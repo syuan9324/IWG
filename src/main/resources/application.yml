@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:sqlserver://192.168.57.201:9981;database=PWC_DB;encrypt=true;trustServerCertificate=true
+    username: pwc
+    password: IISI@pwcdb
+
+app:
+  jwt:
+    jwtSecret: jwtSecretKey
+    #jwtExpiration: 86400000
+    jwtExpiration: 86400000 #單位是ms ex 10000 就是10秒,這邊設定1天
+  cors:
+    allowed-origins: ''

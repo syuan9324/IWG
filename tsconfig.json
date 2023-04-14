@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "baseUrl": "src/main/webapp/app",
+        "outDir": "target/out-tsc/dist",
+        "sourceMap": true,
+        "strict": true,
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "module": "es6",
+        "moduleResolution": "node",
+        "target": "es5",
+        "allowJs": true
+    },
+    "include": ["src/main/webapp/app"],
+    "exclude": ["node_modules"]
+}
