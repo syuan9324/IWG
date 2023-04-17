@@ -43,16 +43,16 @@ public class CommonSSHUtils {
     }
 
     //測試scp
-    public static void testScpCommand() throws JSchException, IOException {
-        Session session = CommonSSHUtils.createSession();
+    public static void testScpCommand(String userName,String password,String host,int port) throws JSchException, IOException {
+        Session session = CommonSSHUtils.createSession(userName,password,host,port);
         copyRemoteToLocal(session,"/home/tailinh/","C:\\Users\\2106017","pwc-web.war");
     }
 
-    private static Session createSession() {
-        final String username = "tailinh";
-        final String password = "IIsi@940450";
-        final String host = "192.168.57.202";
-        final int port = 22;
+    private static Session createSession(String username,String password,String host,int port) {
+//        final String username = "tailinh";
+//        final String password = "IIsi@940450";
+//        final String host = "192.168.57.202";
+//        final int port = 22;
 
         try {
             Session session = null;
