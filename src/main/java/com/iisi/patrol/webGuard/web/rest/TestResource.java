@@ -42,4 +42,30 @@ public class TestResource {
         return "ok";
     }
 
+    @GetMapping("/service/scp")
+    public String testScp(){
+        try {
+            CommonSSHUtils.testScpCommand();
+        }  catch (Exception e){
+            e.printStackTrace();
+        }
+        return "ok";
+    }
+
+    @GetMapping("/service/testSizeCompare")
+    public String testSizeCompare(){
+        //
+        try {
+            CommonSSHUtils.testScpCommand();
+        }  catch (Exception e){
+            e.printStackTrace();
+        }
+        File fileLocal = new File("C://pwc-web.war");
+        File fileRemote = new File("C:\\Users\\2106017\\pwc-web.war");
+        long fileLocalSize = fileLocal.length();
+        long fileRemoteSize = fileRemote.length();
+        System.out.println("fileLocalSize:"+fileLocalSize);
+        System.out.println("fileRemoteSize"+fileRemoteSize);
+        return "ok";
+    }
 }
