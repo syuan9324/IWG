@@ -11,12 +11,12 @@ function resolve(dir = "") {
 }
 //用webpack merge 切分開發環境與建置環境
 module.exports = async (env, options) => {
-  console.log("options", options);
-  console.log("env", env);
-  //const development = options.mode === 'development';//
+  console.log('env:',env)
+  console.log('options:',options)
+  const development = options.mode === 'development';//判斷為開發模式dev或是打包正式環境prod
   const webpackConfig = await merge(
     {
-      mode: "development", //options.mode,//mode 有三種 development,production,none
+      mode: options.mode, //從package.json給的,//mode 有三種 development,production,none
       entry: path.resolve("./src/main/webapp/app/main.ts"), // 入口
       output: {
         path: resolve("target/classes/static/"), //output
@@ -26,7 +26,7 @@ module.exports = async (env, options) => {
       resolve: {
         extensions: [".ts", ".js", ".vue", ".json"],
         alias: {
-          //vue$: 'vue/dist/vue.esm.js', //vue2用的，如果不加這個，遇到import vue似乎會有問題
+          //vue$: 'vue/dist/vue.esm.js', //vue2用的，如果vue2不加這個，遇到import vue似乎會有問題,但用vue3加了會有問題
           "@": resolve("src/main/webapp/app"), //方便寫絕對路徑
         },
       },
@@ -89,7 +89,7 @@ module.exports = async (env, options) => {
         }),
       ],
     },
-    await require(`./webpack.dev.js`)(env, options)
+    await require(`./webpack.${development ? 'dev' : 'prod'}.js`)(env, options)
     // devConfig
   );
   return webpackConfig;

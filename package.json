@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "clean-www": "rimraf target/classes/static/app/{src,target/}",
     "webpack": "webpack --config webpack/webpack.common.js",
-    "serve": "webpack serve --progress --config webpack/webpack.common.js"
+    "webapp:build:prod": "npm run webpack -- --mode production",
+    "webapp:prod": "npm run clean-www && npm run webapp:build:prod --",
+    "serve": "webpack serve --progress --config webpack/webpack.common.js --mode development",
+    "start": "npm run serve --"
   },
   "keywords": [],
   "author": "iisi",
@@ -20,9 +24,12 @@
     "browser-sync-webpack-plugin": "^2.3.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
+    "css-minimizer-webpack-plugin": "^5.0.0",
     "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.7.5",
     "postcss": "^8.4.21",
     "postcss-loader": "^7.2.4",
+    "rimraf": "^5.0.0",
     "sass": "^1.61.0",
     "sass-loader": "^13.2.2",
     "style-loader": "^3.3.2",

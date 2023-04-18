@@ -117,11 +117,11 @@ public class CommonSSHUtils {
             }
 
             // read '0644 '
-            in.read(buf, 0, 5);
-//            int bytes_read = 0;
-//            while (bytes_read < 5){
-//                bytes_read += in.read(buf, 0, 5 - bytes_read);
-//            }
+            //in.read(buf, 0, 5);下面的寫法比較不會有read的bug
+            int bytes_read = 0;
+            while (bytes_read < 5){
+                bytes_read += in.read(buf, 0, 5 - bytes_read);
+            }
 
             long filesize = 0L;
             while (true) {
