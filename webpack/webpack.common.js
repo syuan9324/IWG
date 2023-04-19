@@ -42,6 +42,7 @@ module.exports = async (env, options) => {
             secure: false,
           },
         ],
+        historyApiFallback: true//處理refresh的時候會去打後端的問題
         //   historyApiFallback: {
         //   },
       },

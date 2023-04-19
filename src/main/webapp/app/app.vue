@@ -1,6 +1,14 @@
 <template>
   <div>
-    <home></home>
+    <div>
+      <router-link class="list-group-item" active-class="active" to="/home">Home</router-link>
+    </div>
+    <div>
+      <router-link class="list-group-item" active-class="active" to="/testRouter">testRouter</router-link>
+    </div>
+    <div>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
