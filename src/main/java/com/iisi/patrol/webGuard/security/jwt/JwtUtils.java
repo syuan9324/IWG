@@ -12,6 +12,7 @@ import java.util.Date;
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Value("${app.jwt.jwtSecret}")
     private String jwtSecret;

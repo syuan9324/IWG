@@ -11,9 +11,9 @@ function resolve(dir = "") {
 }
 //用webpack merge 切分開發環境與建置環境
 module.exports = async (env, options) => {
-  console.log('env:',env)
-  console.log('options:',options)
-  const development = options.mode === 'development';//判斷為開發模式dev或是打包正式環境prod
+  console.log("env:", env);
+  console.log("options:", options);
+  const development = options.mode === "development"; //判斷為開發模式dev或是打包正式環境prod
   const webpackConfig = await merge(
     {
       mode: options.mode, //從package.json給的,//mode 有三種 development,production,none
@@ -35,14 +35,19 @@ module.exports = async (env, options) => {
           directory: "./target/classes/static/",
         },
         port: 9060,
-        proxy: [
-          {
-            context: [],
-            target: "http://localhost:8080",
-            secure: false,
+        proxy: {
+          "/api": {
+            target: "http://localhost:8080",            
           },
-        ],
-        historyApiFallback: true//處理refresh的時候會去打後端的問題
+        },
+        // [
+        //   {
+        //     context: [],
+        //     target: "http://localhost:8080",
+        //     secure: false,
+        //   },
+        // ],
+        historyApiFallback: true, //處理refresh的時候會去打後端的問題
         //   historyApiFallback: {
         //   },
       },
@@ -58,7 +63,7 @@ module.exports = async (env, options) => {
             options: {
               appendTsSuffixTo: [/\.vue$/],
             },
-          },          
+          },
           //這幾個結尾都當作資源檔(need study)
           {
             test: /\.(png|jpe?g|gif|svg|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)/,
@@ -79,9 +84,9 @@ module.exports = async (env, options) => {
           ],
         }),
         /**
-         * 處理以下waring 
-         * ature flags __VUE_OPTIONS_API__, __VUE_PROD_DEVTOOLS__ are not explicitly defined. 
-         * You are running the esm-bundler build of Vue, which expects these compile-time feature flags to be globally injected 
+         * 處理以下waring
+         * ature flags __VUE_OPTIONS_API__, __VUE_PROD_DEVTOOLS__ are not explicitly defined.
+         * You are running the esm-bundler build of Vue, which expects these compile-time feature flags to be globally injected
          * via the bundler config in order to get better tree-shaking in the production bundle.
          */
         new webpack.DefinePlugin({
@@ -90,7 +95,7 @@ module.exports = async (env, options) => {
         }),
       ],
     },
-    await require(`./webpack.${development ? 'dev' : 'prod'}.js`)(env, options)
+    await require(`./webpack.${development ? "dev" : "prod"}.js`)(env, options)
     // devConfig
   );
   return webpackConfig;

@@ -1,6 +1,9 @@
 {
     "compilerOptions": {
-        "baseUrl": "src/main/webapp/app",
+        "baseUrl": "./src/main/webapp/app",
+        "paths": {
+            "@/*": ["*"]
+          },
         "outDir": "target/out-tsc/dist",
         "sourceMap": true,
         "strict": true,
