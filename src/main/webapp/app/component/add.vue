@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-center">批次服務查詢</h1>
+    <h1 class="text-center">新增批次服務服務</h1>
     <b-container fluid>
       <b-row class="my-1" v-for="type in types" :key="type">
         <b-col sm="3">
@@ -25,11 +25,11 @@
     <!-- </b-form-row> -->
 
     <b-button-toolbar class="text-center">
-      <b-button class="mr-1" type="search">查詢</b-button>
+      <b-button class="mr-1" type="search">儲存</b-button>
       <b-button class="mr-1" type="x-circle">清除</b-button>
-      <b-button class="mr-1" type="file-earmark-plus" @click="toAdd">
-        <router-link class="list-group-item" active-class="active" to="/add"
-          >新增</router-link
+      <b-button class="mr-1" type="file-earmark-plus">
+        <router-link class="list-group-item" active-class="active" to="/log"
+          >返回</router-link
         >
       </b-button>
     </b-button-toolbar>
@@ -39,7 +39,6 @@
 <script lang="ts">
 import { ref, computed, reactive, onMounted } from "vue";
 import { BButton, BFormInput, BButtonToolbar } from "bootstrap-vue-3";
-import navigateByNameAndParams from "@/component/router/router.vue";
 
 // import appHeader from "./header/app-header.vue";
 
@@ -47,15 +46,10 @@ export default {
   name: "log",
   components: { BButton, BFormInput, BButtonToolbar },
   setup() {
-    const types = ["hostName", "targeFileName"];
-
-    const toAdd = () => {
-      // navigateByNameAndParams('home',{});
-    };
+    const types = ["password", "userName", "hostName", "port", "fargeFileName"];
 
     return {
       types,
-      toAdd,
     };
   },
 };

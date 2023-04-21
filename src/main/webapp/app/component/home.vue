@@ -6,7 +6,11 @@
       <input type="text" id="username" name="username" v-model="username" />
       <label for="password">Password:</label>
       <input type="password" id="password" name="password" v-model="password" />
-      <button type="submit">Login</button>
+      <button type="submit">
+        <router-link class="list-group-item" active-class="active" to="/log"
+          >Login</router-link
+        >
+      </button>
       {{ jwt }}
     </form>
   </div>
