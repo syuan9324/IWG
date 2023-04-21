@@ -26,21 +26,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         /**
-         * 先不要從DB找user資料看看...
+         * 從user.json讀取資料
          */
-        //  User hardcodeUser = new User();
-        //  hardcodeUser.setUsername("admin");
-        //  hardcodeUser
-        //  HashSet<Role> roles = new HashSet<>();
-        //  roles.add(new Role(ERole.ROLE_ADMIN));
-        //  hardcodeUser.setRoles(roles);
         User user = userService.findUserByName(username);
-        System.out.println(user);
-        user.setPassword( new BCryptPasswordEncoder().encode(user.getPassword()));
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),  new BCryptPasswordEncoder().encode(user.getPassword()), authorities);
     }
 }
