@@ -1,6 +1,8 @@
 package com.iisi.patrol.webGuard.web.rest;
 
+import com.iisi.patrol.webGuard.domain.AdmMailSend;
 import com.iisi.patrol.webGuard.domain.HostProperty;
+import com.iisi.patrol.webGuard.repository.AdmMailSendRepository;
 import com.iisi.patrol.webGuard.service.CommonSSHUtils;
 import com.iisi.patrol.webGuard.service.InMemoryHostMapService;
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
+import java.time.Instant;
 import java.util.Map;
 
 @RestController
@@ -20,6 +23,8 @@ public class TestResource {
 
     @Autowired
     InMemoryHostMapService inMemoryHostMapService;
+    @Autowired
+    AdmMailSendRepository rdmMailSendRepository;
 
     @GetMapping("/testResource")
     public String testResource(){
@@ -76,6 +81,17 @@ public class TestResource {
             long fileRemoteSize = fileRemote.length();
             System.out.println("fileLocalSize:"+fileLocalSize);
             System.out.println("fileRemoteSize"+fileRemoteSize);
+            if(fileLocalSize!=fileRemoteSize){
+                AdmMailSend mail = new AdmMailSend();
+                mail.setReceiver("ad10823046@alumni.scu.edu.tw");
+                mail.setMailType("IWG");
+                mail.setSubject("檔案異動通知");
+                mail.setContent("注意!!檢測出檔案有異動");
+                mail.setStatus("W");
+                mail.setIsHtml(false);
+                mail.setCreateTime(Instant.now());
+                rdmMailSendRepository.save(mail);
+            }
         });
 
         return "ok";
