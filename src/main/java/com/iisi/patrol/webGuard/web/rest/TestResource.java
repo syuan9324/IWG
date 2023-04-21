@@ -1,8 +1,8 @@
 package com.iisi.patrol.webGuard.web.rest;
 
 import com.iisi.patrol.webGuard.domain.HostProperty;
-import com.iisi.patrol.webGuard.security.services.InMemoryHostMapService;
 import com.iisi.patrol.webGuard.service.CommonSSHUtils;
+import com.iisi.patrol.webGuard.service.InMemoryHostMapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,9 @@
-package com.iisi.patrol.webGuard.security.services;
+package com.iisi.patrol.webGuard.service;
 
 import com.iisi.patrol.webGuard.domain.HostProperty;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 @Service

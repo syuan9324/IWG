@@ -1,13 +1,8 @@
 package com.iisi.patrol.webGuard.security.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.context.annotation.Bean;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Component
+@ToString
 public class User {
 
     private Long id;

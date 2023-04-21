@@ -1,9 +1,6 @@
 package com.iisi.patrol.webGuard.security.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
@@ -13,7 +10,7 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Role {
-    private Integer id;
     private ERole name;
 }
