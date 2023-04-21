@@ -4,6 +4,7 @@ const Home = () => import('@/component/home.vue');
 const Login = () => import('@/account/login.vue');
 const TestRouter = () => import('@/component/testRouter.vue');
 const TestRouter2 = () => import('@/component/testRouter2.vue');
+const Log = () => import('@/component/log.vue');
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -26,9 +27,14 @@ const routes: Array<RouteRecordRaw> = [
         name: "testRouter2",
         component: TestRouter2,
       },
+       {
+          path: "/log",
+          name: "log",
+          component: Log,
+       },
     ]
   },
-  
+
 ];
 
 const router = createRouter({

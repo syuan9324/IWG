@@ -35,6 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //  roles.add(new Role(ERole.ROLE_ADMIN));
         //  hardcodeUser.setRoles(roles);
         User user = userService.findUserByName(username);
+        System.out.println(user);
         user.setPassword( new BCryptPasswordEncoder().encode(user.getPassword()));
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
