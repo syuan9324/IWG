@@ -7,7 +7,7 @@
 export default {
   name: "testRouter",
   setup() {
-       return {};
+    return {};
   },
 };
 </script>
