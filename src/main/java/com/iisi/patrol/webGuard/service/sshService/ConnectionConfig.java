@@ -14,6 +14,7 @@ public class ConnectionConfig {
     private String serverIp;
     private String userName;
     private String passWord;
+    private Integer port;
 
 
 }

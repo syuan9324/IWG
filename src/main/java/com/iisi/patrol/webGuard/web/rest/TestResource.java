@@ -5,12 +5,11 @@ import com.iisi.patrol.webGuard.domain.HostProperty;
 import com.iisi.patrol.webGuard.repository.AdmMailSendRepository;
 import com.iisi.patrol.webGuard.service.CommonSSHUtils;
 import com.iisi.patrol.webGuard.service.InMemoryHostMapService;
+import com.iisi.patrol.webGuard.service.sshService.ConnectionConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.time.Instant;
@@ -26,10 +25,19 @@ public class TestResource {
     @Autowired
     AdmMailSendRepository rdmMailSendRepository;
 
+    public ConnectionConfig connectionConfig = new ConnectionConfig("192.168.57.202","tailinh","IIsi@940450",22);
+
     @GetMapping("/testResource")
     public String testResource(){
         log.info("check resource");
         return "get resource";
+    }
+
+    @PostMapping("/service/testPermission")
+    public String testPermission(@RequestBody String command) throws Exception {
+        String result = CommonSSHUtils.useSshCommand(connectionConfig, command);
+        System.out.println(result);
+        return result;
     }
 
     @GetMapping("/service/testResource")
