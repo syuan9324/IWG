@@ -1,10 +1,13 @@
 package com.iisi.patrol.webGuard.service;
 
+import com.iisi.patrol.webGuard.service.sshService.ConnectionConfig;
 import com.jcraft.jsch.*;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Properties;
 
+@Component
 public class CommonSSHUtils {
 
     //測試SSH #todo 要改成比較general的寫法
@@ -40,6 +43,39 @@ public class CommonSSHUtils {
                 channel.disconnect();
             }
         }
+    }
+
+    public static String useSshCommand(ConnectionConfig connectionConfig, String command) throws Exception {
+
+        Session session = null;
+        ChannelExec channel = null;
+        String responseString;
+        try {
+            session = new JSch().getSession(connectionConfig.getUserName(), connectionConfig.getServerIp(), connectionConfig.getPort());
+            session.setPassword(connectionConfig.getPassWord());
+            session.setConfig("StrictHostKeyChecking", "no");
+            session.connect();
+
+            channel = (ChannelExec) session.openChannel("exec");
+            channel.setCommand(command);
+            ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
+            channel.setOutputStream(responseStream);
+            channel.connect();
+
+            while (channel.isConnected()) {
+                Thread.sleep(100);
+            }
+
+            responseString = new String(responseStream.toByteArray());
+        } finally {
+            if (session != null) {
+                session.disconnect();
+            }
+            if (channel != null) {
+                channel.disconnect();
+            }
+        }
+        return responseString;
     }
 
     //測試scp
