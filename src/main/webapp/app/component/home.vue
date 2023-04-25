@@ -13,6 +13,12 @@
         to="/testRouter2"
         >testRouter2</router-link
       >
+      <router-link
+        class="list-group-item"
+        active-class="active"
+        to="/log"
+        >log</router-link
+      >
       <button @click="logout">logout</button>
     </div>
     <div>

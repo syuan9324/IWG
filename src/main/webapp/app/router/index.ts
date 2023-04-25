@@ -35,16 +35,16 @@ const routes: Array<RouteRecordRaw> = [
        },
     ]
   },
-  {
-    path: "/log",
-    name: "log",
-    component: Log,
-  },
-  {
-    path: "/add",
-    name: "add",
-    component: Add,
-  },
+  // {
+  //   path: "/log",
+  //   name: "log",
+  //   component: Log,
+  // },
+  // {
+  //   path: "/add",
+  //   name: "add",
+  //   component: Add,
+  // },
 ];
 
 const router = createRouter({
