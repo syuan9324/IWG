@@ -5,6 +5,7 @@ import com.iisi.patrol.webGuard.domain.HostProperty;
 import com.iisi.patrol.webGuard.repository.AdmMailSendRepository;
 import com.iisi.patrol.webGuard.service.CommonSSHUtils;
 import com.iisi.patrol.webGuard.service.InMemoryHostMapService;
+import com.iisi.patrol.webGuard.service.ScheduledTaskService;
 import com.iisi.patrol.webGuard.service.sshService.ConnectionConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ public class TestResource {
     InMemoryHostMapService inMemoryHostMapService;
     @Autowired
     AdmMailSendRepository rdmMailSendRepository;
+    @Autowired
+    ScheduledTaskService scheduledTaskService;
 
     public ConnectionConfig connectionConfig = new ConnectionConfig("192.168.57.202","tailinh","IIsi@940450",22);
 
@@ -49,7 +52,7 @@ public class TestResource {
     @GetMapping("/service/ssh")
     public String testSsh(){
         try {
-            CommonSSHUtils.listFolderStructure("tailinh","IIsi@940450","192.168.57.202",22,"du -B 1 pwc-web.war");
+            CommonSSHUtils.useSshCommand(connectionConfig,"ls -l");
         }  catch (Exception e){
             e.printStackTrace();
         }
@@ -58,19 +61,8 @@ public class TestResource {
         long size = file.length();
         System.out.println("size"+size);
 
-
         return "ok";
     }
-
-//    @GetMapping("/service/scp")
-//    public String testScp(){
-//        try {
-//            CommonSSHUtils.testScpCommand();
-//        }  catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return "ok";
-//    }
 
     @GetMapping("/service/testSizeCompare")
     public String testSizeCompare(){
@@ -79,7 +71,7 @@ public class TestResource {
         //HostProperty connectionProperty = map.get("202");
         map.forEach((k,v) -> {
             try {
-                CommonSSHUtils.testScpCommand(v.getUserName(),v.getPassword(),v.getHostName(),v.getPort());
+//                CommonSSHUtils.testScpCommand(v.getUserName(),v.getPassword(),v.getHostName(),v.getPort());
             }  catch (Exception e){
                 e.printStackTrace();
             }
@@ -103,5 +95,10 @@ public class TestResource {
         });
 
         return "ok";
+    }
+
+    @GetMapping("/service/testFileSizeCompare")
+    public void testFileSizeCompare(){
+        scheduledTaskService.fileComparisonForDev();
     }
 }
