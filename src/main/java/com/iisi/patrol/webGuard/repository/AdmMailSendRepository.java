@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface AdmMailSendRepository extends JpaRepository<AdmMailSend, Long> , AdmMailSendRepositoryCustom, JpaSpecificationExecutor<AdmMailSend> {
+public interface AdmMailSendRepository extends JpaRepository<AdmMailSend, Long> , JpaSpecificationExecutor<AdmMailSend> {
     AdmMailSend findBySourceId(String sourceId);
 }
