@@ -1,37 +1,41 @@
 package com.iisi.patrol.webGuard.service;
 
+import com.iisi.patrol.webGuard.service.sshService.ConnectionConfig;
 import com.jcraft.jsch.*;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Properties;
 
+@Component
 public class CommonSSHUtils {
 
-    //測試SSH #todo 要改成比較general的寫法
-    public static void listFolderStructure(String username, String password,
-                                           String host, int port, String command) throws Exception {
+    public static String useSshCommand(ConnectionConfig connectionConfig, String command) throws Exception {
 
         Session session = null;
         ChannelExec channel = null;
-
+        String responseString;
+        String errorString = "";
         try {
-            session = new JSch().getSession(username, host, port);
-            session.setPassword(password);
+            session = new JSch().getSession(connectionConfig.getUserName(), connectionConfig.getServerIp(), connectionConfig.getPort());
+            session.setPassword(connectionConfig.getPassWord());
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect();
 
             channel = (ChannelExec) session.openChannel("exec");
             channel.setCommand(command);
+            ((ChannelExec)channel).setErrStream(System.err);
             ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
+            ByteArrayOutputStream errorStream = new ByteArrayOutputStream();
             channel.setOutputStream(responseStream);
+            channel.setErrStream(errorStream);
             channel.connect();
 
             while (channel.isConnected()) {
                 Thread.sleep(100);
             }
-
-            String responseString = new String(responseStream.toByteArray());
-            System.out.println(responseString);
+            errorString = errorStream.toString();
+            responseString = responseStream.toString();
         } finally {
             if (session != null) {
                 session.disconnect();
@@ -40,43 +44,26 @@ public class CommonSSHUtils {
                 channel.disconnect();
             }
         }
+        if(errorString.length()>0){
+            return errorString.trim();
+        }
+
+        return responseString.trim();
     }
 
-    //測試scp
-    public static void testScpCommand(String userName,String password,String host,int port) throws JSchException, IOException {
-        Session session = CommonSSHUtils.createSession(userName,password,host,port);
-        copyRemoteToLocal(session,"/home/tailinh/","C:\\Users\\2106017","pwc-web.war");
+    public static String useScpCopyRemoteFile(ConnectionConfig connectionConfig,String from, String to,String fileName) throws JSchException, IOException {
+        Session session = CommonSSHUtils.createSession(connectionConfig);
+        copyRemoteToLocal(session,from,to,fileName);
+        return "ok";
     }
 
-    private static Session createSession(String username,String password,String host,int port) {
-//        final String username = "tailinh";
-//        final String password = "IIsi@940450";
-//        final String host = "192.168.57.202";
-//        final int port = 22;
-
+    private static Session createSession(ConnectionConfig connectionConfig) {
         try {
             Session session = null;
-            session = new JSch().getSession(username, host, port);
-            session.setPassword(password);
+            session = new JSch().getSession(connectionConfig.getUserName(),connectionConfig.getServerIp(), connectionConfig.getPort());
+            session.setPassword(connectionConfig.getPassWord());
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect();
-//            JSch jsch = new JSch();
-//
-//            if (keyFilePath != null) {
-//                if (keyPassword != null) {
-//                    jsch.addIdentity(keyFilePath, keyPassword);
-//                } else {
-//                    jsch.addIdentity(keyFilePath);
-//                }
-//            }
-//
-//            Properties config = new java.util.Properties();
-//            config.put("StrictHostKeyChecking", "no");
-//
-//            Session session = jsch.getSession(user, host, port);
-//            session.setConfig(config);
-//            session.connect();
-
             return session;
         } catch (JSchException e) {
             System.out.println(e);
@@ -142,7 +129,7 @@ public class CommonSSHUtils {
                 }
             }
 
-            System.out.println("file-size=" + filesize + ", file=" + file);
+            //System.out.println("file-size=" + filesize + ", file=" + file);
 
             // send '\0'
             buf[0] = 0;
@@ -183,7 +170,7 @@ public class CommonSSHUtils {
 
         channel.disconnect();
         session.disconnect();
-        System.out.println("copyRemoteToLocal finish");
+
     }
 
     public static int checkAck(InputStream in) throws IOException {

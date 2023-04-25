@@ -19,6 +19,15 @@
         to="/log"
         >log</router-link
       >
+<<<<<<< HEAD
+=======
+      <router-link
+        class="list-group-item"
+        active-class="active"
+        to="/add"
+        >ladd</router-link
+      >
+>>>>>>> f38bf670605bf9dfca4dcb5d15d5ecedbd698cb0
       <button @click="logout">logout</button>
     </div>
     <div>

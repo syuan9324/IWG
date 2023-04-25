@@ -33,6 +33,11 @@ const routes: Array<RouteRecordRaw> = [
           name: "log",
           component: Log,
        },
+       {
+          path: "/add",
+          name: "add",
+          component: Add,
+        },
     ]
   },
   // {

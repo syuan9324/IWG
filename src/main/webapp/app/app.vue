@@ -1,10 +1,10 @@
 <template>
   <div>
-    <!-- <div>
+    <div>
       <router-link class="list-group-item" active-class="active" to="/log"
         >紀錄查詢</router-link
       >
-    </div> -->
+    </div>
     <!-- <div>
       <router-link class="list-group-item" active-class="active" to="/home"
         >home</router-link
@@ -13,7 +13,7 @@
     <div>
       <router-view></router-view>
     </div>
-    <!-- <home></home> -->
+    <home></home>
   </div>
 </template>
 

@@ -1,19 +1,18 @@
 package com.iisi.patrol.webGuard.service.sshService;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ConnectionConfig {
 
     private String serverIp;
     private String userName;
     private String passWord;
+    private Integer port;
 
 
 }
