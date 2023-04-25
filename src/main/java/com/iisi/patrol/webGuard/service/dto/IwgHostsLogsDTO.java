@@ -1,75 +1,24 @@
-package com.iisi.patrol.webGuard.domain;
+package com.iisi.patrol.webGuard.service.dto;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
-@Entity
-public class IwgHostsLogs implements Serializable {
+public class IwgHostsLogsDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-
-    @Id
-    @NotNull
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotNull
-    @Size(max = 25)
-    @Column(name = "hostname", length = 25, nullable = false)
     private String hostname;
-
-    @NotNull
-    @Size(max = 4)
-    @Column(name = "port", length = 4, nullable = false)
     private Integer port;
-
-    @Column(name = "trigger_time", nullable = false)
     private Instant triggerTime;
-
-    @Column(name = "finish_time", nullable = false)
     private Instant finishTime;
-
-    @Size(max = 2)
-    @Column(name = "result", length = 2, nullable = true)
     private String result;
-
-    @Size(max = 500)
-    @Column(name = "sms_status", length = 500, nullable = true)
     private String smsStatus;
-
-    @Size(max = 500)
-    @Column(name = "mail_status", length = 500, nullable = true)
     private String mailStatus;
-
-    @Size(max = 25)
-    @Column(name = "create_user", length = 25, nullable = true)
     private String createUser;
-
-    @Column(name = "create_time", nullable = true)
     private Instant createTime;
-
-    @Size(max = 25)
-    @Column(name = "update_user", length = 25, nullable = true)
     private String updateUser;
-
-    @Column(name = "update_time", nullable = true)
     private Instant updateTime;
-
-    @Size(max = 50)
-    @Column(name = "target_filename", length = 50, nullable = true)
     private String targetFilename;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getHostname() {
         return hostname;
@@ -165,5 +114,36 @@ public class IwgHostsLogs implements Serializable {
 
     public void setTargetFilename(String targetFilename) {
         this.targetFilename = targetFilename;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof IwgHostsLogsDTO)) return false;
+        IwgHostsLogsDTO that = (IwgHostsLogsDTO) o;
+        return  Objects.equals(hostname, that.hostname) && Objects.equals(port, that.port) && Objects.equals(triggerTime, that.triggerTime) && Objects.equals(finishTime, that.finishTime) && Objects.equals(result, that.result) && Objects.equals(smsStatus, that.smsStatus) && Objects.equals(mailStatus, that.mailStatus) && Objects.equals(createUser, that.createUser) && Objects.equals(createTime, that.createTime) && Objects.equals(updateUser, that.updateUser) && Objects.equals(updateTime, that.updateTime) && Objects.equals(targetFilename, that.targetFilename);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( hostname, port, triggerTime, finishTime, result, smsStatus, mailStatus, createUser, createTime, updateUser, updateTime, targetFilename);
+    }
+
+    @Override
+    public String toString() {
+        return "IwgHostsLogsDTO{" +
+                ", hostname='" + hostname + '\'' +
+                ", port=" + port +
+                ", triggerTime=" + triggerTime +
+                ", finishTime=" + finishTime +
+                ", result='" + result + '\'' +
+                ", smsStatus='" + smsStatus + '\'' +
+                ", mailStatus='" + mailStatus + '\'' +
+                ", createUser='" + createUser + '\'' +
+                ", createTime=" + createTime +
+                ", updateUser='" + updateUser + '\'' +
+                ", updateTime=" + updateTime +
+                ", targetFilename='" + targetFilename + '\'' +
+                '}';
     }
 }

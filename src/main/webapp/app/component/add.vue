@@ -79,7 +79,9 @@
       </b-button>
     </b-button-toolbar> -->
     <div class="text-center">
-      <b-button class="ml-2" style="background-color: #1aa4b7">儲存</b-button>
+      <b-button class="ml-2" style="background-color: #1aa4b7" @click="toSave"
+        >儲存</b-button
+      >
       <b-button class="mr-10" style="background-color: #1aa4b7">清除</b-button>
       <b-button class="pl-12" style="background-color: #1aa4b7" @click="toLog"
         >返回
@@ -89,6 +91,7 @@
 </template>
 
 <script lang="ts">
+import axios from "axios";
 import { ref, computed, reactive, onMounted } from "vue";
 import { BButton, BFormInput, BButtonToolbar } from "bootstrap-vue-3";
 import router from "@/router";
@@ -118,6 +121,22 @@ export default {
       fargeFileName: {},
     });
 
+    const toSave = () => {
+      const criteria = {
+        password: "123456",
+        username: "syuan",
+        hostname: "01",
+        port: "22",
+      };
+      axios
+        .post("/create/iwgHosts", criteria)
+        .then((response: any) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
     const toLog = () => {
       router.push({ path: "/log" });
     };
@@ -126,6 +145,7 @@ export default {
       // types,
       formDefault,
       toLog,
+      toSave,
     };
   },
 };
