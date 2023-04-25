@@ -13,10 +13,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>webGuard</name>
 	<description>web patrol</description>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 		<node.version>v16.13.1</node.version>
 		<npm.version>8.3.2</npm.version>
 	</properties>
@@ -32,13 +32,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<!--不要用tomcat-->
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-tomcat</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<!--valid用-->
@@ -146,10 +139,6 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-undertow</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-devtools</artifactId>
 					<optional>true</optional>
 				</dependency>
@@ -161,15 +150,23 @@
 
 		<profile>
 			<id>prod</id>
-			<dependencies>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-undertow</artifactId>
-					<scope>provided</scope>
-				</dependency>
-			</dependencies>
+<!--			<dependencies>-->
+<!--				<dependency>-->
+<!--					<groupId>org.springframework.boot</groupId>-->
+<!--					<artifactId>spring-boot-starter-undertow</artifactId>-->
+<!--					<scope>provided</scope>-->
+<!--				</dependency>-->
+<!--			</dependencies>-->
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<source>1.8</source>
+							<target>1.8</target>
+						</configuration>
+					</plugin>
 					<plugin>
 						<artifactId>maven-clean-plugin</artifactId>
 						<configuration>
