@@ -37,7 +37,7 @@ module.exports = async (env, options) => {
         port: 9060,
         proxy: {
           "/api": {
-            target: "http://localhost:8080",            
+            target: "http://localhost:8088",            
           },
         },
         // [
