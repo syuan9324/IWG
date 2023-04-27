@@ -5,29 +5,31 @@
     <button @click="testToken()">testToken</button>
     <div>
       <b-table striped hover :items="items"></b-table>
-    </div>
-    <BButton @click.stop="showModal = !showModal">Open Modal</BButton>
-    {{ showModal }}
-    <b-modal id='aaa' v-model="showModal">
-      <p>This is a test modal.</p>
-    </b-modal>
+    </div>   
     <i class="bi bi-clipboard"></i>
+    <div>
+      <h3>
+        check store modal
+        <BButton @click="showModals">change store</BButton>
+      </h3>
+    </div>
   </div>
 </template>
 <script lang="ts">
-import { ref, getCurrentInstance } from "vue";
+import { ref, getCurrentInstance, watch } from "vue";
 import axios from "axios";
 import { BModal } from "bootstrap-vue-next";
+import { useStore } from "vuex";
+import NotificationService from "@/shared/notification-service";
 export default {
   name: "testRouter",
   components: {
     BModal,
   },
   setup() {
-    const vue = getCurrentInstance();   
-    // globals2.show('aaa');
-    // const notificationService: NotificationService  = inject<NotificationService>('notificationService')!;
-    // notificationService.info('test123');
+    const vue = getCurrentInstance();
+    const notificationService = new NotificationService();
+    const store = useStore();
     const items = ref([
       { age: 40, first_name: "Dickerson", last_name: "Macdonald" },
       { age: 21, first_name: "Larsen", last_name: "Shaw" },
@@ -47,10 +49,17 @@ export default {
           console.log(error);
         });
     };
+
+    function showModals() {
+      notificationService.danger("!!!");
+    }
+    
+
     return {
       testToken,
       items,
       showModal,
+      showModals,
     };
   },
 };
