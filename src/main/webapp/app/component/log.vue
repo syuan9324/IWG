@@ -30,11 +30,11 @@
         content-cols="2"
         id="fieldset-1"
         label="主機名稱"
-        label-for="hostName"
+        label-for="hostname"
       >
         <b-form-input
-          id="hostName"
-          v-model="formDefault.hostName"
+          id="hostname"
+          v-model="formDefault.hostname"
         ></b-form-input>
       </b-form-group>
     </b-form>
@@ -45,11 +45,11 @@
         content-cols="2"
         id="fieldset-1"
         label="檔案路徑"
-        label-for="targeFileName"
+        label-for="targeFilename"
       >
         <b-form-input
-          id="targeFileName"
-          v-model="formDefault.targeFileName"
+          id="targeFilename"
+          v-model="formDefault.targeFilename"
         ></b-form-input>
       </b-form-group>
     </b-form>
@@ -113,6 +113,7 @@ import {
 } from "bootstrap-vue-3";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import router from "@/router";
+import axios from "axios";
 
 // import iTable from "./shared/i-table/i-table.vue";
 
@@ -149,8 +150,18 @@ export default {
     const toAdd = () => {
       router.push({ path: "/add" });
     };
+
     const toQuery = () => {
       stepVisible.value = true;
+      axios
+        .post("/find/iwgHosts", formDefault.value)
+        .then((data) => {
+          // ele.forEach((e) => {});
+          console.log("資料", data);
+        })
+        .catch((error) => {
+          console.log("catch", error);
+        });
       // table.data = [];
       // table.totalItems = 1;
       // table.data.splice(0, table.data.length, ...mockdata);

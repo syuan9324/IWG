@@ -30,6 +30,15 @@ public class ScheduledTaskService {
         this.connectionConfigService = connectionConfigService;
     }
 
+
+
+
+
+    /**
+     * 以下都是測試用
+     */
+
+
     /**
      * 測試一下job
      */
@@ -44,7 +53,7 @@ public class ScheduledTaskService {
     /**
      * 比對檔案大小
      */
-    @Scheduled(cron = "0 0/5 * * * ?")
+    // @Scheduled(cron = "0 0/5 * * * ?")
     public void fileComparisonForDev() {
         log.info("start file compare");
         String fileName = "pwc-web.war";

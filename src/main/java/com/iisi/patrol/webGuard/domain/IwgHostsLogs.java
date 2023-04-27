@@ -1,21 +1,24 @@
 package com.iisi.patrol.webGuard.domain;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class IwgHostsLogs implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -65,107 +68,4 @@ public class IwgHostsLogs implements Serializable {
     @Column(name = "target_filename", length = 50, nullable = true)
     private String targetFilename;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getHostname() {
-        return hostname;
-    }
-
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
-    }
-
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
-    public Instant getTriggerTime() {
-        return triggerTime;
-    }
-
-    public void setTriggerTime(Instant triggerTime) {
-        this.triggerTime = triggerTime;
-    }
-
-    public Instant getFinishTime() {
-        return finishTime;
-    }
-
-    public void setFinishTime(Instant finishTime) {
-        this.finishTime = finishTime;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
-    public String getSmsStatus() {
-        return smsStatus;
-    }
-
-    public void setSmsStatus(String smsStatus) {
-        this.smsStatus = smsStatus;
-    }
-
-    public String getMailStatus() {
-        return mailStatus;
-    }
-
-    public void setMailStatus(String mailStatus) {
-        this.mailStatus = mailStatus;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Instant getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Instant createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public Instant getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Instant updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getTargetFilename() {
-        return targetFilename;
-    }
-
-    public void setTargetFilename(String targetFilename) {
-        this.targetFilename = targetFilename;
-    }
 }
