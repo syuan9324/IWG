@@ -44,8 +44,10 @@ export default {
         .then((response: any) => {
           console.log(response);
           result.value = response.data;
+          notificationService.info(response.data);
         })
         .catch((error) => {
+          notificationService.danger(error);
           console.log(error);
         });
     };
