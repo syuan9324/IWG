@@ -12,28 +12,22 @@ public class IwgHosts implements Serializable {
 
 
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Size(max = 25)
     @Column(name = "password", length = 25, nullable = false)
     private String password;
 
-    @NotNull
     @Size(max = 25)
     @Column(name = "username", length = 25, nullable = false)
     private String username;
 
-    @NotNull
     @Size(max = 25)
     @Column(name = "hostname", length = 25, nullable = false)
     private String hostname;
 
-    @NotNull
-    @Size(max = 4)
-    @Column(name = "port", length = 4, nullable = false)
+    @Column(name = "port", nullable = false)
     private Integer port;
 
     @Size(max = 500)

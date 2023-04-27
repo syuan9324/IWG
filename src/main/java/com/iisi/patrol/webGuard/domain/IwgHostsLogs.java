@@ -13,7 +13,6 @@ public class IwgHostsLogs implements Serializable {
 
 
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

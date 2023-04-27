@@ -21,11 +21,11 @@
         label-cols="2"
         content-cols="2"
         label="帳號"
-        label-for="userName"
+        label-for="username"
       >
         <b-form-input
-          id="userName"
-          v-model="formDefault.userName"
+          id="username"
+          v-model="formDefault.username"
         ></b-form-input>
       </b-form-group>
     </b-form>
@@ -49,11 +49,11 @@
         label-cols="2"
         content-cols="2"
         label="主機名稱"
-        label-for="hostName"
+        label-for="hostname"
       >
         <b-form-input
-          id="hostName"
-          v-model="formDefault.hostName"
+          id="hostname"
+          v-model="formDefault.hostname"
         ></b-form-input>
       </b-form-group>
     </b-form>
@@ -82,7 +82,9 @@
       <b-button class="ml-2" style="background-color: #1aa4b7" @click="toSave"
         >儲存</b-button
       >
-      <b-button class="mr-10" style="background-color: #1aa4b7">清除</b-button>
+      <b-button class="mr-10" style="background-color: #1aa4b7" @click="reset"
+        >清除</b-button
+      >
       <b-button class="pl-12" style="background-color: #1aa4b7" @click="toLog"
         >返回
       </b-button>
@@ -104,37 +106,37 @@ export default {
   setup() {
     // const types = ["password", "userName", "hostName", "port", "fargeFileName"];
 
-    const formDefault = ref({
-      password: "",
-      userName: "",
-      hostName: "",
-      port: "",
-      fargeFileName: "",
+    let formDefault = ref({
+      password: "123456",
+      username: "syuan",
+      hostname: "01",
+      port: 22,
+      // fargeFilename: "pcic",
     });
 
     // 表單物件驗證規則
     const rules = ref({
       password: {},
-      userName: {},
-      hostName: {},
+      username: {},
+      hostname: {},
       port: {},
-      fargeFileName: {},
+      // fargeFilename: {},
     });
+    const form = reactive(Object.assign({}, formDefault));
+
+    // const reset = () => {
+    //   formDefault.value = form.value;
+    // };
 
     const toSave = () => {
-      const criteria = {
-        password: "123456",
-        username: "syuan",
-        hostname: "01",
-        port: "22",
-      };
       axios
-        .post("/create/iwgHosts", criteria)
+        .post("/create/iwgHosts", formDefault.value)
         .then((response: any) => {
-          console.log(response);
+          alert("新增成功");
+          console.log("then", response);
         })
         .catch((error) => {
-          console.log(error);
+          console.log("catch", error);
         });
     };
     const toLog = () => {
@@ -146,6 +148,7 @@ export default {
       formDefault,
       toLog,
       toSave,
+      // reset,
     };
   },
 };
