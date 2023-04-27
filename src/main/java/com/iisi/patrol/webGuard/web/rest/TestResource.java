@@ -6,7 +6,9 @@ import com.iisi.patrol.webGuard.repository.AdmMailSendRepository;
 import com.iisi.patrol.webGuard.repository.AdmSmsSendRepository;
 import com.iisi.patrol.webGuard.service.CommonSSHUtils;
 import com.iisi.patrol.webGuard.service.InMemoryHostMapService;
+import com.iisi.patrol.webGuard.service.IwgHostsService;
 import com.iisi.patrol.webGuard.service.ScheduledTaskService;
+import com.iisi.patrol.webGuard.service.dto.IwgHostsDTO;
 import com.iisi.patrol.webGuard.service.sshService.ConnectionConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,8 @@ public class TestResource {
     AdmSmsSendRepository admSmsSendRepository;
     @Autowired
     ScheduledTaskService scheduledTaskService;
+    @Autowired
+    IwgHostsService iwgHostsService;
 
     public ConnectionConfig connectionConfig = new ConnectionConfig("192.168.57.202","tailinh","IIsi@940450",22);
 
@@ -95,6 +99,11 @@ public class TestResource {
 
     @GetMapping("/service/testFileSizeCompare")
     public void testFileSizeCompare(){
-        scheduledTaskService.fileComparisonForDev();
+        scheduledTaskService.doFileComparison();
+    }
+
+    @GetMapping("/service/testMapper")
+    public IwgHostsDTO testMapper(){
+        return iwgHostsService.findById(1l);
     }
 }

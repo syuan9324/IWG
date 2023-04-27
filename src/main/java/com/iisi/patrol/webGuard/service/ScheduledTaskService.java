@@ -1,17 +1,16 @@
 package com.iisi.patrol.webGuard.service;
 
-import com.iisi.patrol.webGuard.WebGuardApplication;
+import com.iisi.patrol.webGuard.service.dto.IwgHostsDTO;
+import com.iisi.patrol.webGuard.service.dto.IwgHostsTargetDTO;
 import com.iisi.patrol.webGuard.service.sshService.ConnectionConfig;
 import com.jcraft.jsch.JSchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,18 +18,59 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Profile("dev")
 public class ScheduledTaskService {
 
     private final ConnectionConfigService connectionConfigService;
 
+    private final IwgHostsService iwgHostsService;
+
+    private final IwgHostsTargetService iwgHostsTargetService;
+
     private static final Logger log = LoggerFactory.getLogger(ScheduledTaskService.class);
 
 
-    public ScheduledTaskService(ConnectionConfigService connectionConfigService) {
+    public ScheduledTaskService(ConnectionConfigService connectionConfigService, IwgHostsService iwgHostsService, IwgHostsTargetService iwgHostsTargetService) {
         this.connectionConfigService = connectionConfigService;
+        this.iwgHostsService = iwgHostsService;
+        this.iwgHostsTargetService = iwgHostsTargetService;
     }
 
+    public void doFileComparison(){
+        List<IwgHostsDTO> hostList = iwgHostsService.findActive();
+        hostList.forEach(iwgHostsDTO -> {
+            log.info("start file compare");
+            log.info("current host : {}",iwgHostsDTO);
+            List<IwgHostsTargetDTO> iwgHostsTargetDTOs = iwgHostsTargetService.getIwgHostTargetByHost(iwgHostsDTO.getHostname(),iwgHostsDTO.getPort());
+            log.info("check IwgHostsTargetLength : {}",iwgHostsTargetDTOs.size());
+            for(IwgHostsTargetDTO targetDTO : iwgHostsTargetDTOs){
+                //取得要監控的file資訊
+                String fileName = targetDTO.getFileName();//"pwc-web.war";
+                String serverLocation =  targetDTO.getTargetFileLocation();
+                String fromServerLocation = targetDTO.getTargetInLocalLocation();
+                String originLocation = targetDTO.getOriginFileLocation();
 
+                log.info("check file name :{}",fileName);
+                log.info("fromServerLocation path :{}",fromServerLocation);
+                log.info("originLocation path :{}",originLocation);
+
+                ConnectionConfig connectionConfig = new ConnectionConfig(iwgHostsDTO.getHostname(),iwgHostsDTO.getUsername(),iwgHostsDTO.getPassword(),iwgHostsDTO.getPort());
+                try {
+                    boolean response = this.fileSizeComparison(connectionConfig, fileName, serverLocation, fromServerLocation, originLocation);
+                    if (response) {
+                        long remoteFileSize = new File(fromServerLocation + fileName).length();
+                        long comparedFileSize = new File(originLocation + fileName).length();
+                        log.info("size of origin {} is {},size of {} from server is {}", fileName, comparedFileSize, fileName, remoteFileSize);
+                        log.info("check {} size normal", fileName);
+                    }else{
+                        log.warn("{} size is different",fileName);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
 
 
@@ -84,11 +124,14 @@ public class ScheduledTaskService {
     public boolean fileSizeComparison(ConnectionConfig connectionConfig, String fileName, String serverLocation, String localLocation, String originLocation) throws JSchException, IOException {
         CommonSSHUtils.useScpCopyRemoteFile(connectionConfig, serverLocation, localLocation, fileName);
         //remote file size
-        long remoteFileSize = new File(localLocation + fileName).length();
-        //comparison file size
-        long comparedFileSize = new File(originLocation + fileName).length();
+        Long remoteFileSize = new File(localLocation + fileName).length();
+        log.info("remote {} size is {}",fileName,remoteFileSize);
 
-        return remoteFileSize == comparedFileSize;
+        //comparison file size
+        Long comparedFileSize = new File(originLocation + fileName).length();
+        log.info("local {} size is {}",fileName,remoteFileSize);
+        log.info("judge size : {}",remoteFileSize.compareTo(comparedFileSize));
+        return remoteFileSize.compareTo(comparedFileSize) == 0;
 
     }
 }
