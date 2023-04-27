@@ -14,14 +14,18 @@
       <router-view></router-view>
     </div>
     <home></home>
+    <NotifyModal></NotifyModal>
   </div>
 </template>
 
 <script lang="ts">
 import { useRouter } from "vue-router";
-
+import NotifyModal from '@/component/notify-modal.vue'
 export default {
   name: "app",
+  components:{
+    NotifyModal,
+  },
   setup() {
     const router = useRouter();
     router.push({ name: "login" });
