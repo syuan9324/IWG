@@ -37,36 +37,39 @@ public class ScheduledTaskService {
     }
 
     public void doFileComparison(){
-        log.info("start file compare");
-        IwgHostsDTO iwgHostsDTO = iwgHostsService.findById(5);
-        List<IwgHostsTargetDTO> iwgHostsTargetDTOs = iwgHostsTargetService.getIwgHostTargetByHost(iwgHostsDTO.getHostname(),iwgHostsDTO.getPort());
-        log.info("check iwgHostsDTO : {}",iwgHostsDTO.toString());
-        log.info("check IwgHostsTargetDTO : {}",iwgHostsTargetDTOs.get(0).toString());
-        IwgHostsTargetDTO target = iwgHostsTargetDTOs.get(0);
+        List<IwgHostsDTO> hostList = iwgHostsService.findActive();
+        hostList.forEach(iwgHostsDTO -> {
+            log.info("start file compare");
+            log.info("current host : {}",iwgHostsDTO);
+            List<IwgHostsTargetDTO> iwgHostsTargetDTOs = iwgHostsTargetService.getIwgHostTargetByHost(iwgHostsDTO.getHostname(),iwgHostsDTO.getPort());
+            log.info("check IwgHostsTargetLength : {}",iwgHostsTargetDTOs.size());
+            for(IwgHostsTargetDTO targetDTO : iwgHostsTargetDTOs){
+                //取得要監控的file資訊
+                String fileName = targetDTO.getFileName();//"pwc-web.war";
+                String serverLocation =  targetDTO.getTargetFileLocation();
+                String fromServerLocation = targetDTO.getTargetInLocalLocation();
+                String originLocation = targetDTO.getOriginFileLocation();
 
-        String fileName = target.getFileName();//"pwc-web.war";
-        String serverLocation =  target.getTargetFileLocation();
-        String fromServerLocation = target.getTargetInLocalLocation();
-        String originLocation = target.getOriginFileLocation();
+                log.info("check file name :{}",fileName);
+                log.info("fromServerLocation path :{}",fromServerLocation);
+                log.info("originLocation path :{}",originLocation);
 
-        log.info("fromServerLocation path :{}",fromServerLocation);
-        log.info("originLocation path :{}",originLocation);
-
-        ConnectionConfig connectionConfig = new ConnectionConfig(iwgHostsDTO.getHostname(),iwgHostsDTO.getUsername(),iwgHostsDTO.getPassword(),iwgHostsDTO.getPort());
-        try {
-            //String response = CommonSSHUtils.useSshCommand(connectionConfig, "du -B 1 pwc-web.war");
-
-            boolean response = this.fileSizeComparison(connectionConfig, fileName, serverLocation, fromServerLocation, originLocation);
-            if (response) {
-                long remoteFileSize = new File(fromServerLocation + fileName).length();
-                long comparedFileSize = new File(originLocation + fileName).length();
-                log.info("size of origin {} is {},size of {} from server is {}", fileName, comparedFileSize, fileName, remoteFileSize);
-                log.info("check {} size normal", fileName);
+                ConnectionConfig connectionConfig = new ConnectionConfig(iwgHostsDTO.getHostname(),iwgHostsDTO.getUsername(),iwgHostsDTO.getPassword(),iwgHostsDTO.getPort());
+                try {
+                    boolean response = this.fileSizeComparison(connectionConfig, fileName, serverLocation, fromServerLocation, originLocation);
+                    if (response) {
+                        long remoteFileSize = new File(fromServerLocation + fileName).length();
+                        long comparedFileSize = new File(originLocation + fileName).length();
+                        log.info("size of origin {} is {},size of {} from server is {}", fileName, comparedFileSize, fileName, remoteFileSize);
+                        log.info("check {} size normal", fileName);
+                    }else{
+                        log.warn("{} size is different",fileName);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        });
     }
 
 
@@ -121,11 +124,14 @@ public class ScheduledTaskService {
     public boolean fileSizeComparison(ConnectionConfig connectionConfig, String fileName, String serverLocation, String localLocation, String originLocation) throws JSchException, IOException {
         CommonSSHUtils.useScpCopyRemoteFile(connectionConfig, serverLocation, localLocation, fileName);
         //remote file size
-        long remoteFileSize = new File(localLocation + fileName).length();
-        //comparison file size
-        long comparedFileSize = new File(originLocation + fileName).length();
+        Long remoteFileSize = new File(localLocation + fileName).length();
+        log.info("remote {} size is {}",fileName,remoteFileSize);
 
-        return remoteFileSize == comparedFileSize;
+        //comparison file size
+        Long comparedFileSize = new File(originLocation + fileName).length();
+        log.info("local {} size is {}",fileName,remoteFileSize);
+        log.info("judge size : {}",remoteFileSize.compareTo(comparedFileSize));
+        return remoteFileSize.compareTo(comparedFileSize) == 0;
 
     }
 }

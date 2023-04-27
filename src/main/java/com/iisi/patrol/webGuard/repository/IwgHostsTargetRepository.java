@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface IwgHostsTargetRepository extends JpaRepository<IwgHostsTarget, Long> {
     @Query(
-            value = "SELECT * FROM IWG_HOSTS_TARGET u WHERE u.HOSTNAME = :hostName and u.PORT = :port",
+            value = "SELECT * FROM IWG_HOSTS_TARGET u WHERE u.HOSTNAME = :hostName and u.PORT = :port and u.ACTIVE = 'Y'",
             nativeQuery = true)
     List<IwgHostsTarget> getIwgHostTargetByHost(@Param("hostName") String hostName,@Param("port") int port);
 }

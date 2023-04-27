@@ -6,7 +6,10 @@ import com.iisi.patrol.webGuard.service.dto.IwgHostsDTO;
 import com.iisi.patrol.webGuard.service.dto.mapper.IwgHostsMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class IwgHostsService {
@@ -34,6 +37,10 @@ public class IwgHostsService {
     public IwgHostsDTO findByHostNameAndPort(long id){
         Optional<IwgHosts> domain = iwgHostsRepository.findById(id);
         return domain.map(iwgHostsMapper::toDto).orElse(null);
+    }
+
+    public List<IwgHostsDTO> findActive(){
+        return iwgHostsRepository.findActive().stream().map(iwgHostsMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
 }
