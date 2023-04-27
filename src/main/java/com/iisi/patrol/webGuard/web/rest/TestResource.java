@@ -3,6 +3,7 @@ package com.iisi.patrol.webGuard.web.rest;
 import com.iisi.patrol.webGuard.domain.AdmMailSend;
 import com.iisi.patrol.webGuard.domain.HostProperty;
 import com.iisi.patrol.webGuard.repository.AdmMailSendRepository;
+import com.iisi.patrol.webGuard.repository.AdmSmsSendRepository;
 import com.iisi.patrol.webGuard.service.CommonSSHUtils;
 import com.iisi.patrol.webGuard.service.InMemoryHostMapService;
 import com.iisi.patrol.webGuard.service.ScheduledTaskService;
@@ -24,7 +25,9 @@ public class TestResource {
     @Autowired
     InMemoryHostMapService inMemoryHostMapService;
     @Autowired
-    AdmMailSendRepository rdmMailSendRepository;
+    AdmMailSendRepository admMailSendRepository;
+    @Autowired
+    AdmSmsSendRepository admSmsSendRepository;
     @Autowired
     ScheduledTaskService scheduledTaskService;
 
@@ -82,15 +85,8 @@ public class TestResource {
             System.out.println("fileLocalSize:"+fileLocalSize);
             System.out.println("fileRemoteSize"+fileRemoteSize);
             if(fileLocalSize!=fileRemoteSize){
-                AdmMailSend mail = new AdmMailSend();
-                mail.setReceiver("ad10823046@alumni.scu.edu.tw");
-                mail.setMailType("IWG");
-                mail.setSubject("檔案異動通知");
-                mail.setContent("注意!!檢測出檔案有異動");
-                mail.setStatus("W");
-                mail.setIsHtml(false);
-                mail.setCreateTime(Instant.now());
-                rdmMailSendRepository.save(mail);
+                admMailSendRepository.warnMail();
+                admSmsSendRepository.warnSms();
             }
         });
 
