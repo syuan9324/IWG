@@ -214,7 +214,6 @@ public class CommonSSHUtils {
     private static void copyLocalToRemote(Session session, String from, String to, String fileName) throws JSchException, IOException {
         boolean ptimestamp = true;
         from = from + File.separator + fileName;
-        System.out.println("copyLocalToRemote");
         // exec 'scp -t rfile' remotely
         String command = "scp " + (ptimestamp ? "-p" : "") + " -t " + to;
         Channel channel = session.openChannel("exec");
@@ -255,7 +254,7 @@ public class CommonSSHUtils {
         else {
             command += from;
         }
-
+        FileInputStream fis = new FileInputStream(from);
         command += "\n";
         out.write(command.getBytes());
         out.flush();
@@ -264,8 +263,8 @@ public class CommonSSHUtils {
             System.exit(0);
         }
 
-        // send a content of lfile
-        FileInputStream fis = new FileInputStream(from);
+//        // send a content of lfile
+//        FileInputStream fis = new FileInputStream(from);
         byte[] buf = new byte[1024];
         while (true) {
             int len = fis.read(buf, 0, buf.length);

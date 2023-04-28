@@ -114,6 +114,6 @@ public class TestResource {
 
     @GetMapping("/service/scpLocalToRemote")
     public void testScpLocalToRemote() throws JSchException, IOException {
-        CommonSSHUtils.useScpCopyLocalFileToRemote(connectionConfig,"C:\\Users\\2106017\\comparison\\origin\\","/home/tailinh/","test1234.txt");
+        CommonSSHUtils.useScpCopyLocalFileToRemote(connectionConfig,"C:\\Users\\2106017\\comparison\\origin\\","/home/tailinh/","test12345.txt");
     }
 }

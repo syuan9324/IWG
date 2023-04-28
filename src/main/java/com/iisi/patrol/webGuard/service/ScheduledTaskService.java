@@ -6,7 +6,6 @@ import com.iisi.patrol.webGuard.service.sshService.ConnectionConfig;
 import com.jcraft.jsch.JSchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -23,13 +22,16 @@ public class ScheduledTaskService {
 
     private final IwgHostsLogsService iwgHostsLogsService;
 
+    private final AdmMailSendService admMailSendService;
+
     private static final Logger log = LoggerFactory.getLogger(ScheduledTaskService.class);
 
 
-    public ScheduledTaskService(IwgHostsService iwgHostsService, IwgHostsTargetService iwgHostsTargetService, IwgHostsLogsService iwgHostsLogsService) {
+    public ScheduledTaskService(IwgHostsService iwgHostsService, IwgHostsTargetService iwgHostsTargetService, IwgHostsLogsService iwgHostsLogsService, AdmMailSendService admMailSendService) {
         this.iwgHostsService = iwgHostsService;
         this.iwgHostsTargetService = iwgHostsTargetService;
         this.iwgHostsLogsService = iwgHostsLogsService;
+        this.admMailSendService = admMailSendService;
     }
 
 //    @Scheduled(cron = "0 0/5 * * * ?")
@@ -61,7 +63,17 @@ public class ScheduledTaskService {
                         iwgHostsLogsService.writeCheckNormalLog(iwgHostsDTO.getHostname(),iwgHostsDTO.getPort(),triggerTime,finishTime,serverLocation+fileName);
                     } else {
                         log.warn("{} size is different", fileName);
+                        //寫log
                         iwgHostsLogsService.writeCheckFailLog(iwgHostsDTO.getHostname(),iwgHostsDTO.getPort(),triggerTime,finishTime,serverLocation+fileName,iwgHostsDTO.getSmsReceiver(),iwgHostsDTO.getMailReceiver());
+                        //替換檔案
+                        CommonSSHUtils.useScpCopyLocalFileToRemote(connectionConfig,originLocation,serverLocation,fileName);
+                        log.info("exchange diff file {} finish",fileName);
+                        //寄信
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("主機:").append(iwgHostsDTO.getHostname()).append(",檔案路徑:").append(serverLocation+fileName).append(",該檔案有異動");
+                        sb.append("\n並以替換為iwg主機中的正確版本");
+                        admMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(),sb.toString());
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
