@@ -57,6 +57,12 @@ public class CommonSSHUtils {
         return "ok";
     }
 
+    public static void useScpCopyLocalFileToRemote(ConnectionConfig connectionConfig,String from, String to,String fileName) throws JSchException, IOException {
+        Session session = CommonSSHUtils.createSession(connectionConfig);
+        copyLocalToRemote(session,from,to,fileName);
+    }
+
+
     private static Session createSession(ConnectionConfig connectionConfig) {
         try {
             Session session = null;
@@ -195,5 +201,97 @@ public class CommonSSHUtils {
         }
         return b;
     }
+
+    /**
+     *
+     * @param session 連線資訊
+     * @param from  本機檔案位置(不含檔名)
+     * @param to    ssh檔案位置(不含檔名)
+     * @param fileName 檔名
+     * @throws JSchException
+     * @throws IOException
+     */
+    private static void copyLocalToRemote(Session session, String from, String to, String fileName) throws JSchException, IOException {
+        boolean ptimestamp = true;
+        from = from + File.separator + fileName;
+        System.out.println("copyLocalToRemote");
+        // exec 'scp -t rfile' remotely
+        String command = "scp " + (ptimestamp ? "-p" : "") + " -t " + to;
+        Channel channel = session.openChannel("exec");
+        ((ChannelExec) channel).setCommand(command);
+
+        // get I/O streams for remote scp
+        OutputStream out = channel.getOutputStream();
+        InputStream in = channel.getInputStream();
+
+        channel.connect();
+
+        if (checkAck(in) != 0) {
+            System.exit(0);
+        }
+
+        File _lfile = new File(from);
+
+        if (ptimestamp) {
+            command = "T" + (_lfile.lastModified() / 1000) + " 0";
+            // The access time should be sent here,
+            // but it is not accessible with JavaAPI ;-<
+            command += (" " + (_lfile.lastModified() / 1000) + " 0\n");
+            out.write(command.getBytes());
+            out.flush();
+            if (checkAck(in) != 0) {
+                System.exit(0);
+            }
+        }
+
+        // send "C0644 filesize filename", where filename should not include '/'
+        long filesize = _lfile.length();
+        command = "C0644 " + filesize + " ";
+        if (from.lastIndexOf('/') > 0) {
+            command += from.substring(from.lastIndexOf('/') + 1);
+        }else if(from.lastIndexOf('\\') > 0){
+            command += from.substring(from.lastIndexOf('\\') + 1);
+        }
+        else {
+            command += from;
+        }
+
+        command += "\n";
+        out.write(command.getBytes());
+        out.flush();
+
+        if (checkAck(in) != 0) {
+            System.exit(0);
+        }
+
+        // send a content of lfile
+        FileInputStream fis = new FileInputStream(from);
+        byte[] buf = new byte[1024];
+        while (true) {
+            int len = fis.read(buf, 0, buf.length);
+            if (len <= 0) break;
+            out.write(buf, 0, len); //out.flush();
+        }
+
+        // send '\0'
+        buf[0] = 0;
+        out.write(buf, 0, 1);
+        out.flush();
+
+        if (checkAck(in) != 0) {
+            System.exit(0);
+        }
+        out.close();
+
+        try {
+            if (fis != null) fis.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        channel.disconnect();
+        session.disconnect();
+    }
+
 
 }

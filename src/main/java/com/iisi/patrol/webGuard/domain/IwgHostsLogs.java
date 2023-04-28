@@ -27,8 +27,6 @@ public class IwgHostsLogs implements Serializable {
     @Column(name = "hostname", length = 25, nullable = false)
     private String hostname;
 
-    @NotNull
-    @Size(max = 4)
     @Column(name = "port", length = 4, nullable = false)
     private Integer port;
 

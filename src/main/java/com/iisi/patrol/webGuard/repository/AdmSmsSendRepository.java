@@ -11,10 +11,6 @@ import org.springframework.stereotype.Repository;
 import java.time.Instant;
 import java.util.List;
 
-/**
- * Spring Data SQL repository for the AdmSmsSend entity.
- */
-@SuppressWarnings("unused")
 @Repository
 public interface AdmSmsSendRepository extends JpaRepository<AdmSmsSend, Long>, JpaSpecificationExecutor<AdmSmsSend> {
     @Query(value = "SELECT TOP (:count1) * FROM ADM_SMS_SEND  WHERE  STATUS ='W' or STATUS ='w'",nativeQuery = true)

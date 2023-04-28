@@ -1,22 +1,19 @@
 package com.iisi.patrol.webGuard.web.rest;
 
-import com.iisi.patrol.webGuard.domain.AdmMailSend;
 import com.iisi.patrol.webGuard.domain.HostProperty;
 import com.iisi.patrol.webGuard.repository.AdmMailSendRepository;
 import com.iisi.patrol.webGuard.repository.AdmSmsSendRepository;
-import com.iisi.patrol.webGuard.service.CommonSSHUtils;
-import com.iisi.patrol.webGuard.service.InMemoryHostMapService;
-import com.iisi.patrol.webGuard.service.IwgHostsService;
-import com.iisi.patrol.webGuard.service.ScheduledTaskService;
+import com.iisi.patrol.webGuard.service.*;
 import com.iisi.patrol.webGuard.service.dto.IwgHostsDTO;
 import com.iisi.patrol.webGuard.service.sshService.ConnectionConfig;
+import com.jcraft.jsch.JSchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.time.Instant;
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -30,6 +27,8 @@ public class TestResource {
     AdmMailSendRepository admMailSendRepository;
     @Autowired
     AdmSmsSendRepository admSmsSendRepository;
+    @Autowired
+    ScheduledTaskServiceTest scheduledTaskServiceTest;
     @Autowired
     ScheduledTaskService scheduledTaskService;
     @Autowired
@@ -96,14 +95,25 @@ public class TestResource {
 
         return "ok";
     }
+    @GetMapping("/service/testFileSizeCompareProd")
+    public void testFileSizeCompareProd(){
+        scheduledTaskService.doFileComparison();
+    }
+
 
     @GetMapping("/service/testFileSizeCompare")
     public void testFileSizeCompare(){
-        scheduledTaskService.doFileComparison();
+        scheduledTaskServiceTest.doFileComparison();
     }
 
     @GetMapping("/service/testMapper")
     public IwgHostsDTO testMapper(){
         return iwgHostsService.findById(1l);
+    }
+
+
+    @GetMapping("/service/scpLocalToRemote")
+    public void testScpLocalToRemote() throws JSchException, IOException {
+        CommonSSHUtils.useScpCopyLocalFileToRemote(connectionConfig,"C:\\Users\\2106017\\comparison\\origin\\","/home/tailinh/","test1234.txt");
     }
 }
