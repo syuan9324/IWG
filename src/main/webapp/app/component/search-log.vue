@@ -82,22 +82,11 @@
     </div>
   </div>
 
-  <!-- <section class="mt-2">
-    <div v-if="stepVisible" class="container">
-      <i-table
-        ref="iTable"
-        title="通報案件查處結果公告一覽表"
-        class="table-sm"
-        :itemsUndefinedBehavior="'loading'"
-        :items="table.data"
-        :fields="table.fields"
-        :totalItems="table.totalItems"
-        :is-server-side-paging="true"
-        @changePagination="handlePaginationChanged($event)"
-      >
-      </i-table>
+  <section class="mt-2">
+    <div>
+      <b-table striped hover :items="items"></b-table>
     </div>
-  </section> -->
+  </section>
 </template>
 
 <script lang="ts">
@@ -115,10 +104,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import router from "@/router";
 import axios from "axios";
 
-// import iTable from "./shared/i-table/i-table.vue";
-
 export default {
-  name: "log",
+  name: "searchLog",
   components: {
     BButton,
     BFormInput,
@@ -129,9 +116,6 @@ export default {
     BFormRadioGroup,
   },
   setup() {
-    // const types = ["hostName", "targeFileName"];
-    const iTable = ref(null);
-
     const stepVisible = ref(false);
 
     const formDefault = ref({
@@ -157,7 +141,7 @@ export default {
         .post("/find/iwgHosts", formDefault.value)
         .then((data) => {
           // ele.forEach((e) => {});
-          console.log("資料", data);
+          console.log("資料", data.data);
         })
         .catch((error) => {
           console.log("catch", error);
@@ -166,6 +150,12 @@ export default {
       // table.totalItems = 1;
       // table.data.splice(0, table.data.length, ...mockdata);
     };
+
+    const items = [
+      { age: 32, first_name: "Cyndi" },
+      { age: 27, first_name: "Havij" },
+      { age: 42, first_name: "Robert" },
+    ];
 
     const table = reactive({
       fields: [
@@ -221,7 +211,7 @@ export default {
       stepVisible,
       toQuery,
       table,
-      iTable,
+      items,
     };
   },
 };

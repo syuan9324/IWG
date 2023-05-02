@@ -4,14 +4,15 @@ const Home = () => import('@/component/home.vue');
 const Login = () => import('@/account/login.vue');
 const TestRouter = () => import('@/component/testRouter.vue');
 const TestRouter2 = () => import('@/component/testRouter2.vue');
-const Log = () => import('@/component/log.vue');
-const Add = () => import('@/component/add.vue');
+const searchLog = () => import('@/component/search-log.vue');
+const AddServer = () => import('@/component/add-server.vue');
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
     name: "login",
     component: Login,
+    props: true,
   },
   {
     path: "/",
@@ -22,21 +23,25 @@ const routes: Array<RouteRecordRaw> = [
         path: "/testRouter",
         name: "testRouter",
         component: TestRouter,
+        props : true,
       },
       {
         path: "/testRouter2",
         name: "testRouter2",
         component: TestRouter2,
+        props: true,
       },
        {
-          path: "/log",
-          name: "log",
-          component: Log,
+          path: "/searchLog",
+          name: "searchLog",
+          component: searchLog,
+          props: true,
        },
        {
-          path: "/add",
-          name: "add",
-          component: Add,
+          path: "/addServer",
+          name: "addServer",
+          component: AddServer,
+          props: true,
         },
     ]
   },

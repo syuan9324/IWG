@@ -15,7 +15,7 @@
       </b-row>
     </b-container> -->
 
-    <b-form>
+    <b-form class="pb-2">
       <b-form-group
         class="col-12"
         label-cols="2"
@@ -29,7 +29,7 @@
         ></b-form-input>
       </b-form-group>
     </b-form>
-    <b-form>
+    <b-form class="pb-2">
       <b-form-group
         class="col-12"
         label-cols="2"
@@ -43,7 +43,7 @@
         ></b-form-input>
       </b-form-group>
     </b-form>
-    <b-form>
+    <b-form class="pb-2">
       <b-form-group
         class="col-12"
         label-cols="2"
@@ -57,7 +57,7 @@
         ></b-form-input>
       </b-form-group>
     </b-form>
-    <b-form>
+    <b-form class="pb-2">
       <b-form-group
         class="col-12"
         label-cols="2"
@@ -66,6 +66,28 @@
         label-for="port"
       >
         <b-form-input id="port" v-model="formDefault.port"></b-form-input>
+      </b-form-group>
+    </b-form>
+    <b-form class="pb-2">
+      <b-form-group
+        class="col-12"
+        label-cols="2"
+        content-cols="2"
+        label="信件收件者"
+        label-for="mail"
+      >
+        <b-form-input id="mail" v-model="formDefault.mail"></b-form-input>
+      </b-form-group>
+    </b-form>
+    <b-form class="pb-2">
+      <b-form-group
+        class="col-12"
+        label-cols="2"
+        content-cols="2"
+        label="SMS收件者"
+        label-for="sms"
+      >
+        <b-form-input id="sms" v-model="formDefault.sms"></b-form-input>
       </b-form-group>
     </b-form>
 
@@ -101,7 +123,7 @@ import router from "@/router";
 // import appHeader from "./header/app-header.vue";
 
 export default {
-  name: "log",
+  name: "addServer",
   components: { BButton, BFormInput, BButtonToolbar },
   setup() {
     // const types = ["password", "userName", "hostName", "port", "fargeFileName"];
@@ -111,6 +133,8 @@ export default {
       username: "syuan",
       hostname: "01",
       port: 22,
+      mail: "testReceiver@test.com",
+      sms: "0921531997",
       // fargeFilename: "pcic",
     });
 
@@ -120,13 +144,17 @@ export default {
       username: {},
       hostname: {},
       port: {},
+      mail: {},
+      sms: {},
       // fargeFilename: {},
     });
     const form = reactive(Object.assign({}, formDefault));
 
-    // const reset = () => {
-    //   formDefault.value = form.value;
-    // };
+    const reset = () => {
+      formDefault.value = form.value;
+      console.log("66form", form);
+      console.log("66formDefault", formDefault);
+    };
 
     const toSave = () => {
       axios
@@ -140,7 +168,7 @@ export default {
         });
     };
     const toLog = () => {
-      router.push({ path: "/log" });
+      router.push({ path: "/searchLog" });
     };
 
     return {
@@ -148,7 +176,7 @@ export default {
       formDefault,
       toLog,
       toSave,
-      // reset,
+      reset,
     };
   },
 };

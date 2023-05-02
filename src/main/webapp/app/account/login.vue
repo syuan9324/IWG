@@ -1,14 +1,34 @@
 <template>
   <div>
-    <h1 class="text-center">login</h1>
+    <h1 class="login">login</h1>
     <form v-on:submit.prevent="submitForm" class="text-center">
-      <label for="username">Username:</label>
+      <label for="username">Username &nbsp;:&nbsp;</label>
       <input type="text" id="username" name="username" v-model="username" />
-      <label for="password">Password:</label>
+      <br />
+      <br />
+      <br />
+      <label for="password">Password&nbsp;:&nbsp;</label>
       <input type="password" id="password" name="password" v-model="password" />
-      <button type="submit">Login</button>
+      <br />
+      <br />
+      <br />
+      <!-- <button type="submit">Login</button> -->
+      <b-button
+        class="ml-2"
+        style="background-color: #1aa4b7"
+        @click="submitForm"
+        >Login</b-button
+      >
     </form>
-    <addVue />
+
+    <!-- <form class="login">
+      <h1>login</h1>
+      <h2>帳號</h2>
+      <input type="text" placeholder="請輸入帳號" />
+      <h2>密碼</h2>
+      <input type="text" placeholder="請輸入密碼" />
+      <button type="submit">登入</button>
+    </form> -->
   </div>
 </template>
 
@@ -16,14 +36,17 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
-import addVue from "@/component/add.vue";
 export default {
   name: "home",
-
   setup() {
     let username = ref("");
     let password = ref("");
     let jwt: any = ref("");
+    const formDefault = ref({
+      username: "",
+      password: "",
+    });
+    let logStatus = true;
     const router = useRouter();
     async function submitForm() {
       if (username.value === "" || password.value === "") {
@@ -35,7 +58,7 @@ export default {
         });
         console.log(JSON.stringify(jwt.value));
         sessionStorage.setItem("token", jwt.value.data);
-        router.push({ name: "home" });
+        router.push({ name: "home", params: { logStatus: password.value } });
       }
     }
 
@@ -44,11 +67,30 @@ export default {
       password,
       submitForm,
       jwt,
-      addVue,
     };
   },
 };
 </script>
 
 <style scoped>
+/* body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+} */
+.login {
+  /* position: fixed; */
+  /* left: 50%;
+  top: 50%; */
+  /* transform: translate(-50%, -50%); */
+  background: (0, 0, 0, 0.5);
+  text-align: center;
+  color: #666;
+  border-radius: 10px;
+  /* padding: 30px; */
+}
 </style>

@@ -1,32 +1,43 @@
 <template>
   <div>
-    <div>
-      <router-link
-        class="list-group-item"
-        active-class="active"
-        to="/testRouter"
-        >testRouter</router-link
-      >
-      <router-link
-        class="list-group-item"
-        active-class="active"
-        to="/testRouter2"
-        >testRouter2</router-link
-      >
-      <router-link
-        class="list-group-item"
-        active-class="active"
-        to="/log"
-        >log</router-link
-      >
-      <router-link
-        class="list-group-item"
-        active-class="active"
-        to="/add"
-        >ladd</router-link
-      >
-      <button @click="logout">logout</button>
+    <div class="sidebar">
+      <h3>功能</h3>
+      <ul>
+        <li>
+          <router-link
+            class="list-group-item"
+            active-class="active"
+            to="/searchLog"
+            >log</router-link
+          >
+        </li>
+        <li>
+          <router-link
+            class="list-group-item"
+            active-class="active"
+            to="/addServer"
+            >add</router-link
+          >
+        </li>
+        <li>
+          <router-link
+            class="list-group-item"
+            active-class="active"
+            to="/testRouter"
+            >testRouter</router-link
+          >
+        </li>
+        <li>
+          <router-link
+            class="list-group-item"
+            active-class="active"
+            to="/testRouter2"
+            >testRouter2</router-link
+          >
+        </li>
+      </ul>
     </div>
+    <div></div>
     <div>
       <router-view></router-view>
     </div>
@@ -47,13 +58,25 @@
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
+import { ref, toRef, Ref, toRefs } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import AccountService from "@/account/accout.service";
 export default {
   name: "home",
-  setup() {
+  props: {
+    logStatus: {
+      type: String,
+      required: false,
+    },
+  },
+  setup(props: any) {
+    console.log(111);
+    const logStatusProps: Ref<any> = toRef(props, "logStatus");
+    // const propValue = toRefs(props).username;
+
+    console.log("6666logStatusPropsvalue", logStatusProps.value);
+    console.log("6666logStatusProps", logStatusProps);
     const router = useRouter();
     const accountService = new AccountService();
     const result = ref("");
@@ -82,4 +105,35 @@ export default {
 </script>
 
 <style scoped>
+.sidebar {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+/* .sidebar h3 {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 10px;
+} */
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar a {
+  color: #337ab7;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  text-decoration: underline;
+}
 </style>
