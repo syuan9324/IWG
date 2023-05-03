@@ -88,7 +88,7 @@ public class TestResource {
             System.out.println("fileLocalSize:"+fileLocalSize);
             System.out.println("fileRemoteSize"+fileRemoteSize);
             if(fileLocalSize!=fileRemoteSize){
-//                admMailSendRepository.warnMail();
+                //admMailSendRepository.warnMail();
                 admSmsSendRepository.warnSms();
             }
         });
