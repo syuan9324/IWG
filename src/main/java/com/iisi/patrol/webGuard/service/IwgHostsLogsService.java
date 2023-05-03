@@ -1,13 +1,16 @@
 package com.iisi.patrol.webGuard.service;
 
+import com.iisi.patrol.webGuard.domain.IwgHosts;
 import com.iisi.patrol.webGuard.domain.IwgHostsLogs;
 import com.iisi.patrol.webGuard.repository.IwgHostsLogsRepository;
+import com.iisi.patrol.webGuard.service.dto.IwgHostsDTO;
 import com.iisi.patrol.webGuard.service.dto.IwgHostsLogsDTO;
 import com.iisi.patrol.webGuard.service.dto.mapper.IwgHostsLogsMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class IwgHostsLogsService {
@@ -62,5 +65,10 @@ public class IwgHostsLogsService {
         newLog.setCreateTime(Instant.now());
         newLog.setCreateUser("system");
         return this.saveIwgHostsLogs(newLog);
+    }
+
+
+    public List<IwgHostsLogs> find(IwgHostsLogsDTO iwgHostsLogsDTO) {
+        return iwgHostsLogsRepository.findAll();
     }
 }

@@ -38,7 +38,7 @@
         ></b-form-input>
       </b-form-group>
     </b-form>
-    <b-form>
+    <!-- <b-form>
       <b-form-group
         class="col-12"
         label-cols="2"
@@ -52,7 +52,7 @@
           v-model="formDefault.targeFilename"
         ></b-form-input>
       </b-form-group>
-    </b-form>
+    </b-form> -->
     <b-form>
       <b-form-group
         class="col-12"
@@ -82,9 +82,22 @@
     </div>
   </div>
 
-  <section class="mt-2">
+  <section class="mt-2" v-if="stepVisible">
     <div>
-      <b-table striped hover :items="items"></b-table>
+      <b-table striped hover :items="table.data" :fields="table.fields">
+        <template #cell(result)="row">
+          {{ row.item.result }}
+        </template>
+        <template #cell(index)="row">
+          {{ row.index + 1 }}
+        </template>
+      </b-table>
+      <b-pagination
+        v-model="page"
+        :total-rows="table.data.length"
+        :per-page="perPage"
+        align="center"
+      />
     </div>
   </section>
 </template>
@@ -118,6 +131,21 @@ export default {
   setup() {
     const stepVisible = ref(false);
 
+    const page = ref(1); //當前頁面
+    const perPage = ref(10); //每頁顯示的資料
+
+    // 根據當前頁碼和每頁顯示的資料數，計算當前頁面顯示的資料
+    const paginatedItems = computed(() => {
+      const start = (page.value - 1) * perPage.value;
+      const end = start + perPage.value;
+      return table.data.slice(start, end);
+    });
+
+    // 計算總頁數
+    const totalPages = computed(() => {
+      return Math.ceil(table.data.length / perPage.value);
+    });
+
     const formDefault = ref({
       hostName: "",
       targeFileName: "",
@@ -131,6 +159,69 @@ export default {
       fileMove: {},
     });
 
+    const table = reactive({
+      fields: [
+        {
+          key: "index",
+          label: "序號",
+          sortable: false,
+          thStyle: "width:10%",
+          thClass: "text-center",
+          tdClass: "text-center align-middle",
+        },
+        {
+          key: "hostname",
+          label: "主機",
+          sortable: false,
+          thStyle: "width:10%",
+          thClass: "text-center",
+          tdClass: "text-center align-middle",
+        },
+        {
+          key: "port",
+          label: "port號",
+          sortable: false,
+          thStyle: "width:20%",
+          thClass: "text-center",
+          tdClass: "text-center align-middle",
+        },
+        {
+          key: "triggerTime",
+          label: "啟動時間",
+          sortable: false,
+          thStyle: "width:20%",
+          thClass: "text-center",
+          tdClass: "text-center align-middle",
+        },
+        {
+          key: "finishTime",
+          label: "結束時間",
+          sortable: false,
+          thStyle: "width:20%",
+          thClass: "text-center",
+          tdClass: "text-center align-middle",
+        },
+        {
+          key: "result",
+          label: "結果",
+          sortable: false,
+          thStyle: "width:20%",
+          thClass: "text-center",
+          tdClass: "text-center align-middle",
+        },
+        {
+          key: "targetFilename",
+          label: "偵測檔案",
+          sortable: false,
+          thStyle: "width:20%",
+          thClass: "text-center",
+          tdClass: "text-center align-middle",
+        },
+      ],
+      data: [],
+      totalItems: 0,
+    });
+
     const toAdd = () => {
       router.push({ path: "/add" });
     };
@@ -138,10 +229,11 @@ export default {
     const toQuery = () => {
       stepVisible.value = true;
       axios
-        .post("/find/iwgHosts", formDefault.value)
+        .post("/find/iwgHostsLogs", formDefault.value)
         .then((data) => {
           // ele.forEach((e) => {});
-          console.log("資料", data.data);
+          table.data = data.data;
+          console.log("table.data", table.data);
         })
         .catch((error) => {
           console.log("catch", error);
@@ -151,59 +243,6 @@ export default {
       // table.data.splice(0, table.data.length, ...mockdata);
     };
 
-    const items = [
-      { age: 32, first_name: "Cyndi" },
-      { age: 27, first_name: "Havij" },
-      { age: 42, first_name: "Robert" },
-    ];
-
-    const table = reactive({
-      fields: [
-        {
-          //發生日期
-          key: "sdate",
-          label: "發生日期",
-          thClass: "text-center",
-          tdClass: "text-center align-middle",
-          thStyle: "width:8%",
-          // formatter: (value: string) => formatToString(value, '/', '-'),
-        },
-        {
-          //承攬廠商
-          key: "prmTitle",
-          label: "承攬廠商",
-          thClass: "text-center",
-          tdClass: "text-left align-middle",
-          thStyle: "width:40%",
-        },
-        {
-          //違反之法令
-          key: "violateFact",
-          label: "違反之法令",
-          thClass: "text-center",
-          tdClass: "text-left align-middle",
-          thStyle: "width:20%",
-        },
-        {
-          key: "action",
-          label: "功能",
-          thClass: "text-center",
-          tdClass: "text-center align-middle",
-          thStyle: "width:20%",
-        },
-      ],
-      data: undefined,
-      totalItems: 0,
-    });
-
-    const mockdata = [
-      {
-        sdate: "110/03/13",
-        prmTitle: "XX營造",
-        violateFact: "中華民國刑法第X條",
-      },
-    ];
-
     return {
       // types,
       toAdd,
@@ -211,7 +250,8 @@ export default {
       stepVisible,
       toQuery,
       table,
-      items,
+      paginatedItems,
+      totalPages,
     };
   },
 };

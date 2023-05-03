@@ -22,13 +22,11 @@ public class IwgHostsController {
 
     @PostMapping("/create/iwgHosts")
     public IwgHosts createiwgHosts(@Valid @RequestBody IwgHosts iwgHosts) {
-        System.out.print("666@@");
         return iwgHostsService.save(iwgHosts) ;
     }
 
     @PostMapping("/find/iwgHosts")
     public List<IwgHosts> findiwgHosts(@Valid @RequestBody IwgHostsDTO iwgHosts) {
-        System.out.print("6666@@");
         return iwgHostsService.find(iwgHosts) ;
     }
 

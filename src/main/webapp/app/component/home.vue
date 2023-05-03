@@ -62,6 +62,9 @@ import { ref, toRef, Ref, toRefs } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import AccountService from "@/account/accout.service";
+import { NotifyModalStore } from "@/store/notify-modal-store";
+import { useStore } from "vuex";
+
 export default {
   name: "home",
   props: {
@@ -71,12 +74,13 @@ export default {
     },
   },
   setup(props: any) {
-    console.log(111);
     const logStatusProps: Ref<any> = toRef(props, "logStatus");
     // const propValue = toRefs(props).username;
 
     console.log("6666logStatusPropsvalue", logStatusProps.value);
     console.log("6666logStatusProps", logStatusProps);
+    console.log("NotifyModalStore", NotifyModalStore);
+    console.log("useStore", useStore);
     const router = useRouter();
     const accountService = new AccountService();
     const result = ref("");
@@ -126,6 +130,11 @@ export default {
 
 .sidebar li {
   margin-bottom: 10px;
+  height: 20px;
+  width: 100px;
+  /* background-color: #1aa4b7;
+  border-radius: 4px; */
+  /* color: whith; */
 }
 
 .sidebar a {

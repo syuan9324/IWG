@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <h1 class="text-center">新增批次服務服務</h1>
+    <h1 class="text-center">新增批次服務</h1>
     <!-- <b-container fluid>
       <b-row class="my-1" v-for="type in types" :key="type">
         <b-col sm="3">
@@ -15,7 +15,7 @@
       </b-row>
     </b-container> -->
 
-    <b-form class="pb-2">
+    <b-form-row class="pb-2">
       <b-form-group
         class="col-12"
         label-cols="2"
@@ -28,7 +28,7 @@
           v-model="formDefault.username"
         ></b-form-input>
       </b-form-group>
-    </b-form>
+    </b-form-row>
     <b-form class="pb-2">
       <b-form-group
         class="col-12"
@@ -107,9 +107,9 @@
       <b-button class="mr-10" style="background-color: #1aa4b7" @click="reset"
         >清除</b-button
       >
-      <b-button class="pl-12" style="background-color: #1aa4b7" @click="toLog"
+      <!-- <b-button class="pl-12" style="background-color: #1aa4b7" @click="toLog"
         >返回
-      </b-button>
+      </b-button> -->
     </div>
   </div>
 </template>
@@ -119,6 +119,7 @@ import axios from "axios";
 import { ref, computed, reactive, onMounted } from "vue";
 import { BButton, BFormInput, BButtonToolbar } from "bootstrap-vue-3";
 import router from "@/router";
+import NotificationService from "@/shared/notification-service";
 
 // import appHeader from "./header/app-header.vue";
 
@@ -127,6 +128,7 @@ export default {
   components: { BButton, BFormInput, BButtonToolbar },
   setup() {
     // const types = ["password", "userName", "hostName", "port", "fargeFileName"];
+    const notificationService = new NotificationService();
 
     let formDefault = ref({
       password: "123456",
@@ -160,7 +162,7 @@ export default {
       axios
         .post("/create/iwgHosts", formDefault.value)
         .then((response: any) => {
-          alert("新增成功");
+          notificationService.info("新增成功");
           console.log("then", response);
         })
         .catch((error) => {

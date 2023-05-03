@@ -36,6 +36,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { NotifyModalStore } from "@/store/notify-modal-store";
 export default {
   name: "home",
   setup() {
@@ -59,6 +60,9 @@ export default {
         console.log(JSON.stringify(jwt.value));
         sessionStorage.setItem("token", jwt.value.data);
         router.push({ name: "home", params: { logStatus: password.value } });
+
+        console.log("NotifyModalStore", NotifyModalStore);
+        console.log("NotifyModalStore", (NotifyModalStore.state = true));
       }
     }
 

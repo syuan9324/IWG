@@ -18,6 +18,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "home",
     component: Home,
+    props : true,
     children: [
       {
         path: "/testRouter",

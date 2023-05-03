@@ -5,7 +5,12 @@
     <!-- desk top -->
     <div class="desktop-app-header-wrapper">
       <div class="top-nav pr-3">
-        <a class="btn-link" @click="logout">登出</a>
+        <a
+          class="btn-link"
+          @click="logout"
+          v-if="NotifyModalStore.state === true"
+          >登出</a
+        >
       </div>
     </div>
     <div class="img">
@@ -30,6 +35,8 @@ import { ref } from "vue";
 import AccountService from "@/account/accout.service";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { NotifyModalStore } from "@/store/notify-modal-store";
+import { useStore } from "vuex";
 
 export default {
   name: "AppHeader",
@@ -38,13 +45,12 @@ export default {
     const router = useRouter();
     const accountService = new AccountService();
     const logStatus = ref(false);
-
     const logout = () => {
       accountService.logout();
       router.push({ name: "login" });
     };
 
-    return { logout, logStatus };
+    return { logout, logStatus, NotifyModalStore };
   },
 };
 </script>
