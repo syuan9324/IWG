@@ -103,7 +103,7 @@ public class TestResource {
 
     @GetMapping("/service/testFileSizeCompare")
     public void testFileSizeCompare(){
-        scheduledTaskServiceTest.doFileComparison();
+        scheduledTaskServiceTest.doDevFileComparison();
     }
 
     @GetMapping("/service/testMapper")
