@@ -62,4 +62,8 @@ public class IwgHosts implements Serializable {
     @Column(name = "target_filename", length = 50, nullable = true)
     private String targetFilename;
 
+    @Size(max = 1)
+    @Column(name = "active", length = 1, nullable = true)
+    private String active;
+
 }

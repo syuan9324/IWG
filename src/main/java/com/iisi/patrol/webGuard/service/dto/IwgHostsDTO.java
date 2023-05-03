@@ -19,6 +19,7 @@ public class IwgHostsDTO implements Serializable {
     private String updateUser;
     private Instant updateTime;
     private String targetFilename;
+    private String active;
 
 
 }

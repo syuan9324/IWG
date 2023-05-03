@@ -39,6 +39,7 @@
       >
         <b-form-input
           id="password"
+          type="password"
           v-model="formDefault.password"
         ></b-form-input>
       </b-form-group>
@@ -74,9 +75,12 @@
         label-cols="2"
         content-cols="2"
         label="信件收件者"
-        label-for="mail"
+        label-for="mailReceiver"
       >
-        <b-form-input id="mail" v-model="formDefault.mail"></b-form-input>
+        <b-form-input
+          id="mailReceiver"
+          v-model="formDefault.mailReceiver"
+        ></b-form-input>
       </b-form-group>
     </b-form>
     <b-form class="pb-2">
@@ -85,9 +89,27 @@
         label-cols="2"
         content-cols="2"
         label="SMS收件者"
-        label-for="sms"
+        label-for="smsReceiver"
       >
-        <b-form-input id="sms" v-model="formDefault.sms"></b-form-input>
+        <b-form-input
+          id="smsReceiver"
+          v-model="formDefault.smsReceiver"
+        ></b-form-input>
+      </b-form-group>
+    </b-form>
+    <b-form>
+      <b-form-group
+        class="col-12"
+        label-cols="2"
+        content-cols="2"
+        id="active"
+        label="是否啟用"
+        label-for="active"
+      >
+        <b-form-radio-group id="active" v-model="formDefault.active">
+          <b-form-radio value="Y">是</b-form-radio>
+          <b-form-radio value="N">否</b-form-radio>
+        </b-form-radio-group>
       </b-form-group>
     </b-form>
 
@@ -117,7 +139,15 @@
 <script lang="ts">
 import axios from "axios";
 import { ref, computed, reactive, onMounted } from "vue";
-import { BButton, BFormInput, BButtonToolbar } from "bootstrap-vue-3";
+import {
+  BButton,
+  BFormInput,
+  BButtonToolbar,
+  BFormGroup,
+  BForm,
+  BFormRadioGroup,
+  BFormRadio,
+} from "bootstrap-vue-3";
 import router from "@/router";
 import NotificationService from "@/shared/notification-service";
 
@@ -125,7 +155,15 @@ import NotificationService from "@/shared/notification-service";
 
 export default {
   name: "addServer",
-  components: { BButton, BFormInput, BButtonToolbar },
+  components: {
+    BButton,
+    BFormInput,
+    BButtonToolbar,
+    BFormGroup,
+    BFormRadioGroup,
+    BFormRadio,
+    BForm,
+  },
   setup() {
     // const types = ["password", "userName", "hostName", "port", "fargeFileName"];
     const notificationService = new NotificationService();
@@ -135,9 +173,9 @@ export default {
       username: "syuan",
       hostname: "01",
       port: 22,
-      mail: "testReceiver@test.com",
-      sms: "0921531997",
-      // fargeFilename: "pcic",
+      mailReceiver: "testReceiver@test.com",
+      smsReceiver: "0921531997",
+      active: "Y",
     });
 
     // 表單物件驗證規則
@@ -146,9 +184,9 @@ export default {
       username: {},
       hostname: {},
       port: {},
-      mail: {},
-      sms: {},
-      // fargeFilename: {},
+      mailReceiver: {},
+      smsReceiver: {},
+      active: {},
     });
     const form = reactive(Object.assign({}, formDefault));
 
