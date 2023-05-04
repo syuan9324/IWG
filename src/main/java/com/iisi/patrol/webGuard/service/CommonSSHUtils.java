@@ -10,11 +10,11 @@ import java.util.Properties;
 @Component
 public class CommonSSHUtils {
 
-    public static String useSshCommand(ConnectionConfig connectionConfig, String command) throws Exception {
+    public static String useSshCommand(ConnectionConfig connectionConfig, String command) throws JSchException {
 
         Session session = null;
         ChannelExec channel = null;
-        String responseString;
+        String responseString = null;
         String errorString = "";
         try {
             session = new JSch().getSession(connectionConfig.getUserName(), connectionConfig.getServerIp(), connectionConfig.getPort());
@@ -36,6 +36,8 @@ public class CommonSSHUtils {
             }
             errorString = errorStream.toString();
             responseString = responseStream.toString();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             if (session != null) {
                 session.disconnect();
@@ -51,10 +53,9 @@ public class CommonSSHUtils {
         return responseString.trim();
     }
 
-    public static String useScpCopyRemoteFile(ConnectionConfig connectionConfig,String from, String to,String fileName) throws JSchException, IOException {
+    public static void useScpCopyRemoteFile(ConnectionConfig connectionConfig,String from, String to,String fileName) throws JSchException, IOException {
         Session session = CommonSSHUtils.createSession(connectionConfig);
         copyRemoteToLocal(session,from,to,fileName);
-        return "ok";
     }
 
     public static void useScpCopyLocalFileToRemote(ConnectionConfig connectionConfig,String from, String to,String fileName) throws JSchException, IOException {

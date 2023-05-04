@@ -37,6 +37,19 @@ public class ScheduledTaskServiceTest {
         log.info("end file compare =============================");
     }
 
+
+    public void doDevFileComparisonInMd5() {
+        List<IwgHostsDTO> hostList = iwgHostsService.findActive();
+        hostList.forEach(iwgHostsDTO -> {
+            log.info("start file compare =============================");
+            log.info("current host : {}", iwgHostsDTO.getHostname());
+            List<IwgHostsTargetDTO> iwgHostsTargetDTOs = iwgHostsTargetService.getDevIwgHostTargetByHost(iwgHostsDTO.getHostname(), iwgHostsDTO.getPort());
+            log.info("check IwgHostsTargetLength : {}", iwgHostsTargetDTOs.size());
+            fileComparisonService.fileCompareInMD5ByHostAndTargetList(iwgHostsDTO,iwgHostsTargetDTOs);
+        });
+        log.info("end file compare =============================");
+    }
+
 }
 //    public void doFileComparison(){
 //        List<IwgHostsDTO> hostList = iwgHostsService.findActive();
