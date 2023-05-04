@@ -24,6 +24,9 @@ public class IwgHostsTargetService {
     public List<IwgHostsTargetDTO> getIwgHostTargetByHost(String hostName ,int port){
         return iwgHostsTargetRepository.getIwgHostTargetByHost(hostName,port).stream().map(iwgHostsTargetMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
+    public List<IwgHostsTargetDTO> getDevIwgHostTargetByHost(String hostName ,int port){
+        return iwgHostsTargetRepository.getDevIwgHostTargetByHost(hostName,port).stream().map(iwgHostsTargetMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+    }
 
     public List<IwgHostsTargetDTO> findAll(){
         return iwgHostsTargetRepository.findAll().stream().map(iwgHostsTargetMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
