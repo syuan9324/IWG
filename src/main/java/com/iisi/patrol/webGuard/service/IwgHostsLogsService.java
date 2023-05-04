@@ -8,7 +8,9 @@ import com.iisi.patrol.webGuard.service.dto.IwgHostsLogsDTO;
 import com.iisi.patrol.webGuard.service.dto.mapper.IwgHostsLogsMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.time.Instant;
 import java.util.List;
 
@@ -65,6 +67,10 @@ public class IwgHostsLogsService {
         newLog.setCreateTime(Instant.now());
         newLog.setCreateUser("system");
         return this.saveIwgHostsLogs(newLog);
+    }
+
+    public List<IwgHostsLogs> findiwgHosts( IwgHostsLogsDTO iwgHostsLogsDTO) {
+        return iwgHostsLogsRepository.findByResultAndHostname(iwgHostsLogsDTO.getResult(),iwgHostsLogsDTO.getHostname()) ;
     }
 
 

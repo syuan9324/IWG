@@ -1,9 +1,8 @@
 package com.iisi.patrol.webGuard.web.rest;
-import com.iisi.patrol.webGuard.domain.IwgHosts;
 import com.iisi.patrol.webGuard.domain.IwgHostsLogs;
+import com.iisi.patrol.webGuard.repository.IwgHostsLogsRepository;
 import com.iisi.patrol.webGuard.service.IwgHostsLogsService;
 import com.iisi.patrol.webGuard.service.IwgHostsService;
-import com.iisi.patrol.webGuard.service.dto.IwgHostsDTO;
 import com.iisi.patrol.webGuard.service.dto.IwgHostsLogsDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,16 +16,18 @@ import java.util.List;
 @RequestMapping("/api")
 public class IwgHostsLogsController {
 
+    private final IwgHostsLogsRepository iwgHostsLogsRepository;
+
     private final IwgHostsLogsService iwgHostsLogsService;
 
-    public IwgHostsLogsController(IwgHostsService iwgHostsService, IwgHostsLogsService iwgHostsLogsService) {
+    public IwgHostsLogsController(IwgHostsService iwgHostsService, IwgHostsLogsRepository iwgHostsLogsRepository, IwgHostsLogsService iwgHostsLogsService) {
+        this.iwgHostsLogsRepository = iwgHostsLogsRepository;
         this.iwgHostsLogsService = iwgHostsLogsService;
     }
 
-
     @PostMapping("/find/iwgHostsLogs")
     public List<IwgHostsLogs> findiwgHosts(@Valid @RequestBody IwgHostsLogsDTO iwgHostsLogsDTO) {
-        return iwgHostsLogsService.find(iwgHostsLogsDTO) ;
+        return iwgHostsLogsService.findiwgHosts(iwgHostsLogsDTO);
     }
 
 

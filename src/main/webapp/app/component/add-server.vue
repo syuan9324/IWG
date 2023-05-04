@@ -17,7 +17,6 @@
 
     <b-form-row class="pb-2">
       <b-form-group
-        class="col-12"
         label-cols="2"
         content-cols="2"
         label="帳號"
@@ -31,7 +30,6 @@
     </b-form-row>
     <b-form class="pb-2">
       <b-form-group
-        class="col-12"
         label-cols="2"
         content-cols="2"
         label="密碼"
@@ -46,7 +44,6 @@
     </b-form>
     <b-form class="pb-2">
       <b-form-group
-        class="col-12"
         label-cols="2"
         content-cols="2"
         label="主機名稱"
@@ -60,7 +57,6 @@
     </b-form>
     <b-form class="pb-2">
       <b-form-group
-        class="col-12"
         label-cols="2"
         content-cols="2"
         label="Port號"
@@ -71,7 +67,6 @@
     </b-form>
     <b-form class="pb-2">
       <b-form-group
-        class="col-12"
         label-cols="2"
         content-cols="2"
         label="信件收件者"
@@ -85,7 +80,6 @@
     </b-form>
     <b-form class="pb-2">
       <b-form-group
-        class="col-12"
         label-cols="2"
         content-cols="2"
         label="SMS收件者"
@@ -99,7 +93,6 @@
     </b-form>
     <b-form>
       <b-form-group
-        class="col-12"
         label-cols="2"
         content-cols="2"
         id="active"
@@ -223,4 +216,13 @@ export default {
 </script>
 
 <style scoped>
+.b-form-group .form-control {
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-center {
+  text-align: center;
+}
 </style>
