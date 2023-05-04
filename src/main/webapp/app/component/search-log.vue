@@ -60,9 +60,9 @@
         content-cols="2"
         id="fieldset-1"
         label="檔案是否異動"
-        label-for="fileMove"
+        label-for="result"
       >
-        <b-form-radio-group id="fileMove" v-model="formDefault.fileMove">
+        <b-form-radio-group id="result" v-model="formDefault.result">
           <b-form-radio value="Y">是</b-form-radio>
           <b-form-radio value="N">否</b-form-radio>
         </b-form-radio-group>
@@ -84,7 +84,7 @@
 
   <section class="mt-2" v-if="stepVisible">
     <div>
-      <b-table striped hover :items="table.data" :fields="table.fields">
+      <b-table striped hover :items="paginatedItems" :fields="table.fields">
         <template #cell(result)="row">
           {{ row.item.result }}
         </template>
@@ -147,16 +147,16 @@ export default {
     });
 
     const formDefault = ref({
-      hostName: "",
+      hostname: "",
       targeFileName: "",
-      fileMove: "N",
+      result: "",
     });
 
     // 表單物件驗證規則
     const rules = ref({
-      hostName: {},
+      hostname: {},
       targeFileName: {},
-      fileMove: {},
+      result: {},
     });
 
     const table = reactive({

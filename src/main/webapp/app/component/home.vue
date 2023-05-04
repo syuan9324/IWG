@@ -45,7 +45,7 @@
         </li>
       </ul>
     </div>
-    <div></div>
+
     <div>
       <router-view></router-view>
     </div>
@@ -72,6 +72,15 @@ import { useRouter } from "vue-router";
 import AccountService from "@/account/accout.service";
 import { NotifyModalStore } from "@/store/notify-modal-store";
 import { useStore } from "vuex";
+import {
+  BNavbar,
+  BNavbarBrand,
+  BNavbarToggle,
+  BCollapse,
+  BNavbarNav,
+  BNavItem,
+  BButton,
+} from "bootstrap-vue-next";
 
 export default {
   name: "home",

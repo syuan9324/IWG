@@ -16,4 +16,9 @@ public interface IwgHostsTargetRepository extends JpaRepository<IwgHostsTarget, 
             value = "SELECT * FROM IWG_HOSTS_TARGET u WHERE u.HOSTNAME = :hostName and u.PORT = :port and u.ACTIVE = 'Y'",
             nativeQuery = true)
     List<IwgHostsTarget> getIwgHostTargetByHost(@Param("hostName") String hostName,@Param("port") int port);
+
+    @Query(
+            value = "SELECT * FROM IWG_HOSTS_TARGET u WHERE u.HOSTNAME = :hostName and u.PORT = :port and u.PROFILE = 'DEV'",
+            nativeQuery = true)
+    List<IwgHostsTarget> getDevIwgHostTargetByHost(@Param("hostName") String hostName,@Param("port") int port);
 }
