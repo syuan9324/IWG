@@ -10,7 +10,8 @@
 	</parent>
 	<groupId>com.iisi.patrol</groupId>
 	<artifactId>webGuard</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
+	<!--<version>0.0.1-SNAPSHOT</version>-->
 	<name>webGuard</name>
 	<description>web patrol</description>
 	<packaging>jar</packaging>
