@@ -6,6 +6,7 @@ const TestRouter = () => import('@/component/testRouter.vue');
 const TestRouter2 = () => import('@/component/testRouter2.vue');
 const searchLog = () => import('@/component/search-log.vue');
 const AddServer = () => import('@/component/add-server.vue');
+const SearchServer = () => import('@/component/search-server.vue');
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -42,6 +43,12 @@ const routes: Array<RouteRecordRaw> = [
           path: "/addServer",
           name: "addServer",
           component: AddServer,
+          props: true,
+        },
+       {
+          path: "/searchServer",
+          name: "searchServer",
+          component: SearchServer,
           props: true,
         },
     ]

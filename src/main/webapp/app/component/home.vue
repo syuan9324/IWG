@@ -23,6 +23,14 @@
           <router-link
             class="list-group-item"
             active-class="active"
+            to="/searchServer"
+            >searchServer</router-link
+          >
+        </li>
+        <li>
+          <router-link
+            class="list-group-item"
+            active-class="active"
             to="/testRouter"
             >testRouter</router-link
           >
