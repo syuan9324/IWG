@@ -26,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,8 +41,8 @@ public class WebSecurityConfig {
     private AuthEntryPointJwt unauthorizedHandler;
 
     //設定cors允許的origin陣列
-    @Value("#{'${app.cors.allowed-origins}'.split(',')}")
-    private String[] corsAllowOrigins;
+    @Value("app.cors.allowed-origins")
+    private String corsAllowOrigins;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -90,8 +91,13 @@ public class WebSecurityConfig {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+        List<String> allowOriginArray = new ArrayList<>();
+        if(corsAllowOrigins.contains(",")){
+            allowOriginArray = Arrays.asList(corsAllowOrigins.split(","));
+        }
+
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(corsAllowOrigins));
+        configuration.setAllowedOrigins(allowOriginArray);
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
