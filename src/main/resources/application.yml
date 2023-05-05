@@ -6,7 +6,8 @@ spring:
     url: jdbc:sqlserver://192.168.57.201:9981;database=PWC_DB;encrypt=true;trustServerCertificate=true
     username: pwc
     password: IISI@pwcdb
-
+  profiles:
+    active: @spring.profiles.active@
 app:
   jwt:
     jwtSecret: jwtSecretKey

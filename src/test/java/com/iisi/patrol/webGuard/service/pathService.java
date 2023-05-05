@@ -6,7 +6,8 @@ public class pathService {
         String homePath = System.getProperty("user.home");
         System.out.println(homePath);
 
-        String pwd = "IIsi@940450";
+//        String pwd = "IIsi@940450";
+        String pwd = "1qaz@WSX3edc";
         String encodedPwd = PassWordEncodeUtils.encodePassword(pwd);
         System.out.println(encodedPwd);
         System.out.println(PassWordEncodeUtils.decodePassword(encodedPwd));

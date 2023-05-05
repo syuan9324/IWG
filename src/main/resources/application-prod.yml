@@ -1,0 +1,8 @@
+server:
+  port: 6409
+
+spring:
+  datasource:
+    url: jdbc:sqlserver://192.168.57.201:9981;database=PWC_DB;encrypt=true;trustServerCertificate=true
+    username: pwc
+    password: IISI@pwcdb

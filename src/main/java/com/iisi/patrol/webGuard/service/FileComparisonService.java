@@ -197,7 +197,7 @@ public class FileComparisonService {
                         //normal
                         Instant finishTime = Instant.now();
                         iwgHostsLogsService.writeCheckNormalLog(iwgHostsDTO.getHostname(), iwgHostsDTO.getPort(), triggerTime, finishTime, targetDTO.getTargetFolder());
-                        log.info("check folder normal");
+                        log.info("check folder {} normal",targetDTO.getTargetFolder());
                     }
                 } catch (JSchException | IOException e) {
                     e.printStackTrace();
