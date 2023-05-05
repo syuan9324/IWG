@@ -4,6 +4,7 @@ import com.iisi.patrol.webGuard.service.dto.IwgHostsDTO;
 import com.iisi.patrol.webGuard.service.dto.IwgHostsTargetDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,13 +39,13 @@ public class ScheduledTaskService {
         });
         log.info("end file compare =============================");
     }
-
+    @Scheduled(cron = "0 0/5 * * * ?")
     public void doFileComparisonInMd5() {
         List<IwgHostsDTO> hostList = iwgHostsService.findActive();
         hostList.forEach(iwgHostsDTO -> {
             log.info("start file compare =============================");
             log.info("current host : {}", iwgHostsDTO.getHostname());
-            List<IwgHostsTargetDTO> iwgHostsTargetDTOs = iwgHostsTargetService.getDevIwgHostTargetByHost(iwgHostsDTO.getHostname(), iwgHostsDTO.getPort());
+            List<IwgHostsTargetDTO> iwgHostsTargetDTOs = iwgHostsTargetService.getIwgHostTargetByHost(iwgHostsDTO.getHostname(), iwgHostsDTO.getPort());
             log.info("check IwgHostsTargetLength : {}", iwgHostsTargetDTOs.size());
             fileComparisonService.fileCompareInMD5ByHostAndTargetList(iwgHostsDTO,iwgHostsTargetDTOs);
         });

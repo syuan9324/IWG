@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iisi.patrol.webGuard.security.domain.ERole;
 import com.iisi.patrol.webGuard.security.domain.Role;
 import com.iisi.patrol.webGuard.security.domain.User;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
@@ -31,9 +32,9 @@ public class UserService {
         ObjectMapper objectMapper = new ObjectMapper();
         File file = null;
         try {
-            file = ResourceUtils.getFile("classpath:data" + File.separator + "users.json");
-            InputStream in = new FileInputStream(file);
-            BufferedReader streamReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+            ClassPathResource classPathResource = new ClassPathResource("data" + File.separator + "users.json");
+            InputStream inputStream = classPathResource.getInputStream();
+            BufferedReader streamReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             StringBuilder responseStrBuilder = new StringBuilder();
 
             String inputStr;
