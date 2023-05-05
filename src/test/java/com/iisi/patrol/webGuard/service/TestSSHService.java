@@ -7,6 +7,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 
 public class TestSSHService {
@@ -20,7 +21,7 @@ public class TestSSHService {
         String host="192.168.57.202";
         String user="tailinh";
         String password="IIsi@940450";
-        String command1="du -B 1 pwc-web.war";
+        String command1="du -b test1234.txt";
         ConnectionConfig conn = new ConnectionConfig(host, user, password, 22);
 
         String response = useSshCommand2(conn, command1);
@@ -29,6 +30,8 @@ public class TestSSHService {
         String fileSize = response.split("\t")[0];
         System.out.println(fileName);
         System.out.println(fileSize);
+        String filePath = "C:\\Users\\2106017\\comparison\\origin\\test1234.txt";
+        System.out.println(new File(filePath).length());
     }
 
 
