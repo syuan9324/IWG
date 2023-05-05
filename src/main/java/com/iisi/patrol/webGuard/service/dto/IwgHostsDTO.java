@@ -22,4 +22,11 @@ public class IwgHostsDTO implements Serializable {
     private String active;
 
 
+    private String fileName;
+    private String originFileLocation;
+    private String targetFileLocation;
+    private String originFolder;
+    private String targetFolder;
+
+
 }

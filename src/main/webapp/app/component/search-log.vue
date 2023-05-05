@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <h1 class="text-center">批次服務查詢</h1>
+    <h3 class="text-center pb-5">批次服務查詢</h3>
     <!-- <b-container fluid>
       <b-row class="my-1" v-for="type in types" :key="type">
         <b-col sm="3">
@@ -23,73 +23,64 @@
     <!-- <b-form-select :options="queryOptions.ServiceNoOpt" v-model="$v.batchServiceNo.$model"></b-form-select> -->
     <!-- </i-form-group-check> -->
     <!-- </b-form-row> -->
-    <b-form>
-      <b-form-group
-        class="col-12"
-        label-cols="2"
-        content-cols="2"
-        id="fieldset-1"
-        label="主機名稱"
-        label-for="hostname"
-      >
-        <b-form-input
-          id="hostname"
-          v-model="formDefault.hostname"
-        ></b-form-input>
-      </b-form-group>
-    </b-form>
-    <!-- <b-form>
-      <b-form-group
-        class="col-12"
-        label-cols="2"
-        content-cols="2"
-        id="fieldset-1"
-        label="檔案路徑"
-        label-for="targeFilename"
-      >
-        <b-form-input
-          id="targeFilename"
-          v-model="formDefault.targeFilename"
-        ></b-form-input>
-      </b-form-group>
-    </b-form> -->
-    <b-form>
-      <b-form-group
-        class="col-12"
-        label-cols="2"
-        content-cols="2"
-        id="fieldset-1"
-        label="檔案是否異動"
-        label-for="result"
-      >
-        <b-form-radio-group id="result" v-model="formDefault.result">
-          <b-form-radio value="Y">是</b-form-radio>
-          <b-form-radio value="N">否</b-form-radio>
-        </b-form-radio-group>
-      </b-form-group>
-    </b-form>
-    <div class="text-center">
+    <div class="searchLog">
+      <b-form class="pb-2">
+        <b-form-group
+          class="col-12"
+          label-cols="4"
+          content-cols="8"
+          id="fieldset-1"
+          label="主機名稱"
+          label-for="hostname"
+        >
+          <b-form-input
+            id="hostname"
+            v-model="formDefault.hostname"
+          ></b-form-input>
+        </b-form-group>
+      </b-form>
+      <b-form class="pb-2">
+        <b-form-group
+          class="col-12"
+          label-cols="4"
+          content-cols="8"
+          id="fieldset-1"
+          label="檔案是否異動"
+          label-for="result"
+        >
+          <b-form-radio-group id="result" v-model="formDefault.result">
+            <b-form-radio value="Y">是</b-form-radio>
+            <b-form-radio value="N">否</b-form-radio>
+          </b-form-radio-group>
+        </b-form-group>
+      </b-form>
+    </div>
+    <div class="text-center pt-5">
       <b-button class="ml-2" style="background-color: #1aa4b7" @click="toQuery"
         >查詢</b-button
       >
-      <b-button class="mr-10" style="background-color: #1aa4b7">清除</b-button>
-      <b-button class="pl-12" style="background-color: #1aa4b7" @click="toAdd"
-        >新增
-        <!-- <router-link class="list-group-item" active-class="active" to="/add"
-          >新增</router-link
-        > -->
-      </b-button>
+      <b-button class="ml-2" style="background-color: #1aa4b7" @click="rest"
+        >清除</b-button
+      >
     </div>
   </div>
 
-  <section class="mt-2" v-if="stepVisible">
+  <section class="pt-5" v-if="stepVisible">
     <div>
-      <b-table striped hover :items="paginatedItems" :fields="table.fields">
-        <template #cell(result)="row">
-          {{ row.item.result }}
-        </template>
+      <b-table
+        striped
+        hover
+        :items="paginatedItems"
+        :fields="table.fields"
+        :per-page="perPage"
+        :current-page="page"
+        @page-change="onPageChange"
+      >
         <template #cell(index)="row">
           {{ row.index + 1 }}
+        </template>
+        <template #cell(result)="row">
+          {{ row.item.result }}
         </template>
       </b-table>
       <b-pagination
@@ -104,30 +95,11 @@
 
 <script lang="ts">
 import { ref, computed, reactive, onMounted } from "vue";
-import {
-  BButton,
-  BFormInput,
-  BButtonToolbar,
-  BFormGroup,
-  BForm,
-  BFormRadioGroup,
-  BFormRadio,
-} from "bootstrap-vue-3";
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import router from "@/router";
 import axios from "axios";
 
 export default {
   name: "searchLog",
-  components: {
-    BButton,
-    BFormInput,
-    BButtonToolbar,
-    BFormGroup,
-    BForm,
-    BFormRadio,
-    BFormRadioGroup,
-  },
   setup() {
     const stepVisible = ref(false);
 
@@ -158,6 +130,9 @@ export default {
       targeFileName: {},
       result: {},
     });
+
+    const form = reactive(Object.assign(formDefault));
+    // const form = reactive(Object.assign({}, formDefault));
 
     const table = reactive({
       fields: [
@@ -243,6 +218,16 @@ export default {
       // table.data.splice(0, table.data.length, ...mockdata);
     };
 
+    const rest = () => {
+      console.log("6", form.value);
+      console.log("7", formDefault.value);
+      formDefault.value = form.value;
+    };
+
+    const onPageChange = (pageNum: any) => {
+      page.value = pageNum;
+    };
+
     return {
       // types,
       toAdd,
@@ -250,12 +235,22 @@ export default {
       stepVisible,
       toQuery,
       table,
+      rest,
       paginatedItems,
       totalPages,
+      onPageChange,
     };
   },
 };
 </script>
 
 <style scoped>
+.ml-2 {
+  margin-right: 20px;
+}
+.searchLog {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>

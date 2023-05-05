@@ -13,6 +13,14 @@ import java.util.List;
 
 @Repository
 public interface IwgHostsLogsRepository extends JpaRepository<IwgHostsLogs, Long> , JpaSpecificationExecutor<IwgHosts> {
-    @Query(value = "SELECT * from IWG_HOSTS_LOGS where HOSTNAME LIKE CONCAT ('%',:hostname,'%') AND [RESULT] = :result  ", nativeQuery = true)
+// "SELECT * FROM IWG_HOSTS_LOGS WHERE 1=1 " +
+//         "/*APPEND_WHERE*/ " +
+//         "AND HOSTNAME LIKE CONCAT('%', :hostname, '%') " +
+//         "AND [RESULT] = :result ",
+    @Query(value = "SELECT * from IWG_HOSTS_LOGS where 1=1"+
+            "/*APPEND_WHERE*/ " +
+            "AND HOSTNAME LIKE CONCAT ('%',:hostname,'%')" +
+//            "/*APPEND_WHERE*/ " +
+            " AND [RESULT] = :result  ", nativeQuery = true)
     List<IwgHostsLogs> findByResultAndHostname(@Param("result")String result,@Param("hostname")String hostname);
 }

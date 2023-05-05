@@ -1,130 +1,195 @@
 <template>
   <div class="text-center">
-    <h1 class="text-center">新增批次服務</h1>
-    <!-- <b-container fluid>
-      <b-row class="my-1" v-for="type in types" :key="type">
-        <b-col sm="3">
-          <label :for="`type-${type}`"
-            ><code>{{ type }}</code
-            >:</label
-          >
-        </b-col>
-        <b-col sm="9">
-          <b-form-input :id="`type-${type}`" :type="type"></b-form-input>
-        </b-col>
-      </b-row>
-    </b-container> -->
-
-    <b-form-row class="pb-2">
-      <b-form-group
-        label-cols="2"
-        content-cols="2"
-        label="帳號"
-        label-for="username"
-      >
-        <b-form-input
-          id="username"
-          v-model="formDefault.username"
-        ></b-form-input>
-      </b-form-group>
-    </b-form-row>
-    <b-form class="pb-2">
-      <b-form-group
-        label-cols="2"
-        content-cols="2"
-        label="密碼"
-        label-for="password"
-      >
-        <b-form-input
-          id="password"
-          type="password"
-          v-model="formDefault.password"
-        ></b-form-input>
-      </b-form-group>
-    </b-form>
-    <b-form class="pb-2">
-      <b-form-group
-        label-cols="2"
-        content-cols="2"
-        label="主機名稱"
-        label-for="hostname"
-      >
-        <b-form-input
-          id="hostname"
-          v-model="formDefault.hostname"
-        ></b-form-input>
-      </b-form-group>
-    </b-form>
-    <b-form class="pb-2">
-      <b-form-group
-        label-cols="2"
-        content-cols="2"
-        label="Port號"
-        label-for="port"
-      >
-        <b-form-input id="port" v-model="formDefault.port"></b-form-input>
-      </b-form-group>
-    </b-form>
-    <b-form class="pb-2">
-      <b-form-group
-        label-cols="2"
-        content-cols="2"
-        label="信件收件者"
-        label-for="mailReceiver"
-      >
-        <b-form-input
-          id="mailReceiver"
-          v-model="formDefault.mailReceiver"
-        ></b-form-input>
-      </b-form-group>
-    </b-form>
-    <b-form class="pb-2">
-      <b-form-group
-        label-cols="2"
-        content-cols="2"
-        label="SMS收件者"
-        label-for="smsReceiver"
-      >
-        <b-form-input
-          id="smsReceiver"
-          v-model="formDefault.smsReceiver"
-        ></b-form-input>
-      </b-form-group>
-    </b-form>
-    <b-form>
-      <b-form-group
-        label-cols="2"
-        content-cols="2"
-        id="active"
-        label="是否啟用"
-        label-for="active"
-      >
-        <b-form-radio-group id="active" v-model="formDefault.active">
-          <b-form-radio value="Y">是</b-form-radio>
-          <b-form-radio value="N">否</b-form-radio>
-        </b-form-radio-group>
-      </b-form-group>
-    </b-form>
-
-    <!-- <b-button-toolbar class="text-center">
-      <b-button class="mr-1" type="search">儲存</b-button>
-      <b-button class="mr-1" type="x-circle">清除</b-button>
-      <b-button class="mr-1" type="file-earmark-plus">
-        <router-link class="list-group-item" active-class="active" to="/log"
-          >返回</router-link
+    <h3 class="text-center pb-5">新增批次服務</h3>
+    <div class="batchService">
+      <b-form class="pb-2">
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          label="帳號"
+          label-for="username"
         >
-      </b-button>
-    </b-button-toolbar> -->
-    <div class="text-center">
+          <b-form-input
+            id="username"
+            v-model="formDefault.username"
+          ></b-form-input>
+        </b-form-group>
+      </b-form>
+      <b-form class="pb-2">
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          label="密碼"
+          label-for="password"
+        >
+          <b-form-input
+            id="password"
+            type="password"
+            v-model="formDefault.password"
+          ></b-form-input>
+        </b-form-group>
+      </b-form>
+      <b-form class="pb-2">
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          label="主機名稱"
+          label-for="hostname"
+        >
+          <b-form-input
+            id="hostname"
+            v-model="formDefault.hostname"
+          ></b-form-input>
+        </b-form-group>
+      </b-form>
+      <b-form class="pb-2">
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          label="Port號"
+          label-for="port"
+        >
+          <b-form-input id="port" v-model="formDefault.port"></b-form-input>
+        </b-form-group>
+      </b-form>
+      <b-form class="pb-2">
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          label="信件收件者"
+          label-for="mailReceiver"
+        >
+          <b-form-input
+            id="mailReceiver"
+            v-model="formDefault.mailReceiver"
+          ></b-form-input>
+        </b-form-group>
+      </b-form>
+      <b-form class="pb-2">
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          label="SMS收件者"
+          label-for="smsReceiver"
+        >
+          <b-form-input
+            id="smsReceiver"
+            v-model="formDefault.smsReceiver"
+          ></b-form-input>
+        </b-form-group>
+      </b-form>
+      <b-form>
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          id="active"
+          label="是否啟用"
+          label-for="active"
+        >
+          <b-form-radio-group id="active" v-model="formDefault.active">
+            <b-form-radio value="Y">是</b-form-radio>
+            <b-form-radio value="N">否</b-form-radio>
+          </b-form-radio-group>
+        </b-form-group>
+      </b-form>
+    </div>
+    <h3 class="text-center pb-5 pt-5">批次掃描內容</h3>
+    <!-- <b-button
+      class="ml-2"
+      style="background-color: #1aa4b7"
+      @click="addCheckadv"
+      >新增</b-button
+    > -->
+
+    <!-- <div v-for="(item, index) in item">
+      <b-tr>
+        <b-td>
+          <b-form-textarea
+            rows="3"
+            maxlength="4000"
+            v-model="item.detel1"
+          ></b-form-textarea>
+        </b-td>
+        <b-td class="text-center">
+          <i-button type="trash" @click="removeCheckadv(index)"></i-button>
+        </b-td>
+      </b-tr>
+    </div> -->
+    <div class="batchCotent">
+      <b-form-row class="pb-2">
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          label="檔案名稱"
+          label-for="fileName"
+        >
+          <b-form-input
+            id="fileName"
+            v-model="formDefault.fileName"
+          ></b-form-input>
+        </b-form-group>
+      </b-form-row>
+      <b-form-row class="pb-2">
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          label="IWG主機中參考檔案的位置"
+          label-for="originFileLocation"
+        >
+          <b-form-input
+            id="originFileLocation"
+            v-model="formDefault.originFileLocation"
+          ></b-form-input>
+        </b-form-group>
+      </b-form-row>
+      <b-form-row class="pb-2">
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          label="IWG要監控的host中的檔案位置"
+          label-for="targetFileLocation"
+        >
+          <b-form-input
+            id="targetFileLocation"
+            v-model="formDefault.targetFileLocation"
+          ></b-form-input>
+        </b-form-group>
+      </b-form-row>
+      <b-form-row class="pb-2">
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          label="IWG主機中參考的目錄位置"
+          label-for="originFolder"
+        >
+          <b-form-input
+            id="originFolder"
+            v-model="formDefault.originFolder"
+          ></b-form-input>
+        </b-form-group>
+      </b-form-row>
+      <b-form-row class="pb-2">
+        <b-form-group
+          label-cols="4"
+          content-cols="8"
+          label="IWG要監控的host中的目錄位置"
+          label-for="targerFolder"
+        >
+          <b-form-input
+            id="targerFolder"
+            v-model="formDefault.targerFolder"
+          ></b-form-input>
+        </b-form-group>
+      </b-form-row>
+    </div>
+
+    <div class="text-center pt-5">
       <b-button class="ml-2" style="background-color: #1aa4b7" @click="toSave"
         >儲存</b-button
       >
-      <b-button class="mr-10" style="background-color: #1aa4b7" @click="reset"
+      <b-button class="ml-2" style="background-color: #1aa4b7" @click="reset"
         >清除</b-button
       >
-      <!-- <b-button class="pl-12" style="background-color: #1aa4b7" @click="toLog"
-        >返回
-      </b-button> -->
     </div>
   </div>
 </template>
@@ -132,15 +197,6 @@
 <script lang="ts">
 import axios from "axios";
 import { ref, computed, reactive, onMounted } from "vue";
-import {
-  BButton,
-  BFormInput,
-  BButtonToolbar,
-  BFormGroup,
-  BForm,
-  BFormRadioGroup,
-  BFormRadio,
-} from "bootstrap-vue-3";
 import router from "@/router";
 import NotificationService from "@/shared/notification-service";
 
@@ -148,18 +204,11 @@ import NotificationService from "@/shared/notification-service";
 
 export default {
   name: "addServer",
-  components: {
-    BButton,
-    BFormInput,
-    BButtonToolbar,
-    BFormGroup,
-    BFormRadioGroup,
-    BFormRadio,
-    BForm,
-  },
   setup() {
     // const types = ["password", "userName", "hostName", "port", "fargeFileName"];
     const notificationService = new NotificationService();
+
+    const item = ref([]);
 
     let formDefault = ref({
       password: "123456",
@@ -169,6 +218,11 @@ export default {
       mailReceiver: "testReceiver@test.com",
       smsReceiver: "0921531997",
       active: "Y",
+      fileName: "pwc-web.war",
+      originFileLocation: "/root/",
+      targetFileLocation: "/home/tailinh/",
+      originFolder: "C:Users/2106017welcome-content",
+      targerFolder: "/opt/wildfly-4/welcome-content/",
     });
 
     // 表單物件驗證規則
@@ -180,6 +234,11 @@ export default {
       mailReceiver: {},
       smsReceiver: {},
       active: {},
+      fileName: {},
+      originFileLocation: {},
+      targetFileLocation: {},
+      originFolder: {},
+      targerFolder: {},
     });
     const form = reactive(Object.assign({}, formDefault));
 
@@ -200,29 +259,34 @@ export default {
           console.log("catch", error);
         });
     };
-    const toLog = () => {
-      router.push({ path: "/searchLog" });
-    };
+
+    // function addCheckadv() {
+    //   item.value.push({ detel1: item.value.length + 1 + "." });
+    // }
+
+    // function removeCheckadv(index: any) {
+    //   item.value.splice(index, 1);
+    // }
 
     return {
-      // types,
       formDefault,
-      toLog,
       toSave,
       reset,
+      // addCheckadv,
+      // removeCheckadv,
     };
   },
 };
 </script>
 
 <style scoped>
-.b-form-group .form-control {
-  max-width: 400px;
+.batchService,
+.batchCotent {
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
 }
-
-.text-center {
-  text-align: center;
+.ml-2 {
+  margin-right: 20px;
 }
 </style>

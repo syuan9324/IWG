@@ -37,8 +37,10 @@ import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { NotifyModalStore } from "@/store/notify-modal-store";
+import homeVue from "@/component/home.vue";
 export default {
   name: "home",
+  componet: { homeVue },
   setup() {
     let username = ref("");
     let password = ref("");

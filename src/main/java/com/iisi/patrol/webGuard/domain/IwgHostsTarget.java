@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
@@ -16,7 +18,7 @@ import java.time.Instant;
 public class IwgHostsTarget {
 
     @Id
-    @NotNull
+//    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
@@ -24,8 +26,7 @@ public class IwgHostsTarget {
     @Column(name = "hostname", length = 50, nullable = true)
     private String hostname;
 
-    @NotNull
-    @Size(max = 4)
+//    @NotNull
     @Column(name = "port", length = 4, nullable = false)
     private int port;
 

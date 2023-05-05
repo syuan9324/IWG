@@ -1,16 +1,8 @@
 <template>
   <header>
-    <!-- mobile -->
-
-    <!-- desk top -->
     <div class="desktop-app-header-wrapper">
       <div class="top-nav pr-3">
-        <a
-          class="btn-link"
-          @click="logout"
-          v-if="NotifyModalStore.state === true"
-          >登出</a
-        >
+        <a class="btn-link" @click="logout">登出</a>
       </div>
     </div>
     <div class="img">
@@ -19,18 +11,10 @@
     <div class="desktop-app-header-wrapper2">
       <div class="top-nav pr-3"><strong>公共工程系統監控管理</strong></div>
     </div>
-    <!-- <div class="belt">
-      <b-row
-        class="belt-btn-wrapper d-flex align-items-center justify-content-center"
-      >
-      </b-row>
-      公共工程系統監控管理
-    </div> -->
   </header>
 </template>
 
 <script lang="ts">
-import { BButton, BTooltip, BRow, BCol } from "bootstrap-vue";
 import { ref } from "vue";
 import AccountService from "@/account/accout.service";
 import axios from "axios";
@@ -40,7 +24,6 @@ import { useStore } from "vuex";
 
 export default {
   name: "AppHeader",
-  components: { BButton, BTooltip, BRow, BCol },
   setup() {
     const router = useRouter();
     const accountService = new AccountService();

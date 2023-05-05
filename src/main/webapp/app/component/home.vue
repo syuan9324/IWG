@@ -1,67 +1,77 @@
 <template>
   <div>
-    <div class="sidebar">
-      <h3>功能</h3>
-      <ul>
-        <li>
-          <router-link
-            class="list-group-item"
-            active-class="active"
-            to="/searchLog"
-            >log</router-link
-          >
-        </li>
-        <li>
-          <router-link
-            class="list-group-item"
-            active-class="active"
-            to="/addServer"
-            >add</router-link
-          >
-        </li>
-        <li>
-          <router-link
-            class="list-group-item"
-            active-class="active"
-            to="/searchServer"
-            >searchServer</router-link
-          >
-        </li>
-        <li>
-          <router-link
-            class="list-group-item"
-            active-class="active"
-            to="/testRouter"
-            >testRouter</router-link
-          >
-        </li>
-        <li>
-          <router-link
-            class="list-group-item"
-            active-class="active"
-            to="/testRouter2"
-            >testRouter2</router-link
-          >
-        </li>
-      </ul>
+    <div>
+      <div>
+        <b-button v-b-toggle.sidebar-right variant="Light">
+          <b-icon icon="exclamation-circle-fill" variant="primary"></b-icon
+          >功能選單</b-button
+        >
+        <b-collapse id="sidebar-right" title="Sidebar" right>
+          <div class="px-3 py-2">
+            <div class="sidebar">
+              <ul>
+                <li>
+                  <router-link
+                    class="list-group-item"
+                    active-class="active"
+                    to="/searchLog"
+                    >批次服務查詢</router-link
+                  >
+                </li>
+                <li>
+                  <router-link
+                    class="list-group-item"
+                    active-class="active"
+                    to="/addServer"
+                    >新增批次服務</router-link
+                  >
+                </li>
+                <li>
+                  <router-link
+                    class="list-group-item"
+                    active-class="active"
+                    to="/searchServer"
+                    >主機查詢</router-link
+                  >
+                </li>
+                <!-- <li>
+                  <router-link
+                    class="list-group-item"
+                    active-class="active"
+                    to="/testRouter"
+                    >testRouter</router-link
+                  >
+                </li> -->
+                <!-- <li>
+                  <router-link
+                    class="list-group-item"
+                    active-class="active"
+                    to="/testRouter2"
+                    >testRouter2</router-link
+                  >
+                </li> -->
+              </ul>
+            </div>
+          </div>
+        </b-collapse>
+      </div>
     </div>
-
     <div>
       <router-view></router-view>
     </div>
     <!-- <h1>Login Page</h1>
-    <form v-on:submit.prevent="submitForm">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" v-model="username" />
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" v-model="password" />
-      <button type="submit">
-        <router-link class="list-group-item" active-class="active" to="/log"
-          >Login</router-link
-        >
-      </button>
-      {{ jwt }}
-    </form> -->
+    <form v-on:submit.prevent="submitForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" v-model="username" />
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" v-model="password" />
+      <button type="submit">
+        <router-link class="list-group-item" active-class="active" to="/log"
+          >Login</router-link
+        >
+      </button>
+      {{ jwt }}
+    </form> -->
   </div>
 </template>
 
