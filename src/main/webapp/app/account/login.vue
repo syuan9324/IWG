@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
+import { ref, h } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { NotifyModalStore } from "@/store/notify-modal-store";
@@ -42,14 +42,13 @@ export default {
   name: "home",
   componet: { homeVue },
   setup() {
-    let username = ref("");
-    let password = ref("");
+    let username = ref("admin");
+    let password = ref("admin");
     let jwt: any = ref("");
     const formDefault = ref({
       username: "",
       password: "",
     });
-    let logStatus = true;
     const router = useRouter();
     async function submitForm() {
       if (username.value === "" || password.value === "") {
@@ -61,10 +60,7 @@ export default {
         });
         console.log(JSON.stringify(jwt.value));
         sessionStorage.setItem("token", jwt.value.data);
-        router.push({ name: "home", params: { logStatus: password.value } });
-
-        console.log("NotifyModalStore", NotifyModalStore);
-        console.log("NotifyModalStore", (NotifyModalStore.state = true));
+        router.push({ name: "home" });
       }
     }
 

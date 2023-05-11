@@ -39,7 +39,7 @@
           ></b-form-input>
         </b-form-group>
       </b-form>
-      <b-form class="pb-2">
+      <!-- <b-form class="pb-2">
         <b-form-group
           class="col-12"
           label-cols="4"
@@ -53,7 +53,7 @@
             <b-form-radio value="N">否</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
-      </b-form>
+      </b-form> -->
     </div>
     <div class="text-center pt-5">
       <b-button class="ml-2" style="background-color: #1aa4b7" @click="toQuery"
@@ -70,17 +70,22 @@
       <b-table
         striped
         hover
-        :items="paginatedItems"
+        :items="table.data"
         :fields="table.fields"
         :per-page="perPage"
         :current-page="page"
-        @page-change="onPageChange"
       >
         <template #cell(index)="row">
           {{ row.index + 1 }}
         </template>
         <template #cell(result)="row">
-          {{ row.item.result }}
+          {{ row.item.result === "Y" ? "成功" : "失敗" }}
+        </template>
+        <template #cell(triggerTime)="row">
+          {{ formatDate(row.item.triggerTime) }}
+        </template>
+        <template #cell(finishTime)="row">
+          {{ formatDate(row.item.finishTime) }}
         </template>
       </b-table>
       <b-pagination
@@ -88,7 +93,7 @@
         :total-rows="table.data.length"
         :per-page="perPage"
         align="center"
-      />
+      ></b-pagination>
     </div>
   </section>
 </template>
@@ -118,18 +123,18 @@ export default {
       return Math.ceil(table.data.length / perPage.value);
     });
 
-    const formDefault = ref({
+    const formDefault = reactive({
       hostname: "",
       targeFileName: "",
       result: "",
     });
 
     // 表單物件驗證規則
-    const rules = ref({
+    const rules = {
       hostname: {},
       targeFileName: {},
       result: {},
-    });
+    };
 
     const form = reactive(Object.assign(formDefault));
     // const form = reactive(Object.assign({}, formDefault));
@@ -204,7 +209,7 @@ export default {
     const toQuery = () => {
       stepVisible.value = true;
       axios
-        .post("/find/iwgHostsLogs", formDefault.value)
+        .post("/find/iwgHostsLogs", formDefault)
         .then((data) => {
           // ele.forEach((e) => {});
           table.data = data.data;
@@ -218,10 +223,21 @@ export default {
       // table.data.splice(0, table.data.length, ...mockdata);
     };
 
+    //轉換時間
+    const formatDate = (value: any) => {
+      var date = new Date(value);
+      const year = (date.getFullYear() - 1911).toString().padStart(3, "0");
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const day = date.getDate().toString().padStart(2, "0");
+      const hour = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      return (
+        year + "年" + month + "月" + day + "日" + "/" + hour + ":" + minutes
+      );
+    };
+
     const rest = () => {
-      console.log("6", form.value);
-      console.log("7", formDefault.value);
-      formDefault.value = form.value;
+      formDefault.hostname = "";
     };
 
     const onPageChange = (pageNum: any) => {
@@ -229,7 +245,6 @@ export default {
     };
 
     return {
-      // types,
       toAdd,
       formDefault,
       stepVisible,
@@ -239,6 +254,7 @@ export default {
       paginatedItems,
       totalPages,
       onPageChange,
+      formatDate,
     };
   },
 };

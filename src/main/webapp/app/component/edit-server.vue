@@ -79,10 +79,10 @@
 
 <script lang="ts">
 import axios from "axios";
-import { ref, computed, reactive, onMounted, Ref, toRef } from "vue";
+import { ref, computed, reactive, onMounted, Ref, toRef, toRaw } from "vue";
 import router from "@/router";
 import NotificationService from "@/shared/notification-service";
-import { routerKey } from "vue-router";
+import { routerKey, useRoute } from "vue-router";
 
 // import appHeader from "./header/app-header.vue";
 
@@ -90,26 +90,29 @@ export default {
   name: "editServer",
   props: {
     id: {
-      type: Object,
       required: false,
     },
   },
+
   setup(props: any) {
-    const idProp: Ref<any> = toRef(props, "id");
-    console.log("Prop", router);
-    console.log("Prop", props);
-    console.log("idProp", idProp);
+    const route = useRoute();
+    const elea = toRaw(props.id);
+    console.log("elea", props.id);
+    console.log("route", route.params);
+    // console.log("Prop", router);
+    // console.log("Prop", props);
+    // console.log("elea", props.elea);
     // const types = ["password", "userName", "hostName", "port", "fargeFileName"];
     const notificationService = new NotificationService();
 
     let formDefault = ref({
-      password: "123456",
-      username: "syuan",
-      hostname: "01",
-      port: 22,
-      mailReceiver: "testReceiver@test.com",
-      smsReceiver: "0921531997",
-      active: "Y",
+      password: "",
+      username: "",
+      hostname: "",
+      port: "",
+      mailReceiver: "",
+      smsReceiver: "",
+      active: "",
     });
 
     // 表單物件驗證規則

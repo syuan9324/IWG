@@ -1,4 +1,8 @@
 <template>
+  <!-- <div class="inp">
+    <input type="text" :placeholder="placeholder" v-model="search.content" />
+    <button @click="handlerSearch">搜索</button>
+  </div> -->
   <div class="text-center">
     <h3 class="text-center pb-5">主機查詢</h3>
     <div class="searchServer">
@@ -22,7 +26,9 @@
       <b-button class="ml-2" style="background-color: #1aa4b7" @click="toQuery"
         >查詢</b-button
       >
-      <b-button class="ml-2" style="background-color: #1aa4b7">清除</b-button>
+      <b-button class="ml-2" style="background-color: #1aa4b7" @click="rest"
+        >清除</b-button
+      >
     </div>
   </div>
 
@@ -39,9 +45,9 @@
         <template #cell(index)="row">
           {{ row.index + 1 }}
         </template>
-        <!-- <template #cell(result)="row">
-          {{ row.item.result }}
-        </template> -->
+        <template #cell(active)="row">
+          {{ row.item.active === "Y" ? "是" : "否" }}
+        </template>
         <template #cell(action)="row">
           <b-button
             class="ml-2"
@@ -62,21 +68,20 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, reactive, onMounted } from "vue";
-import router from "@/router";
+import { ref, computed, reactive, toRef, toRaw } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default {
   name: "searchServer",
-  setup() {
+  props: ["currentComponent"],
+  setup(props: any, content: any) {
+    const currentComponentprops = toRef(props, "currentComponent");
+    const placeholder = props.currentComponent;
+
     const stepVisible = ref(false);
     const page = ref(1); //當前頁面
     const perPage = ref(20); //每頁顯示的資料
-    const edit = ref(false);
-
-    // onMounted(() => {
-    //   toQuery();
-    // });
 
     // 根據當前頁碼和每頁顯示的資料數，計算當前頁面顯示的資料
     const paginatedItems = computed(() => {
@@ -90,7 +95,7 @@ export default {
       return Math.ceil(table.data.length / perPage.value);
     });
 
-    const formDefault = ref({
+    const formDefault = reactive({
       hostname: "",
       result: "N",
     });
@@ -148,35 +153,44 @@ export default {
       totalItems: 0,
     });
 
-    const toAdd = () => {
-      router.push({ path: "/add" });
-    };
-
     const toQuery = () => {
       stepVisible.value = true;
       axios
-        .post("/find/iwgHosts", formDefault.value)
+        .post("/find/iwgHosts", formDefault)
         .then((data) => {
           // ele.forEach((e) => {});
           table.data = data.data;
-          console.log("table.data", table.data);
         })
         .catch((error) => {
           console.log("catch", error);
         });
-      // table.data = [];
-      // table.totalItems = 1;
-      // table.data.splice(0, table.data.length, ...mockdata);
-    };
-    const toEdit = (ele: any) => {
-      console.log(ele);
-      edit.value = true;
-      router.push({ path: "/editServer", query: { id: ele.hostname } });
     };
 
+    const router = useRouter();
+
+    const toEdit = (ele: any) => {
+      const elea = toRaw(ele);
+      // router.push({
+      //   name: "editServer",
+      //   params: { id: JSON.stringify(ele) },
+      // });
+      content.emit("queryItemt", elea);
+      content.emit("status", "editServerVue");
+    };
+
+    const rest = () => {
+      formDefault.hostname = "";
+    };
+
+    // const search = ref({
+    //   content: "",
+    // });
+    // function handlerSearch() {
+    //   console.log("search.value", search.value);
+    //   content.emit("searchClick", search.value);
+    // }
+
     return {
-      // types,
-      toAdd,
       formDefault,
       stepVisible,
       toQuery,
@@ -184,6 +198,12 @@ export default {
       table,
       paginatedItems,
       totalPages,
+      rest,
+      currentComponentprops,
+
+      // placeholder,
+      // handlerSearch,
+      // search,
     };
   },
 };

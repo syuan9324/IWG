@@ -26,7 +26,7 @@ public class IwgHostsLogsController {
     }
 
     @PostMapping("/find/iwgHostsLogs")
-    public List<IwgHostsLogs> findiwgHosts(@Valid @RequestBody IwgHostsLogsDTO iwgHostsLogsDTO) {
+    public List<IwgHostsLogsDTO> findiwgHosts(@Valid @RequestBody IwgHostsLogsDTO iwgHostsLogsDTO) {
         return iwgHostsLogsService.findiwgHosts(iwgHostsLogsDTO);
     }
 

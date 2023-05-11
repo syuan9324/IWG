@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.time.Instant;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class IwgHostsLogsService {
@@ -69,8 +71,8 @@ public class IwgHostsLogsService {
         return this.saveIwgHostsLogs(newLog);
     }
 
-    public List<IwgHostsLogs> findiwgHosts( IwgHostsLogsDTO iwgHostsLogsDTO) {
-        return iwgHostsLogsRepository.findByResultAndHostname(iwgHostsLogsDTO.getResult(),iwgHostsLogsDTO.getHostname()) ;
+    public List<IwgHostsLogsDTO> findiwgHosts( IwgHostsLogsDTO iwgHostsLogsDTO) {
+        return iwgHostsLogsRepository.findByResultAndHostname(iwgHostsLogsDTO.getHostname()).stream().map(iwgHostsLogsMapper::toDto).collect(Collectors.toCollection(LinkedList::new)) ;
     }
 
 

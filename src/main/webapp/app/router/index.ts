@@ -8,6 +8,7 @@ const searchLog = () => import('@/component/search-log.vue');
 const AddServer = () => import('@/component/add-server.vue');
 const SearchServer = () => import('@/component/search-server.vue');
 const EditServer = () => import('@/component/edit-server.vue');
+const SearchServerHome = () => import('@/component/search-serverHome.vue');
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -53,9 +54,15 @@ const routes: Array<RouteRecordRaw> = [
           props: true,
         },
        {
-          path: "/editServer",
+          path: '/editServe/:id',
           name: "editServer",
           component: EditServer,
+          // props: true,
+        },
+       {
+          path: "/searchServerHome",
+          name: "searchServerHome",
+          component: SearchServerHome,
           props: true,
         },
     ]
@@ -74,7 +81,7 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes,
+  routes: routes,
 });
 
 export default router;

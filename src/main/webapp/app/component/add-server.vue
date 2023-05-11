@@ -12,6 +12,7 @@
           <b-form-input
             id="username"
             v-model="formDefault.username"
+            placeholder="syuan"
           ></b-form-input>
         </b-form-group>
       </b-form>
@@ -26,6 +27,7 @@
             id="password"
             type="password"
             v-model="formDefault.password"
+            placeholder="123456"
           ></b-form-input>
         </b-form-group>
       </b-form>
@@ -39,6 +41,7 @@
           <b-form-input
             id="hostname"
             v-model="formDefault.hostname"
+            placeholder="01"
           ></b-form-input>
         </b-form-group>
       </b-form>
@@ -49,7 +52,11 @@
           label="Port號"
           label-for="port"
         >
-          <b-form-input id="port" v-model="formDefault.port"></b-form-input>
+          <b-form-input
+            id="port"
+            v-model="formDefault.port"
+            placeholder="22"
+          ></b-form-input>
         </b-form-group>
       </b-form>
       <b-form class="pb-2">
@@ -62,6 +69,7 @@
           <b-form-input
             id="mailReceiver"
             v-model="formDefault.mailReceiver"
+            placeholder="testReceiver@test.com"
           ></b-form-input>
         </b-form-group>
       </b-form>
@@ -75,6 +83,7 @@
           <b-form-input
             id="smsReceiver"
             v-model="formDefault.smsReceiver"
+            placeholder="0921531997"
           ></b-form-input>
         </b-form-group>
       </b-form>
@@ -126,6 +135,7 @@
           <b-form-input
             id="fileName"
             v-model="formDefault.fileName"
+            placeholder="pwc-web.war"
           ></b-form-input>
         </b-form-group>
       </b-form-row>
@@ -139,6 +149,7 @@
           <b-form-input
             id="originFileLocation"
             v-model="formDefault.originFileLocation"
+            placeholder="/root/"
           ></b-form-input>
         </b-form-group>
       </b-form-row>
@@ -152,6 +163,7 @@
           <b-form-input
             id="targetFileLocation"
             v-model="formDefault.targetFileLocation"
+            placeholder="/home/tailinh/"
           ></b-form-input>
         </b-form-group>
       </b-form-row>
@@ -165,6 +177,7 @@
           <b-form-input
             id="originFolder"
             v-model="formDefault.originFolder"
+            placeholder="C:Users/2106017welcome-content"
           ></b-form-input>
         </b-form-group>
       </b-form-row>
@@ -178,6 +191,7 @@
           <b-form-input
             id="targerFolder"
             v-model="formDefault.targerFolder"
+            placeholder="/opt/wildfly-4/welcome-content/"
           ></b-form-input>
         </b-form-group>
       </b-form-row>
@@ -200,35 +214,30 @@ import { ref, computed, reactive, onMounted } from "vue";
 import router from "@/router";
 import NotificationService from "@/shared/notification-service";
 
-// import appHeader from "./header/app-header.vue";
-
 export default {
   name: "addServer",
   setup() {
-    // const types = ["password", "userName", "hostName", "port", "fargeFileName"];
     const notificationService = new NotificationService();
 
-    const item = ref([]);
-
-    let formDefault = ref({
-      password: "123456",
-      username: "syuan",
-      hostname: "01",
-      port: 22,
-      mailReceiver: "testReceiver@test.com",
-      smsReceiver: "0921531997",
+    let formDefault = reactive({
+      username: "",
+      password: "",
+      hostname: "",
+      port: "",
+      mailReceiver: "",
+      smsReceiver: "",
       active: "Y",
-      fileName: "pwc-web.war",
-      originFileLocation: "/root/",
-      targetFileLocation: "/home/tailinh/",
-      originFolder: "C:Users/2106017welcome-content",
-      targerFolder: "/opt/wildfly-4/welcome-content/",
+      fileName: "",
+      originFileLocation: "",
+      targetFileLocation: "",
+      originFolder: "",
+      targerFolder: "",
     });
 
     // 表單物件驗證規則
     const rules = ref({
-      password: {},
       username: {},
+      password: {},
       hostname: {},
       port: {},
       mailReceiver: {},
@@ -243,21 +252,48 @@ export default {
     const form = reactive(Object.assign({}, formDefault));
 
     const reset = () => {
-      formDefault.value = form.value;
-      console.log("66form", form);
-      console.log("66formDefault", formDefault);
+      formDefault.username = "";
+      formDefault.password = "";
+      formDefault.hostname = "";
+      formDefault.port = "";
+      formDefault.mailReceiver = "";
+      formDefault.smsReceiver = "";
+      formDefault.active = "Y";
+      formDefault.fileName = "";
+      formDefault.originFileLocation = "";
+      formDefault.targetFileLocation = "";
+      formDefault.originFolder = "";
+      formDefault.targerFolder = "";
     };
 
     const toSave = () => {
-      axios
-        .post("/create/iwgHosts", formDefault.value)
-        .then((response: any) => {
-          notificationService.info("新增成功");
-          console.log("then", response);
-        })
-        .catch((error) => {
-          console.log("catch", error);
-        });
+      if (
+        formDefault.username === "" ||
+        formDefault.password === "" ||
+        formDefault.hostname === "" ||
+        formDefault.port === "" ||
+        formDefault.mailReceiver === "" ||
+        formDefault.smsReceiver === "" ||
+        formDefault.fileName === "" ||
+        formDefault.originFileLocation === "" ||
+        formDefault.targetFileLocation === "" ||
+        formDefault.originFolder === "" ||
+        formDefault.targerFolder === ""
+      ) {
+        notificationService.danger(
+          "欄位尚未填寫完畢，請於輸入完畢後再行送出。"
+        );
+      } else {
+        axios
+          .post("/create/iwgHosts", formDefault)
+          .then((response: any) => {
+            notificationService.info("新增成功");
+            console.log("then", response);
+          })
+          .catch((error) => {
+            console.log("catch", error);
+          });
+      }
     };
 
     // function addCheckadv() {

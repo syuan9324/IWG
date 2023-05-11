@@ -27,13 +27,13 @@ export default {
   setup() {
     const router = useRouter();
     const accountService = new AccountService();
-    const logStatus = ref(false);
+
     const logout = () => {
       accountService.logout();
       router.push({ name: "login" });
     };
 
-    return { logout, logStatus, NotifyModalStore };
+    return { logout, NotifyModalStore };
   },
 };
 </script>

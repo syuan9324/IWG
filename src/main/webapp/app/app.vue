@@ -1,7 +1,6 @@
 <template>
   <div>
     <appHeaderVue />
-
     <div>
       <router-view></router-view>
     </div>
@@ -13,7 +12,6 @@
 import { useRouter } from "vue-router";
 import NotifyModal from "@/component/notify-modal.vue";
 import appHeaderVue from "./component/app-header.vue";
-import homeVue from "./component/home.vue";
 export default {
   name: "app",
   components: {

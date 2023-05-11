@@ -30,8 +30,16 @@
                   <router-link
                     class="list-group-item"
                     active-class="active"
-                    to="/searchServer"
+                    to="/searchServerHome"
                     >主機查詢</router-link
+                  >
+                </li>
+                <li>
+                  <router-link
+                    class="list-group-item"
+                    active-class="active"
+                    to="/searchServer"
+                    >test</router-link
                   >
                 </li>
                 <!-- <li>
@@ -82,32 +90,16 @@ import { useRouter } from "vue-router";
 import AccountService from "@/account/accout.service";
 import { NotifyModalStore } from "@/store/notify-modal-store";
 import { useStore } from "vuex";
-import {
-  BNavbar,
-  BNavbarBrand,
-  BNavbarToggle,
-  BCollapse,
-  BNavbarNav,
-  BNavItem,
-  BButton,
-} from "bootstrap-vue-next";
 
 export default {
   name: "home",
-  props: {
-    logStatus: {
-      type: String,
-      required: false,
-    },
-  },
-  setup(props: any) {
-    const logStatusProps: Ref<any> = toRef(props, "logStatus");
-    // const propValue = toRefs(props).username;
+  setup() {
+    // const logStatusProps: Ref<any> = toRef(props, "logStatus");
 
-    console.log("6666logStatusPropsvalue", logStatusProps.value);
-    console.log("6666logStatusProps", logStatusProps);
-    console.log("NotifyModalStore", NotifyModalStore);
-    console.log("useStore", useStore);
+    // console.log("6666logStatusPropsvalue", logStatusProps.value);
+    // console.log("6666logStatusProps", logStatusProps);
+    // console.log("NotifyModalStore", NotifyModalStore);
+    // console.log("useStore", useStore);
     const router = useRouter();
     const accountService = new AccountService();
     const result = ref("");
