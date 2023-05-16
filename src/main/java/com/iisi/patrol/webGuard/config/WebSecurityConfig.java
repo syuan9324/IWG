@@ -41,7 +41,7 @@ public class WebSecurityConfig {
     private AuthEntryPointJwt unauthorizedHandler;
 
     //設定cors允許的origin陣列
-    @Value("app.cors.allowed-origins")
+    @Value("${app.cors.allowed-origins}")
     private String corsAllowOrigins;
 
     @Bean
@@ -95,7 +95,6 @@ public class WebSecurityConfig {
         if(corsAllowOrigins.contains(",")){
             allowOriginArray = Arrays.asList(corsAllowOrigins.split(","));
         }
-
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(allowOriginArray);
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));

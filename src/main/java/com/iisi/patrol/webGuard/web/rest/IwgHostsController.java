@@ -37,5 +37,10 @@ public class IwgHostsController {
         return iwgHostsService.findByHostname(iwgHostsDTO);
     }
 
+    @PostMapping("/update/iwgHosts")
+    public void updateiwgHosts(@Valid @RequestBody IwgHostsDTO iwgHostsDTO) {
+        iwgHostsService.update(iwgHostsDTO) ;
+    }
+
 
 }

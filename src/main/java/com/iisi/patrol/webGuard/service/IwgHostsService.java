@@ -5,6 +5,7 @@ import com.iisi.patrol.webGuard.domain.IwgHostsTarget;
 import com.iisi.patrol.webGuard.repository.IwgHostsRepository;
 import com.iisi.patrol.webGuard.repository.IwgHostsTargetRepository;
 import com.iisi.patrol.webGuard.service.dto.IwgHostsDTO;
+import com.iisi.patrol.webGuard.service.dto.IwgHostsTargetDTO;
 import com.iisi.patrol.webGuard.service.dto.mapper.IwgHostsMapper;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,13 @@ public class IwgHostsService {
     private final IwgHostsRepository iwgHostsRepository;
     private final IwgHostsTargetRepository iwgHostsTargetRepository;
     private final IwgHostsMapper iwgHostsMapper;
+    private final IwgHostsTargetService iwgHostsTargetService;
 
-    public IwgHostsService(IwgHostsRepository iwgHostsRepository, IwgHostsTargetRepository iwgHostsTargetRepository, IwgHostsMapper iwgHostsMapper) {
+    public IwgHostsService(IwgHostsRepository iwgHostsRepository, IwgHostsTargetRepository iwgHostsTargetRepository, IwgHostsMapper iwgHostsMapper, IwgHostsTargetService iwgHostsTargetService) {
         this.iwgHostsRepository = iwgHostsRepository;
         this.iwgHostsTargetRepository = iwgHostsTargetRepository;
         this.iwgHostsMapper = iwgHostsMapper;
+        this.iwgHostsTargetService = iwgHostsTargetService;
     }
 
     public void save(IwgHostsDTO iwgHostsDTO) {
@@ -70,6 +73,37 @@ public class IwgHostsService {
 
     public List<IwgHosts> findByHostname(IwgHostsDTO iwgHostsDTO) {
         return iwgHostsRepository.findByHostname(iwgHostsDTO.getHostname()) ;
+    }
+
+
+    public void update(IwgHostsDTO iwgHostsDTO) {
+        //更新IwgHosts表格
+        IwgHosts iwgHostss = new IwgHosts();
+        iwgHostss.setId(iwgHostsDTO.getId());
+        //以下要更新的欄位
+        iwgHostss.setUsername(iwgHostsDTO.getUsername());
+        iwgHostss.setPassword(iwgHostsDTO.getPassword());
+        iwgHostss.setHostname(iwgHostsDTO.getHostname());
+        iwgHostss.setPort(Integer.valueOf(iwgHostsDTO.getPort()));
+        iwgHostss.setMailReceiver(iwgHostsDTO.getMailReceiver());
+        iwgHostss.setSmsReceiver(iwgHostsDTO.getSmsReceiver());
+        iwgHostss.setActive(iwgHostsDTO.getActive());
+        iwgHostsRepository.save(iwgHostss);
+
+        //更新IwgHostsTarget表格
+        IwgHostsTarget iwgHostsTarget1 =  iwgHostsTargetRepository.findByHostnameAndPort(iwgHostsDTO.getHostname(),iwgHostsDTO.getPort());
+        IwgHostsTarget iwgHostsTarget = new IwgHostsTarget();
+        iwgHostsTarget.setId(iwgHostsTarget1.getId());
+        //以下要更新的欄位
+        iwgHostsTarget.setHostname(iwgHostsDTO.getHostname());
+        iwgHostsTarget.setPort(Integer.valueOf(iwgHostsDTO.getPort()));
+        iwgHostsTarget.setFileName(iwgHostsDTO.getFileName());
+        iwgHostsTarget.setOriginFileLocation(iwgHostsDTO.getOriginFileLocation());
+        iwgHostsTarget.setTargetFileLocation(iwgHostsDTO.getTargetFileLocation());
+        iwgHostsTarget.setActive(iwgHostsDTO.getActive());
+        iwgHostsTarget.setOriginFolder(iwgHostsDTO.getOriginFolder());
+        iwgHostsTarget.setTargetFolder(iwgHostsDTO.getTargetFolder());
+        iwgHostsTargetRepository.save(iwgHostsTarget);
     }
 
 }

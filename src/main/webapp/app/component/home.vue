@@ -34,14 +34,6 @@
                     >主機查詢</router-link
                   >
                 </li>
-                <li>
-                  <router-link
-                    class="list-group-item"
-                    active-class="active"
-                    to="/searchServer"
-                    >test</router-link
-                  >
-                </li>
                 <!-- <li>
                   <router-link
                     class="list-group-item"

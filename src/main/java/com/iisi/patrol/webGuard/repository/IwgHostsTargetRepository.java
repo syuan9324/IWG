@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -21,4 +22,6 @@ public interface IwgHostsTargetRepository extends JpaRepository<IwgHostsTarget, 
             value = "SELECT * FROM IWG_HOSTS_TARGET u WHERE u.HOSTNAME = :hostName and u.PORT = :port and u.PROFILE = 'DEV'",
             nativeQuery = true)
     List<IwgHostsTarget> getDevIwgHostTargetByHost(@Param("hostName") String hostName,@Param("port") int port);
+
+    IwgHostsTarget findByHostnameAndPort(String hostname, int port);
 }

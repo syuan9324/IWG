@@ -77,7 +77,7 @@ export default {
   props: ["currentComponent"],
   setup(props: any, content: any) {
     const currentComponentprops = toRef(props, "currentComponent");
-    const placeholder = props.currentComponent;
+    console.log(currentComponentprops);
 
     const stepVisible = ref(false);
     const page = ref(1); //當前頁面
@@ -182,14 +182,6 @@ export default {
       formDefault.hostname = "";
     };
 
-    // const search = ref({
-    //   content: "",
-    // });
-    // function handlerSearch() {
-    //   console.log("search.value", search.value);
-    //   content.emit("searchClick", search.value);
-    // }
-
     return {
       formDefault,
       stepVisible,
@@ -200,10 +192,6 @@ export default {
       totalPages,
       rest,
       currentComponentprops,
-
-      // placeholder,
-      // handlerSearch,
-      // search,
     };
   },
 };

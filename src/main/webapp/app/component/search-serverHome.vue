@@ -5,17 +5,14 @@
       currentComponent="父組件進來"
       @queryItemt="queryItemt"
       @status="status"
-      @searchClick="searchClick"
     />
-    <editServerVue v-else />
-    <h3>子组件传值内容：{{ status1 }}</h3>
-    <h3>子组件传值内容：{{ searchCon }}</h3>
+    <editServerVue v-else :searchCon="searchCon" />
     <!-- <router-view></router-view> -->
   </div>
 </template>
 
 <script lang="ts">
-import { ref, toRef, toRaw } from "vue";
+import { ref, toRef, toRaw, watch } from "vue";
 import editServerVue from "./edit-server.vue";
 import searchServerVue from "./search-server.vue";
 export default {
@@ -31,7 +28,6 @@ export default {
     };
 
     const queryItemt = (searchServerVue: any) => {
-      console.log("searchServerVue1111", searchServerVue);
       searchCon.value = searchServerVue;
     };
 

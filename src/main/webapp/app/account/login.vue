@@ -45,10 +45,6 @@ export default {
     let username = ref("admin");
     let password = ref("admin");
     let jwt: any = ref("");
-    const formDefault = ref({
-      username: "",
-      password: "",
-    });
     const router = useRouter();
     async function submitForm() {
       if (username.value === "" || password.value === "") {
@@ -58,7 +54,6 @@ export default {
           username: username.value,
           password: password.value,
         });
-        console.log(JSON.stringify(jwt.value));
         sessionStorage.setItem("token", jwt.value.data);
         router.push({ name: "home" });
       }
