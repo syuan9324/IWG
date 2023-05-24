@@ -39,7 +39,7 @@ public class ScheduledTaskService {
         });
         log.info("end file compare =============================");
     }
-//    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
     public void doFileComparisonInMd5() {
         List<IwgHostsDTO> hostList = iwgHostsService.findActive();
         hostList.forEach(iwgHostsDTO -> {
