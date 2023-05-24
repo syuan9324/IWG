@@ -18,7 +18,7 @@
                     >批次服務查詢</router-link
                   >
                 </li>
-                <li>
+                <!-- <li>
                   <router-link
                     class="list-group-item"
                     active-class="active"
@@ -32,6 +32,22 @@
                     active-class="active"
                     to="/searchServerHome"
                     >主機查詢</router-link
+                  >
+                </li> -->
+                <li>
+                  <router-link
+                    class="list-group-item"
+                    active-class="active"
+                    to="/iwg-host-list"
+                    >註冊監控主機</router-link
+                  >
+                </li>
+                <li>
+                  <router-link
+                    class="list-group-item"
+                    active-class="active"
+                    to="/iwg-host-target"
+                    >主機監控設定</router-link
                   >
                 </li>
                 <!-- <li>

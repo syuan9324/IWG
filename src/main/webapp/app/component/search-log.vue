@@ -72,8 +72,6 @@
         hover
         :items="table.data"
         :fields="table.fields"
-        :per-page="perPage"
-        :current-page="page"
       >
         <template #cell(index)="row">
           {{ row.index + 1 }}
@@ -88,12 +86,6 @@
           {{ formatDate(row.item.finishTime) }}
         </template>
       </b-table>
-      <b-pagination
-        v-model="page"
-        :total-rows="table.data.length"
-        :per-page="perPage"
-        align="center"
-      ></b-pagination>
     </div>
   </section>
 </template>

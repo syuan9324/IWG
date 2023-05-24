@@ -121,23 +121,16 @@ public class FileComparisonService {
                 String originLocation = targetDTO.getOriginFileLocation();
 
                 Instant triggerTime = Instant.now();
-                FileHashStatusEnums fileStatus = null;
+                FileHashStatusEnums fileStatus;
                 //fileStatus 取得比對後的狀態(正常/不正常)
                 try {
                     fileStatus = this.compareSingleFileMd5ByCommand(connectionConfig, fileName, serverLocation, originLocation);
+                    Instant finishTime = Instant.now();
+                    //針對fileStatus狀態做不同處理
+                    this.handleSingleFileComparisonResult(fileStatus, iwgHostsDTO, connectionConfig, originLocation, serverLocation, fileName, triggerTime, finishTime);
                 } catch (JSchException | NoSuchAlgorithmException | IOException e) {
                     e.printStackTrace();
                 }
-
-                Instant finishTime = Instant.now();
-                //針對fileStatus狀態做不同處理
-                try {
-                    assert fileStatus != null;
-                    this.handleSingleFileComparisonResult(fileStatus, iwgHostsDTO, connectionConfig, originLocation, serverLocation, fileName, triggerTime, finishTime);
-                } catch (JSchException | IOException e) {
-                    e.printStackTrace();
-                }
-
                 //如果不是單一檔案就看是否為整個目錄
             } else if (StringUtils.isNotBlank(targetDTO.getTargetFolder())) {
                 if (!(targetDTO.getTargetFolder().endsWith("\\") || targetDTO.getTargetFolder().endsWith("/"))) {
@@ -177,6 +170,8 @@ public class FileComparisonService {
                         for (Map.Entry<String, MapDifference.ValueDifference<String>> map : fileDiff.entrySet()) {
                             String needUpdateFileName = map.getKey();
                             //處理 fileDiff,把origin裡面的檔案搬過去到serverLocation
+                            //backup一下
+                            CommonSSHUtils.useSshCommand(connectionConfig,this.createBackupFolderCommand(targetDTO.getTargetFolder()));
                             CommonSSHUtils.useScpCopyLocalFileToRemote(connectionConfig, targetDTO.getOriginFolder(), targetDTO.getTargetFolder(), needUpdateFileName);
                         }
 
@@ -210,7 +205,26 @@ public class FileComparisonService {
 
         }
     }
+    private String createBackupFolderCommand(String serverLocation){
+        StringBuilder commandBuilder = new StringBuilder();
+        commandBuilder.append("cp -R ");
+        commandBuilder.append(serverLocation).append(" ");
+        commandBuilder.append(serverLocation).append("_bk");
+        return commandBuilder.toString();
+    }
 
+
+    /**
+     *
+     * @param connectionConfig 連線資訊
+     * @param fileName  檔名
+     * @param serverLocation server檔案位置
+     * @param originLocation 本地的檔案位置
+     * @return FILE_HASH_SAME(比對正常),FILE_HASH_DIFF(檔案不同), FILE_NOT_EXIST(檔案不存在)
+     * @throws JSchException
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     */
     private FileHashStatusEnums compareSingleFileMd5ByCommand(ConnectionConfig connectionConfig, String fileName, String serverLocation, String originLocation) throws JSchException, IOException, NoSuchAlgorithmException {
 
         //取得remote單檔的md5
@@ -286,6 +300,7 @@ public class FileComparisonService {
         //針對每個fileName去取的md5
         for (String singleFile : fileNameList) {
             String singleResult = CommonSSHUtils.useSshCommand(connectionConfig, "md5sum " + targetFolderName + singleFile);
+            //result will be like "md5HashId fileName", need split by space
             filesInFolderMd5Map.put(singleFile, singleResult.split(" ")[0]);
         }
         return filesInFolderMd5Map;

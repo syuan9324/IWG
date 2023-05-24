@@ -2,6 +2,7 @@ package com.iisi.patrol.webGuard.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class IwgHosts implements Serializable {
 
     private static final long serialVersionUID = 1L;

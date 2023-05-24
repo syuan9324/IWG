@@ -23,5 +23,6 @@ public interface IwgHostsTargetRepository extends JpaRepository<IwgHostsTarget, 
             nativeQuery = true)
     List<IwgHostsTarget> getDevIwgHostTargetByHost(@Param("hostName") String hostName,@Param("port") int port);
 
-    IwgHostsTarget findByHostnameAndPort(String hostname, int port);
+    List<IwgHostsTarget> findByHostnameAndPort(String hostname, Integer port);
+
 }

@@ -12,7 +12,7 @@
           <b-form-input
             id="username"
             v-model="formDefault.username"
-            placeholder="syuan"
+            placeholder="userName"
           ></b-form-input>
         </b-form-group>
       </b-form>
@@ -27,7 +27,7 @@
             id="password"
             type="password"
             v-model="formDefault.password"
-            placeholder="123456"
+            placeholder="password"
           ></b-form-input>
         </b-form-group>
       </b-form>
@@ -41,7 +41,7 @@
           <b-form-input
             id="hostname"
             v-model="formDefault.hostname"
-            placeholder="01"
+            placeholder="192.168.1.1"
           ></b-form-input>
         </b-form-group>
       </b-form>
@@ -83,7 +83,7 @@
           <b-form-input
             id="smsReceiver"
             v-model="formDefault.smsReceiver"
-            placeholder="0921531997"
+            placeholder="0912345678"
           ></b-form-input>
         </b-form-group>
       </b-form>
