@@ -6,7 +6,7 @@ import java.util.Base64;
 
 public class PassWordEncodeUtils {
 
-    private final static String salt = "iwg";
+    public final static String salt = "iwg";
 
     public static String encodePassword(String password){
         byte[] encodedBytes = Base64.getEncoder().encode((PassWordEncodeUtils.salt+password).getBytes());

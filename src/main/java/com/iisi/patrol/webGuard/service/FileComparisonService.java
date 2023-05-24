@@ -208,6 +208,9 @@ public class FileComparisonService {
     private String createBackupFolderCommand(String serverLocation){
         StringBuilder commandBuilder = new StringBuilder();
         commandBuilder.append("cp -R ");
+        if(serverLocation.endsWith("/")|| serverLocation.endsWith("\\")){
+            serverLocation = serverLocation.substring(0,serverLocation.length()-1);
+        }
         commandBuilder.append(serverLocation).append(" ");
         commandBuilder.append(serverLocation).append("_bk");
         return commandBuilder.toString();

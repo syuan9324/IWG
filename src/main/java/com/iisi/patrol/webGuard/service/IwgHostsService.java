@@ -114,7 +114,7 @@ public class IwgHostsService {
         iwgHostsDTO.setUpdateTime(Instant.now());
         iwgHostsDTO.setUpdateUser(user);
         //主機密碼加密
-        String encodedPassword = PassWordEncodeUtils.encodePassword(iwgHostsDTO.getPassword());
+        String encodedPassword = PassWordEncodeUtils.encodePassword(PassWordEncodeUtils.salt+iwgHostsDTO.getPassword());
         iwgHostsDTO.setPassword(encodedPassword);
 
         IwgHosts iwgHosts = iwgHostsMapper.toEntity(iwgHostsDTO);
@@ -126,7 +126,7 @@ public class IwgHostsService {
         iwgHostsDTO.setCreateTime(Instant.now());
         iwgHostsDTO.setCreateUser(user);
         //主機密碼加密
-        String encodedPassword = PassWordEncodeUtils.encodePassword(iwgHostsDTO.getPassword());
+        String encodedPassword = PassWordEncodeUtils.encodePassword(PassWordEncodeUtils.salt+iwgHostsDTO.getPassword());
         iwgHostsDTO.setPassword(encodedPassword);
 
         IwgHosts iwgHosts = iwgHostsMapper.toEntity(iwgHostsDTO);
