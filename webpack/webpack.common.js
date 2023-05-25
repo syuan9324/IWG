@@ -79,7 +79,8 @@ module.exports = async (env, options) => {
         }),
         new CopyWebpackPlugin({
           patterns: [
-            // { from: './src/main/webapp/content/', to: 'content/' },
+            //把webapp content底下的東西搬到target/content
+            { from: './src/main/webapp/content/', to: 'content/' },
             { from: "./src/main/webapp/favicon.ico", to: "favicon.ico" },
           ],
         }),

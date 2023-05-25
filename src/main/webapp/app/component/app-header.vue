@@ -3,7 +3,9 @@
     <div class="desktop-app-header-wrapper">
       <b-container>
           <b-row>
-          <b-col cols="4"></b-col>
+          <b-col cols="4">
+            <!-- <img src="../../content/img/PCIC_logged_in_logo.png" alt="Image" /> -->
+          </b-col>
           <b-col cols="4"><div class="top-nav"><strong>公共工程系統監控管理</strong></div></b-col>
           <b-col cols="4"><a class="btn-link" @click="logout">登出</a></b-col>
         </b-row>     
