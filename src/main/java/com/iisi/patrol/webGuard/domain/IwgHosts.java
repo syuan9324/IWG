@@ -23,8 +23,8 @@ public class IwgHosts implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 25)
-    @Column(name = "password", length = 25, nullable = false)
+    @Size(max = 50)
+    @Column(name = "password", length = 50, nullable = false)
     private String password;
 
     @Size(max = 25)

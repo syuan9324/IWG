@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 7070
 spring:
   datasource:
     url: jdbc:sqlserver://10.100.216.32:1433;SelectMethod=cursor;databaseName=PWC_DB;encrypt=true;trustServerCertificate=true
