@@ -7,7 +7,7 @@ spring:
     username: pwc
     password: IISI@pwcdb
   profiles:
-    active: @spring.profiles.active@
+    active: '@spring.profiles.active@'
 app:
   jwt:
     jwtSecret: jwtSecretKey
