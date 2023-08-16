@@ -54,7 +54,7 @@ public class TestResource {
     @PostMapping("/service/testPermission")
     public String testPermission(@RequestBody String command) throws Exception {
         String result = CommonSSHUtils.useSshCommand(connectionConfig, command);
-        System.out.println(result);
+        //System.out.println(result);
         return result;
     }
 
