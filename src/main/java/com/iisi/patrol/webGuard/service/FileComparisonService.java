@@ -162,20 +162,30 @@ public class FileComparisonService {
                     Map<String, String> originOnly = diff.entriesOnlyOnLeft();
                     Map<String, String> serverOnly = diff.entriesOnlyOnRight();
 
-                    for(Map.Entry<String, MapDifference.ValueDifference<String>> map : fileDiff.entrySet()){
-                        log.info("key: {}, value:{}",map.getKey(),map.getValue());
-                    }
+                    //for(Map.Entry<String, MapDifference.ValueDifference<String>> map : fileDiff.entrySet()){
+                    //    log.info("key: {}, value:{}",map.getKey(),map.getValue());
+                    //}
                     if (fileDiff.size() > 0 || originOnly.size() > 0 || serverOnly.size()>0) {
+                        /*
+                         *比對有誤的時候,新增一個紀錄所有問題的map,並拿這個map生成訊息
+                         *預計會寫成
+                         *  fileDiff    檔案差異
+                         *  fileLost    檔案缺漏
+                         *  fileUnknown 不知名檔案
+                        */
+                        Map<String,List<String>> messageMap = new HashMap<>();
+                        List<String> fileDiffList = new ArrayList<>();
+                        List<String> fileLostList = new ArrayList<>();
+                        List<String> fileUnknownList = new ArrayList<>();
                         log.warn("check folder abnormal");
                         //origin server 不一樣的狀況,先備份server的,再把origin的蓋掉server的
-                        if(fileDiff.size()>0){
-                            //create backup folder
-                            CommonSSHUtils.useSshCommand(connectionConfig,this.createEmptyBackupFolderCommand(targetDTO.getTargetFolder()));
-                        }
+
+                        //create backup folder
+                        CommonSSHUtils.useSshCommand(connectionConfig,this.createEmptyBackupFolderCommand(targetDTO.getTargetFolder()));
+
                         for (Map.Entry<String, MapDifference.ValueDifference<String>> map : fileDiff.entrySet()) {
                             String needUpdateFileName = map.getKey();
                             //處理 fileDiff,把origin裡面的檔案搬過去到serverLocation
-
                             //組backup 不一樣file的字串
                             String serverFileFullLocation = targetDTO.getTargetFolder() + needUpdateFileName;
                             StringBuilder backupFolderPathBuilder  = new StringBuilder();
@@ -185,35 +195,72 @@ public class FileComparisonService {
                             }
                             String serverFileFullBackupLocation = backupFolderPathBuilder.toString();
                             String mvCommand = "mv "+ serverFileFullLocation + " " + serverFileFullBackupLocation;
-                            log.info("serverFileFullLocation:{}",serverFileFullLocation);
-                            log.info("serverFileFullBackupLocation:{}",serverFileFullBackupLocation);
-                            log.info("mvCommand:{}",mvCommand);
+                            //log.info("serverFileFullLocation:{}",serverFileFullLocation);
+                            //log.info("serverFileFullBackupLocation:{}",serverFileFullBackupLocation);
+                            //log.info("mvCommand:{}",mvCommand);
                             CommonSSHUtils.useSshCommand(connectionConfig,mvCommand);
+                            fileDiffList.add(needUpdateFileName);//message用,紀錄有差異的檔案
                             //backup完copy origin to server
                             CommonSSHUtils.useScpCopyLocalFileToRemote(connectionConfig, targetDTO.getOriginFolder(), targetDTO.getTargetFolder(), needUpdateFileName);
                         }
+                        messageMap.put("fileDiff",fileDiffList);
 
                         //只有origin有
                         for (Map.Entry<String, String> map : originOnly.entrySet()) {
                             String needUpdateFileName = map.getKey();
                             //處理 fileDiff,把origin裡面的檔案搬過去到serverLocation
+                            fileLostList.add(needUpdateFileName);//message用,紀錄origin有but server沒有的檔案
                             CommonSSHUtils.useScpCopyLocalFileToRemote(connectionConfig, targetDTO.getOriginFolder(), targetDTO.getTargetFolder(), needUpdateFileName);
                         }
+                        messageMap.put("fileLost",fileLostList);
+
                         //只有server有
                         for (Map.Entry<String, String> map : serverOnly.entrySet()) {
                             String needDeleteFileName = map.getKey();
-                            //處理 fileDiff,把origin裡面的檔案搬過去到serverLocation
-                            log.info("remove file : {}{}",targetDTO.getTargetFolder(),needDeleteFileName);
-                            CommonSSHUtils.useSshCommand(connectionConfig, "rm -f" + targetDTO.getTargetFolder() + needDeleteFileName);
-                        }
+                            //1.備份
 
+                            String serverFileFullLocation = targetDTO.getTargetFolder() + needDeleteFileName;
+                            StringBuilder backupFolderPathBuilder  = new StringBuilder();
+                            if(targetDTO.getTargetFolder().endsWith("/")|| targetDTO.getTargetFolder().endsWith("\\")){
+                                backupFolderPathBuilder.append(targetDTO.getTargetFolder().substring(0,targetDTO.getTargetFolder().length()-1));
+                                backupFolderPathBuilder.append("_bk").append("/");
+                            }
+                            String serverFileFullBackupLocation = backupFolderPathBuilder.toString();
+                            String mvCommand = "mv "+ serverFileFullLocation + " " + serverFileFullBackupLocation;
+                            //log.info("serverFileFullLocation:{}",serverFileFullLocation);
+                            //log.info("serverFileFullBackupLocation:{}",serverFileFullBackupLocation);
+                            //log.info("mvCommand:{}",mvCommand);
+                            CommonSSHUtils.useSshCommand(connectionConfig,mvCommand);
+
+                            //2.刪除
+                            log.info("remove file : {}{}",targetDTO.getTargetFolder(),needDeleteFileName);
+                            fileUnknownList.add(needDeleteFileName);//message用,紀錄有未在origin的檔案
+                            CommonSSHUtils.useSshCommand(connectionConfig, "rm -f " + targetDTO.getTargetFolder() + needDeleteFileName);
+                        }
+                        messageMap.put("fileUnknown",fileUnknownList);
 
                         //寫log
                         Instant finishTime = Instant.now();
                         iwgHostsLogsService.writeCheckFailLog(iwgHostsDTO.getHostname(), iwgHostsDTO.getPort(), triggerTime, finishTime, targetDTO.getTargetFolder(), iwgHostsDTO.getSmsReceiver(), iwgHostsDTO.getMailReceiver());
                         StringBuilder sb1 = new StringBuilder();
                         sb1.append("主機:").append(iwgHostsDTO.getHostname()).append(",檔案目錄:").append(targetDTO.getTargetFolder()).append(",該目錄比對有誤");
-                        sb1.append("\n並上傳主機中的正確版本");
+                        //詳細的紀錄
+                        if(messageMap.get("fileDiff") != null && messageMap.get("fileDiff").size()>0){
+                            sb1.append("\n檔案差異:");
+                            String fileDiffs = String.join(",", messageMap.get("fileDiff"));
+                            sb1.append(fileDiffs);
+                        }
+                        if(messageMap.get("fileLost") != null && messageMap.get("fileLost").size()>0){
+                            sb1.append("\n檔案缺漏:");
+                            String fileLost = String.join(",", messageMap.get("fileLost"));
+                            sb1.append(fileLost);
+                        }
+                        if(messageMap.get("fileUnknown") != null && messageMap.get("fileUnknown").size()>0 ){
+                            sb1.append("\n不知名檔案:");
+                            String fileUnknown = String.join(",", messageMap.get("fileUnknown"));
+                            sb1.append(fileUnknown);
+                        }
+                        sb1.append("\n已處理並上傳主機中的正確版本");
                         admMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(), sb1.toString());
                     } else {
                         //normal
