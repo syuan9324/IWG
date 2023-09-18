@@ -161,10 +161,10 @@ public class FileComparisonService {
                     Map<String, MapDifference.ValueDifference<String>> fileDiff = diff.entriesDiffering();
                     Map<String, String> originOnly = diff.entriesOnlyOnLeft();
                     Map<String, String> serverOnly = diff.entriesOnlyOnRight();
-                    //
-                    //                    for(Map.Entry<String, MapDifference.ValueDifference<String>> map : fileDiff.entrySet()){
-                    //                        log.info("key: {}, value:{}",map.getKey(),map.getValue());
-                    //                    }
+
+                    for(Map.Entry<String, MapDifference.ValueDifference<String>> map : fileDiff.entrySet()){
+                        log.info("key: {}, value:{}",map.getKey(),map.getValue());
+                    }
                     if (fileDiff.size() > 0 || originOnly.size() > 0) {
                         log.warn("check folder abnormal");
                         for (Map.Entry<String, MapDifference.ValueDifference<String>> map : fileDiff.entrySet()) {

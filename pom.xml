@@ -339,6 +339,13 @@
 		</profile>
 		<profile>
 			<id>prod_pcc</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-undertow</artifactId>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
 			<build>
 				<plugins>
 					<plugin>
@@ -447,6 +454,13 @@
 		</profile>
 		<profile>
 			<id>prod_dr</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-undertow</artifactId>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
 			<build>
 				<plugins>
 					<plugin>
