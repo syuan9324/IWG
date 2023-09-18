@@ -165,13 +165,31 @@ public class FileComparisonService {
                     for(Map.Entry<String, MapDifference.ValueDifference<String>> map : fileDiff.entrySet()){
                         log.info("key: {}, value:{}",map.getKey(),map.getValue());
                     }
-                    if (fileDiff.size() > 0 || originOnly.size() > 0) {
+                    if (fileDiff.size() > 0 || originOnly.size() > 0 || serverOnly.size()>0) {
                         log.warn("check folder abnormal");
+                        //origin server 不一樣的狀況,先備份server的,再把origin的蓋掉server的
+                        if(fileDiff.size()>0){
+                            //create backup folder
+                            CommonSSHUtils.useSshCommand(connectionConfig,this.createEmptyBackupFolderCommand(targetDTO.getTargetFolder()));
+                        }
                         for (Map.Entry<String, MapDifference.ValueDifference<String>> map : fileDiff.entrySet()) {
                             String needUpdateFileName = map.getKey();
                             //處理 fileDiff,把origin裡面的檔案搬過去到serverLocation
-                            //backup一下
-                            CommonSSHUtils.useSshCommand(connectionConfig,this.createBackupFolderCommand(targetDTO.getTargetFolder()));
+
+                            //組backup 不一樣file的字串
+                            String serverFileFullLocation = targetDTO.getTargetFolder() + needUpdateFileName;
+                            StringBuilder backupFolderPathBuilder  = new StringBuilder();
+                            if(targetDTO.getTargetFolder().endsWith("/")|| targetDTO.getTargetFolder().endsWith("\\")){
+                                backupFolderPathBuilder.append(targetDTO.getTargetFolder().substring(0,targetDTO.getTargetFolder().length()-1));
+                                backupFolderPathBuilder.append("_bk").append("/");
+                            }
+                            String serverFileFullBackupLocation = backupFolderPathBuilder.toString();
+                            String mvCommand = "mv "+ serverFileFullLocation + " " + serverFileFullBackupLocation;
+                            log.info("serverFileFullLocation:{}",serverFileFullLocation);
+                            log.info("serverFileFullBackupLocation:{}",serverFileFullBackupLocation);
+                            log.info("mvCommand:{}",mvCommand);
+                            CommonSSHUtils.useSshCommand(connectionConfig,mvCommand);
+                            //backup完copy origin to server
                             CommonSSHUtils.useScpCopyLocalFileToRemote(connectionConfig, targetDTO.getOriginFolder(), targetDTO.getTargetFolder(), needUpdateFileName);
                         }
 
@@ -181,6 +199,15 @@ public class FileComparisonService {
                             //處理 fileDiff,把origin裡面的檔案搬過去到serverLocation
                             CommonSSHUtils.useScpCopyLocalFileToRemote(connectionConfig, targetDTO.getOriginFolder(), targetDTO.getTargetFolder(), needUpdateFileName);
                         }
+                        //只有server有
+                        for (Map.Entry<String, String> map : serverOnly.entrySet()) {
+                            String needDeleteFileName = map.getKey();
+                            //處理 fileDiff,把origin裡面的檔案搬過去到serverLocation
+                            log.info("remove file : {}{}",targetDTO.getTargetFolder(),needDeleteFileName);
+                            CommonSSHUtils.useSshCommand(connectionConfig, "rm -f" + targetDTO.getTargetFolder() + needDeleteFileName);
+                        }
+
+
                         //寫log
                         Instant finishTime = Instant.now();
                         iwgHostsLogsService.writeCheckFailLog(iwgHostsDTO.getHostname(), iwgHostsDTO.getPort(), triggerTime, finishTime, targetDTO.getTargetFolder(), iwgHostsDTO.getSmsReceiver(), iwgHostsDTO.getMailReceiver());
@@ -208,6 +235,19 @@ public class FileComparisonService {
     private String createBackupFolderCommand(String serverLocation){
         StringBuilder commandBuilder = new StringBuilder();
         commandBuilder.append("cp -R ");
+        if(serverLocation.endsWith("/")|| serverLocation.endsWith("\\")){
+            serverLocation = serverLocation.substring(0,serverLocation.length()-1);
+        }
+        commandBuilder.append(serverLocation).append(" ");
+        commandBuilder.append(serverLocation).append("_bk");
+        return commandBuilder.toString();
+    }
+
+    private String createEmptyBackupFolderCommand(String serverLocation){
+        StringBuilder commandBuilder = new StringBuilder();
+        //-m 設定mod
+        //-p 處理folder 已存在的問題
+        commandBuilder.append("mkdir -m 766 -p ");
         if(serverLocation.endsWith("/")|| serverLocation.endsWith("\\")){
             serverLocation = serverLocation.substring(0,serverLocation.length()-1);
         }

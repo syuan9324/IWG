@@ -194,4 +194,9 @@ public class TestResource {
     public void doDevFileComparisonInMd5() throws JSchException, IOException {
         scheduledTaskServiceTest.doDevFileComparisonInMd5();
     }
+
+    @GetMapping("/service/doDevFileComparison")
+    public void doFileComparisonInMd5() throws JSchException, IOException {
+        scheduledTaskService.doFileComparisonInMd5();
+    }
 }
