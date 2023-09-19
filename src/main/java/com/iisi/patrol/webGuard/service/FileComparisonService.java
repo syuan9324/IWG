@@ -29,13 +29,13 @@ public class FileComparisonService {
 
     private final IwgHostsLogsService iwgHostsLogsService;
 
-    private final AdmMailSendService admMailSendService;
+    private final IwgMailSendService iwgMailSendService;
 
     private final FileCacheService fileCacheService;
 
-    public FileComparisonService(IwgHostsLogsService iwgHostsLogsService, AdmMailSendService admMailSendService, FileCacheService fileCacheService) {
+    public FileComparisonService(IwgHostsLogsService iwgHostsLogsService, IwgMailSendService iwgMailSendService, FileCacheService fileCacheService) {
         this.iwgHostsLogsService = iwgHostsLogsService;
-        this.admMailSendService = admMailSendService;
+        this.iwgMailSendService = iwgMailSendService;
         this.fileCacheService = fileCacheService;
     }
 
@@ -72,7 +72,7 @@ public class FileComparisonService {
                         StringBuilder sb = new StringBuilder();
                         sb.append("主機:").append(iwgHostsDTO.getHostname()).append(",檔案路徑:").append(serverLocation + fileName).append(",該檔案有異動");
                         sb.append("\n並以替換為iwg主機中的正確版本");
-                        admMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(), sb.toString());
+                        iwgMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(), sb.toString());
                         break;
                     case FILE_NOT_EXIST:
                         // 1:寫log 2.放上檔案 3.寄信
@@ -83,7 +83,7 @@ public class FileComparisonService {
                         StringBuilder sb1 = new StringBuilder();
                         sb1.append("主機:").append(iwgHostsDTO.getHostname()).append(",檔案路徑:").append(serverLocation + fileName).append(",該檔案不存在");
                         sb1.append("\n並上傳主機中的正確版本");
-                        admMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(), sb1.toString());
+                        iwgMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(), sb1.toString());
                         break;
                 }
             } catch (Exception e) {
@@ -256,7 +256,7 @@ public class FileComparisonService {
                             sb1.append(fileUnknown);
                         }
                         sb1.append("\n已處理並上傳主機中的正確版本");
-                        admMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(), sb1.toString());
+                        iwgMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(), sb1.toString());
                     } else {
                         //normal
                         Instant finishTime = Instant.now();
@@ -355,7 +355,7 @@ public class FileComparisonService {
                 StringBuilder sb = new StringBuilder();
                 sb.append("主機:").append(iwgHostsDTO.getHostname()).append(",檔案路徑:").append(serverLocation + fileName).append(",該檔案有異動");
                 sb.append("\n並以替換為iwg主機中的正確版本");
-                admMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(), sb.toString());
+                iwgMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(), sb.toString());
                 break;
             case FILE_NOT_EXIST:
                 // 1:寫log 2.放上檔案 3.寄信
@@ -366,7 +366,7 @@ public class FileComparisonService {
                 StringBuilder sb1 = new StringBuilder();
                 sb1.append("主機:").append(iwgHostsDTO.getHostname()).append(",檔案路徑:").append(serverLocation + fileName).append(",該檔案不存在");
                 sb1.append("\n並上傳主機中的正確版本");
-                admMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(), sb1.toString());
+                iwgMailSendService.saveAdmMailWithReceiverAndContent(iwgHostsDTO.getMailReceiver(), sb1.toString());
                 break;
         }
 
