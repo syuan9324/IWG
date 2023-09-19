@@ -12,6 +12,7 @@ import com.jcraft.jsch.JSchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Profile("dev")
 @RestController
 @RequestMapping("/api")
 public class TestResource {
@@ -42,6 +44,8 @@ public class TestResource {
     IwgHostsService iwgHostsService;
     @Autowired
     FileComparisonService fileComparisonService;
+    @Autowired
+    FileCacheService fileCacheService;
 
     public ConnectionConfig connectionConfig = new ConnectionConfig("192.168.57.202","tailinh","IIsi@940450",22);
 
@@ -178,7 +182,7 @@ public class TestResource {
         String targetFolderName = "/opt/wildfly-4/welcome-content/";
         String originFolderName = "C:\\Users\\2106017\\welcome-content";
         Map<String, String> map1 = fileComparisonService.getServerFolderFilesAndMd5Map(connectionConfig, targetFolderName);
-        Map<String, String> map2 = fileComparisonService.getOriginFolderFilesAndMd5Map(originFolderName);
+        Map<String, String> map2 = fileCacheService.getOriginFolderFilesAndMd5Map(originFolderName);
         log.info("====map1====");
         for(Map.Entry<String,String> map : map1.entrySet()){
             log.info("file name: {}, with hash {}",map.getKey(),map.getValue());
@@ -198,5 +202,11 @@ public class TestResource {
     @GetMapping("/service/doDevFileComparison")
     public void doFileComparisonInMd5() throws JSchException, IOException {
         scheduledTaskService.doFileComparisonInMd5();
+    }
+
+
+    @GetMapping("/service/testCache")
+    public Map<String, String> getOriginFolderFilesAndMd5Map(){
+        return fileCacheService.getOriginFolderFilesAndMd5Map("C:\\welcome-content");
     }
 }

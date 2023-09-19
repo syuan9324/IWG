@@ -43,12 +43,12 @@ public class ScheduledTaskService {
     public void doFileComparisonInMd5() {
         List<IwgHostsDTO> hostList = iwgHostsService.findActive();
         hostList.forEach(iwgHostsDTO -> {
-            log.info("start file compare =============================");
+            log.info("========== start file compare =============================");
             log.info("current host : {}", iwgHostsDTO.getHostname());
             List<IwgHostsTargetDTO> iwgHostsTargetDTOs = iwgHostsTargetService.getIwgHostTargetByHost(iwgHostsDTO.getHostname(), iwgHostsDTO.getPort());
             log.info("check IwgHostsTargetLength : {}", iwgHostsTargetDTOs.size());
             fileComparisonService.fileCompareInMD5ByHostAndTargetList(iwgHostsDTO,iwgHostsTargetDTOs);
         });
-        log.info("end file compare =============================");
+        log.info("========== end  file  compare =============================");
     }
 }

@@ -22,8 +22,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class FileComparisonService {
@@ -33,9 +31,12 @@ public class FileComparisonService {
 
     private final AdmMailSendService admMailSendService;
 
-    public FileComparisonService(IwgHostsLogsService iwgHostsLogsService, AdmMailSendService admMailSendService) {
+    private final FileCacheService fileCacheService;
+
+    public FileComparisonService(IwgHostsLogsService iwgHostsLogsService, AdmMailSendService admMailSendService, FileCacheService fileCacheService) {
         this.iwgHostsLogsService = iwgHostsLogsService;
         this.admMailSendService = admMailSendService;
+        this.fileCacheService = fileCacheService;
     }
 
 
@@ -140,7 +141,7 @@ public class FileComparisonService {
                 Instant triggerTime = Instant.now();
                 try {
                     Map<String, String> serverFilesMap = this.getServerFolderFilesAndMd5Map(connectionConfig, targetDTO.getTargetFolder());
-                    Map<String, String> originFilesMap = this.getOriginFolderFilesAndMd5Map(targetDTO.getOriginFolder());
+                    Map<String, String> originFilesMap = fileCacheService.getOriginFolderFilesAndMd5Map(targetDTO.getOriginFolder());
                     //                    log.info("check fileDiff map");
                     //                    for(Map.Entry<String, String> map : serverFilesMap.entrySet()){
                     //                        log.info("key: {}, value:{}",map.getKey(),map.getValue());
@@ -195,9 +196,6 @@ public class FileComparisonService {
                             }
                             String serverFileFullBackupLocation = backupFolderPathBuilder.toString();
                             String mvCommand = "mv "+ serverFileFullLocation + " " + serverFileFullBackupLocation;
-                            //log.info("serverFileFullLocation:{}",serverFileFullLocation);
-                            //log.info("serverFileFullBackupLocation:{}",serverFileFullBackupLocation);
-                            //log.info("mvCommand:{}",mvCommand);
                             CommonSSHUtils.useSshCommand(connectionConfig,mvCommand);
                             fileDiffList.add(needUpdateFileName);//message用,紀錄有差異的檔案
                             //backup完copy origin to server
@@ -227,9 +225,6 @@ public class FileComparisonService {
                             }
                             String serverFileFullBackupLocation = backupFolderPathBuilder.toString();
                             String mvCommand = "mv "+ serverFileFullLocation + " " + serverFileFullBackupLocation;
-                            //log.info("serverFileFullLocation:{}",serverFileFullLocation);
-                            //log.info("serverFileFullBackupLocation:{}",serverFileFullBackupLocation);
-                            //log.info("mvCommand:{}",mvCommand);
                             CommonSSHUtils.useSshCommand(connectionConfig,mvCommand);
 
                             //2.刪除
@@ -396,21 +391,5 @@ public class FileComparisonService {
         return filesInFolderMd5Map;
     }
 
-    public Map<String, String> getOriginFolderFilesAndMd5Map(String originFolderName) {
-        return Stream.of(Objects.requireNonNull(new File(originFolderName).listFiles()))
-                .filter(file -> !file.isDirectory())
-                .collect(Collectors.toMap(File::getName, x -> {
-                    String checksum = "";
-                    try {
-                        byte[] data = new byte[0];
-                        data = Files.readAllBytes(Paths.get(x.getPath()));
-                        byte[] hash = MessageDigest.getInstance("MD5").digest(data);
-                        checksum = new BigInteger(1, hash).toString(16);
-                        checksum = StringUtils.leftPad(checksum, 32, '0');
-                    } catch (IOException | NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    }
-                    return checksum;
-                }));
-    }
+
 }
