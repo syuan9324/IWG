@@ -41,4 +41,40 @@ public class IwgMailSendService {
         });
     }
 
+    public void saveNfsWarningMailWithReceiverAndContent(String receivers,String content){
+        if(StringUtils.isBlank(receivers)) return;
+        List<String> receiverList = Arrays.asList(receivers.split(",", -1));
+        receiverList.forEach(receiver->{
+            AdmMailSendDTO mail = new AdmMailSendDTO();
+            mail.setReceiver(receiver);
+            mail.setMailType("IWG");
+            mail.setSubject("MOUNT 異常");
+            mail.setContent(content);
+            mail.setStatus("W");
+            mail.setIsHtml(false);
+            mail.setCreateUser("iwg");
+            mail.setSourceId("iwg");
+            mail.setCreateTime(Instant.now());
+            admMailSendService.saveAdmMail(mail);
+        });
+    }
+
+    public void saveHostLogMail(String receivers,String content){
+        if(StringUtils.isBlank(receivers)) return;
+        List<String> receiverList = Arrays.asList(receivers.split(",", -1));
+        receiverList.forEach(receiver->{
+            AdmMailSendDTO mail = new AdmMailSendDTO();
+            mail.setReceiver(receiver);
+            mail.setMailType("IWG");
+            mail.setSubject("IWG log");
+            mail.setContent(content);
+            mail.setStatus("W");
+            mail.setIsHtml(false);
+            mail.setCreateUser("iwg");
+            mail.setSourceId("iwg");
+            mail.setCreateTime(Instant.now());
+            admMailSendService.saveAdmMail(mail);
+        });
+    }
+
 }

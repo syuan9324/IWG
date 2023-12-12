@@ -1,16 +1,12 @@
 package com.iisi.patrol.webGuard.service;
 
-import com.iisi.patrol.webGuard.domain.IwgHosts;
 import com.iisi.patrol.webGuard.domain.IwgHostsLogs;
 import com.iisi.patrol.webGuard.repository.IwgHostsLogsRepository;
-import com.iisi.patrol.webGuard.service.dto.IwgHostsDTO;
 import com.iisi.patrol.webGuard.service.dto.IwgHostsLogsDTO;
 import com.iisi.patrol.webGuard.service.dto.mapper.IwgHostsLogsMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
@@ -71,8 +67,13 @@ public class IwgHostsLogsService {
         return this.saveIwgHostsLogs(newLog);
     }
 
-    public List<IwgHostsLogsDTO> findiwgHosts( IwgHostsLogsDTO iwgHostsLogsDTO) {
-        return iwgHostsLogsRepository.findByResultAndHostname(iwgHostsLogsDTO.getHostname()).stream().map(iwgHostsLogsMapper::toDto).collect(Collectors.toCollection(LinkedList::new)) ;
+    public List<IwgHostsLogsDTO> findiwgHosts(IwgHostsLogsDTO iwgHostsLogsDTO) {
+        return iwgHostsLogsRepository.findByResultAndHostname(iwgHostsLogsDTO.getHostname()).stream().map(iwgHostsLogsMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Transactional(readOnly = true)
+    public List<IwgHostsLogsDTO> findTop50IwgHosts() {
+        return iwgHostsLogsRepository.findTop50ByResultAndHostname().stream().map(iwgHostsLogsMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
 

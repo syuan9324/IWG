@@ -20,6 +20,12 @@ public interface IwgHostsLogsRepository extends JpaRepository<IwgHostsLogs, Long
 //            "/*APPEND_WHERE*/ " +
     List<IwgHostsLogs> findByResultAndHostname(@Param("hostname")String hostname);
 
+    @Query(value = "SELECT TOP 50 * from IWG_HOSTS_LOGS order by finish_time desc"
+            , nativeQuery = true)
+//            "/*APPEND_WHERE*/ " +
+//            " AND [RESULT] = :result  " +
+//            "/*APPEND_WHERE*/ " +
+    List<IwgHostsLogs> findTop50ByResultAndHostname();
 
 
 }
