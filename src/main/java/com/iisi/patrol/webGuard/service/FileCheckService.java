@@ -66,20 +66,20 @@ public class FileCheckService {
     }
 
     private void initUatMap() {
-        ConnectionConfig ap1 = new ConnectionConfig("10.100.211.15", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhekBXU1gzZWRj"), 22);
-        ConnectionConfig ap2 = new ConnectionConfig("10.100.211.51", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhekBXU1gzZWRj"), 22);
-        ConnectionConfig ap3 = new ConnectionConfig("10.100.213.11", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhekBXU1gzZWRj"), 22);
+        ConnectionConfig ap1 = new ConnectionConfig("10.100.211.15", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhejJ3c3gjRURD"), 22);
+        ConnectionConfig ap2 = new ConnectionConfig("10.100.211.51", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhejJ3c3gjRURD"), 22);
+        ConnectionConfig ap3 = new ConnectionConfig("10.100.213.11", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhejJ3c3gjRURD"), 22);
         this.connectionConfigs.add(ap1);
         this.connectionConfigs.add(ap2);
         this.connectionConfigs.add(ap3);
     }
 
     private void initProdMap() {
-        ConnectionConfig ap1 = new ConnectionConfig("10.100.11.11", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhekBXU1gzZWRj"), 22);
-        ConnectionConfig ap2 = new ConnectionConfig("10.100.11.12", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhekBXU1gzZWRj"), 22);
-        ConnectionConfig ap3 = new ConnectionConfig("10.100.11.13", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhekBXU1gzZWRj"), 22);
-        ConnectionConfig rest = new ConnectionConfig("10.100.11.51", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhekBXU1gzZWRj"), 22);
-        ConnectionConfig batch = new ConnectionConfig("10.100.13.1", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhekBXU1gzZWRj"), 22);
+        ConnectionConfig ap1 = new ConnectionConfig("10.100.11.11", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhejJ3c3gjRURD"), 22);
+        ConnectionConfig ap2 = new ConnectionConfig("10.100.11.12", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhejJ3c3gjRURD"), 22);
+        ConnectionConfig ap3 = new ConnectionConfig("10.100.11.13", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhejJ3c3gjRURD"), 22);
+        ConnectionConfig rest = new ConnectionConfig("10.100.11.51", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhejJ3c3gjRURD"), 22);
+        ConnectionConfig batch = new ConnectionConfig("10.100.13.1", "iisiadmin", PassWordEncodeUtils.decodePassword("aXdnMXFhejJ3c3gjRURD"), 22);
         this.connectionConfigs.add(ap1);
         this.connectionConfigs.add(ap2);
         this.connectionConfigs.add(ap3);
