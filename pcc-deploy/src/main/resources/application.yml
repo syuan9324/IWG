@@ -1,0 +1,8 @@
+server:
+  port: 7777
+
+deploy-config:
+  war-file-location:
+    test: 'D:\test-war-files\'
+    uat: ''
+    prod: ''
