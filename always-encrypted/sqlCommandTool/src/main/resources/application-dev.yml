@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:sqlserver://192.168.57.201:9981;database=PWC_DB;encrypt=true;trustServerCertificate=true;columnEncryptionSetting=Enabled;keyStoreLocation=C:\\keystore_iisi.jks;keyStoreSecret=IISI@pwcdb;keyStoreAuthentication=JavaKeyStorePassword;
+    username: pwc
+    password: IISI@pwcdb
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
