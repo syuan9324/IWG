@@ -45,6 +45,20 @@ let aeTableList = [
         {tableName:'QUA_QTRAIN_STUDENT',columnName:'PEO_ID',isPk:false,pkColumns:'QUA_QTRAIN_STUDENT_ID'}
     ]
 
+//step0 判斷是否有中文
+function judgeChinese(){
+    //select * from {table} where {columnName} not LIKE '[A-Z]%'  and {columnName}  not LIKE '[0-9]%' and{columnName} not like '%[%$#@ *!?./]%'
+    let sqlList = [];
+    aeTableList.forEach(tableMetaData =>{
+        sqlList.push(`select  ${tableMetaData.columnName} from ${tableMetaData.tableName} where ${tableMetaData.columnName} not LIKE '[A-Z]%'  and ${tableMetaData.columnName}  not LIKE '[0-9]%' and ${tableMetaData.columnName} not like '%[%$#@ *!?./]%'`)
+    })
+
+    sqlList.forEach(ele=>console.log(ele));
+    sqlList.forEach(ele=>{
+        fs.appendFileSync('output.sql', ele + "\n");
+    });
+   
+}
 
 
 //step 1  產生備份table sql
@@ -334,6 +348,8 @@ function handlePkColumnBack(){
     });
 }
 
+fs.appendFileSync('output.sql', '----- step0 judgeChinese' + "\n");
+judgeChinese()
 fs.appendFileSync('output.sql', '----- step1 back up tables' + "\n");
 backupTable();
 // fs.appendFileSync('output.sql', '----- step1.5 drop column' + "\n");
