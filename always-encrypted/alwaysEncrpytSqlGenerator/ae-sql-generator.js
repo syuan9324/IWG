@@ -8,6 +8,7 @@ let aeTableList = [
         {tableName:'BID_CPAMI_FTENG',columnName:'FTENG_IDN',isPk:true,pkColumns:'FTENG_IDN,CPAMI_KEY',pkName:'PK_BID_CPAMI_FTENG'},//ok
         {tableName:'BID_CPAMI_FTENG_RESUME',columnName:'IDN',isPk:true,pkColumns:'IDN,JOB_TITLE,START_DATE',pkName:'PK_BID_CPAMI_FTENG_RESUME'},//ok    
         {tableName:'BID_GOV_CHECKERR',columnName:'ROVE_TO',isPk:false,pkColumns:'WKUT,PRJNO,CHECK_DATE,ERR_NUM'},
+        {tableName:'BID_EGR_DISCIPLINE',columnName:'ENGR_IDNO',isPk:false,pkColumns:'ENG_ENGR_DISCIPLINE_ID',pkName:'PK_BID_EGR_DISCIPLINE'},
         {tableName:'BID_PE',columnName:'ID',isPk:true,pkColumns:'ID',pkName:'PK_BID_PE'},// ########varchar have chinese        
         {tableName:'BID_PRJ_PE',columnName:'ID',isPk:true,pkColumns:'WKUT,PRJNO,ID,PNAME,START_DATE,JOB_TYPE',pkName:'PK_BID_PRJ_PE'},
         {tableName:'BID_PERSONNEL_RESUME',columnName:'IDN',isPk:true,pkColumns:'IDN,NAME,JOB_TITLE',pkUpdateSkipColumn:'NAME',pkName:'PK_BID_PERSONNEL_RESUME'},//####varchar chinese
@@ -20,6 +21,7 @@ let aeTableList = [
         {tableName:'BID_PRJ_WKMENG',columnName:'ID',isPk:true,pkColumns:'WKUT,PRJNO,ID,JOB,START_DATE',pkName:'PK_BID_PRJ_WKMENG'},// ########存了一堆中文
         {tableName:'BID_QC_RETRAIN',columnName:'ID',isPk:true,pkColumns:'ID,CLASS2',pkName:'PK_BID_QC_RETRAIN'}, //ok
         {tableName:'BID_QC_TRAIN',columnName:'ID',isPk:true,pkColumns:'ID,QC_TYPE',pkName:'PK_BID_QC_TRAIN'},//ok
+        {tableName:'BID_VENDOR101',columnName:'RESP_IDN',isPk:false,pkColumns:'CCUT,PRJNO,O_WKUT,R101,START_DATE,END_DATE',pkName:'PK_BID_VENDOR101'},
         {tableName:'ENG_CHECK',columnName:'ENGR_IDNO',isPk:false,pkColumns:'ENG_CHECK_ID',nvarchar:true},
         {tableName:'ENG_COMP_MEMBER',columnName:'MEMBER_IDNO',isPk:false,pkColumns:'ENG_COMP_ID,ENG_COMP_MEMBER_ID,ENG_COMP_MEMBER_TYPE'},
         {tableName:'ENG_CST_LICENSE',columnName:'MASTER_IDNO',isPk:false,pkColumns:'ENG_CST_LICENSE_ID,ENG_CST_LICENSE_VERSION'},
