@@ -40,14 +40,14 @@ public class DeployController {
     public String deployTestWarFile(@RequestParam("warName") String warName) throws Exception {
         Map<String, ConnectionConfig> confMap = serverConnectionConfigMap.getTestMap();
         ConnectionConfig conf = confMap.get("192.168.57.202");
-        return wrappedDeployAndRestartServer(conf,warName,testJbossHome,testWarFileLocation)? "deploy finished" : "deploy failed";
+        return wrappedDeployAndRestartServer(conf, warName, testJbossHome, testWarFileLocation) ? "deploy finished" : "deploy failed";
     }
 
     @GetMapping("deploy-test-war-no-restart")
     public String deployTestWarFileNoRestart(@RequestParam("warName") String warName) throws Exception {
         Map<String, ConnectionConfig> confMap = serverConnectionConfigMap.getTestMap();
         ConnectionConfig conf = confMap.get("192.168.57.202");
-        return wrappedDeployAndRestartServer(conf,warName,testJbossHome,testWarFileLocation)? "deploy finished" : "deploy failed";
+        return wrappedDeployAndRestartServer(conf, warName, testJbossHome, testWarFileLocation) ? "deploy finished" : "deploy failed";
     }
 
     /*
@@ -60,7 +60,7 @@ public class DeployController {
         ConnectionConfig conf = confMap.get("10.100.211.15");
         String uatJbossHome = "/home/iisiadmin/EAP-7.4.0/";
         String uatWarFileLocation = "C:\\Users\\iisi.tailin\\Desktop\\war-file\\";
-        return wrappedDeployAndRestartServer(conf,warName,uatJbossHome,uatWarFileLocation)? "deploy finished" : "deploy failed";
+        return wrappedDeployAndRestartServer(conf, warName, uatJbossHome, uatWarFileLocation) ? "deploy finished" : "deploy failed";
     }
 
     @GetMapping("deploy-uat-pwc-web-test")
@@ -70,7 +70,7 @@ public class DeployController {
         String warName = "pwc-web-test.war";
         String uatJbossHome = "/home/iisiadmin/EAP-7.4.0/";
         String uatWarFileLocation = "C:\\Users\\iisi.tailin\\Desktop\\war-file\\";
-        return wrappedDeployAndRestartServer(conf,warName,uatJbossHome,uatWarFileLocation)? "deploy finished" : "deploy failed";
+        return wrappedDeployAndRestartServer(conf, warName, uatJbossHome, uatWarFileLocation) ? "deploy finished" : "deploy failed";
     }
 
     @GetMapping("deploy-uat-pwc-web")
@@ -80,7 +80,7 @@ public class DeployController {
         String warName = "pwc-web.war";
         String uatJbossHome = "/home/iisiadmin/EAP-7.4.0/";
         String uatWarFileLocation = "C:\\Users\\iisi.tailin\\Desktop\\war-file\\";
-        return wrappedDeployAndRestartServer(conf,warName,uatJbossHome,uatWarFileLocation)? "deploy finished" : "deploy failed";
+        return wrappedDeployAndRestartServer(conf, warName, uatJbossHome, uatWarFileLocation) ? "deploy finished" : "deploy failed";
     }
 
     @GetMapping("deploy-uat-rest")
@@ -93,8 +93,9 @@ public class DeployController {
         String uatWarFileLocation = "C:\\Users\\iisi.tailin\\Desktop\\war-file\\";
         boolean res = wrappedDeployService.deployAndRestartServerWithConnectionConfigAndWarName(conf, warName, uatJbossHome, uatWarFileLocation);
         singleServerDeployService.endDeployServer(conf);
-        return res? "deploy finished" : "deploy failed";
+        return res ? "deploy finished" : "deploy failed";
     }
+
     @GetMapping("deploy-uat-batch")
     public String deployUatBatch() throws Exception {
         Map<String, ConnectionConfig> confMap = serverConnectionConfigMap.getUatMap();
@@ -102,7 +103,7 @@ public class DeployController {
         String warName = "pwc-batch.war";
         String uatJbossHome = "/home/iisiadmin/EAP-7.4.0/";
         String uatWarFileLocation = "C:\\Users\\iisi.tailin\\Desktop\\war-file\\";
-        return wrappedDeployAndRestartServer(conf,warName,uatJbossHome,uatWarFileLocation)? "deploy finished" : "deploy failed";
+        return wrappedDeployAndRestartServer(conf, warName, uatJbossHome, uatWarFileLocation) ? "deploy finished" : "deploy failed";
     }
 
 
@@ -120,25 +121,25 @@ public class DeployController {
 
         List<ConnectionConfig> configs = new ArrayList<>();
         List<Future> futures = new ArrayList<>();
-        if(commonSshUtils.testConnect(ap1)) {
+        if (ap1 != null && commonSshUtils.testConnect(ap1)) {
             System.out.println("****ap1 is ok****");
             configs.add(ap1);
         }
-        if(commonSshUtils.testConnect(ap2)) {
+        if (ap2 != null && commonSshUtils.testConnect(ap2)) {
             System.out.println("****ap2 is ok****");
             configs.add(ap2);
         }
-        if(commonSshUtils.testConnect(ap3)) {
+        if (ap3 != null && commonSshUtils.testConnect(ap3)) {
             System.out.println("****ap3 is ok****");
             configs.add(ap3);
         }
-        if(commonSshUtils.testConnect(ap4)) {
+        if (ap4 != null && commonSshUtils.testConnect(ap4)) {
             System.out.println("****ap4 is ok****");
             configs.add(ap4);
         }
         ExecutorService executor = Executors.newFixedThreadPool(configs.size());
 
-        configs.forEach(ele->{
+        configs.forEach(ele -> {
             Future tempFuture = executor.submit(() -> {
                 try {
                     wrappedDeployAndRestartServer(ele, warName, uatJbossHome, uatWarFileLocation);
@@ -150,7 +151,7 @@ public class DeployController {
             futures.add(tempFuture);
         });
         try {
-            futures.forEach(ele->{
+            futures.forEach(ele -> {
                 try {
                     ele.get(900, TimeUnit.SECONDS);
                 } catch (InterruptedException | ExecutionException e) {
@@ -168,7 +169,6 @@ public class DeployController {
     }
 
 
-
     @GetMapping("deploy-uat-pwc-web-test-all")
     public String deployUatPwcWebTestAll() throws Exception {
         Map<String, ConnectionConfig> confMap = serverConnectionConfigMap.getUatMap();
@@ -183,25 +183,25 @@ public class DeployController {
 
         List<ConnectionConfig> configs = new ArrayList<>();
         List<Future> futures = new ArrayList<>();
-        if(commonSshUtils.testConnect(ap1)) {
+        if (ap1 != null && commonSshUtils.testConnect(ap1)) {
             System.out.println("****ap1 is ok****");
             configs.add(ap1);
         }
-        if(commonSshUtils.testConnect(ap2)) {
+        if (ap2 != null && commonSshUtils.testConnect(ap2)) {
             System.out.println("****ap2 is ok****");
             configs.add(ap2);
         }
-        if(commonSshUtils.testConnect(ap3)) {
+        if (ap3 != null && commonSshUtils.testConnect(ap3)) {
             System.out.println("****ap3 is ok****");
             configs.add(ap3);
         }
-        if(commonSshUtils.testConnect(ap4)) {
+        if (ap4 != null && commonSshUtils.testConnect(ap4)) {
             System.out.println("****ap4 is ok****");
             configs.add(ap4);
         }
         ExecutorService executor = Executors.newFixedThreadPool(configs.size());
 
-        configs.forEach(ele->{
+        configs.forEach(ele -> {
             Future tempFuture = executor.submit(() -> {
                 try {
                     wrappedDeployAndRestartServer(ele, warName, uatJbossHome, uatWarFileLocation);
@@ -212,7 +212,7 @@ public class DeployController {
             futures.add(tempFuture);
         });
         try {
-            futures.forEach(ele->{
+            futures.forEach(ele -> {
                 try {
                     ele.get(900, TimeUnit.SECONDS);
                 } catch (InterruptedException | ExecutionException e) {
@@ -239,7 +239,7 @@ public class DeployController {
         String uatWarFileLocation = "C:\\Users\\iisi.tailin\\Desktop\\war-file\\";
         boolean res = wrappedDeployService.deployAndRestartServerWithConnectionConfigAndWarName(conf, warName, uatJbossHome, uatWarFileLocation);
         singleServerDeployService.endDeployServer(conf);
-        return res? "deploy finished" : "deploy failed";
+        return res ? "deploy finished" : "deploy failed";
     }
 
 
@@ -254,7 +254,7 @@ public class DeployController {
         String warName = "pwc-rest.war";
         String prodJbossHome = "/home/iisiadmin/EAP-7.4.0/";
         String prodWarFileLocation = "C:\\Users\\iisi.tailin\\Desktop\\dr-war-file\\";
-        return wrappedDeployAndRestartServer(conf,warName,prodJbossHome,prodWarFileLocation)? "deploy finished" : "deploy failed";
+        return wrappedDeployAndRestartServer(conf, warName, prodJbossHome, prodWarFileLocation) ? "deploy finished" : "deploy failed";
     }
 
     @GetMapping("deploy-prod-batch")
@@ -264,7 +264,7 @@ public class DeployController {
         String warName = "pwc-batch.war";
         String prodJbossHome = "/home/iisiadmin/EAP-7.4.0/";
         String prodWarFileLocation = "C:\\Users\\iisi.tailin\\Desktop\\dr-war-file\\";
-        return wrappedDeployAndRestartServer(conf,warName,prodJbossHome,prodWarFileLocation)? "deploy finished" : "deploy failed";
+        return wrappedDeployAndRestartServer(conf, warName, prodJbossHome, prodWarFileLocation) ? "deploy finished" : "deploy failed";
     }
 
     @GetMapping("deploy-prod-pwc")
@@ -281,21 +281,21 @@ public class DeployController {
 
         //由於ap3有時候會關機 連不到
 
-        if(commonSshUtils.testConnect(ap3)){
+        if (ap3 != null && commonSshUtils.testConnect(ap3)) {
             //如果連的到 先部屬.12,.13
             Future future1 = executor.submit(() -> {
                 try {
-                    wrappedDeployAndRestartServer(ap2,warName,prodJbossHome,prodWarFileLocation);
+                    wrappedDeployAndRestartServer(ap2, warName, prodJbossHome, prodWarFileLocation);
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             });
             Future future2 = executor.submit(() -> {
                 try {
-                    wrappedDeployAndRestartServer(ap3,warName,prodJbossHome,prodWarFileLocation);
+                    wrappedDeployAndRestartServer(ap3, warName, prodJbossHome, prodWarFileLocation);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             });
 
@@ -306,29 +306,31 @@ public class DeployController {
                 future1.cancel(true);
                 future2.cancel(true);
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             } finally {
                 executor.shutdownNow();
             }
-        }else{
+        } else {
             //如果連不到 就部屬.12就好
-            wrappedDeployAndRestartServer(ap2,warName,prodJbossHome,prodWarFileLocation);
+            wrappedDeployAndRestartServer(ap2, warName, prodJbossHome, prodWarFileLocation);
         }
         //最後在部屬.13
-        return wrappedDeployAndRestartServer(ap1,warName,prodJbossHome,prodWarFileLocation)? "deploy finished" : "deploy failed";
+        return wrappedDeployAndRestartServer(ap1, warName, prodJbossHome, prodWarFileLocation) ? "deploy finished" : "deploy failed";
     }
 
 
-
-    private boolean wrappedDeployAndRestartServer(ConnectionConfig connectionConfig,String warName,String jbossHome,String localWarFileLocation) throws Exception{
+    private boolean wrappedDeployAndRestartServer(ConnectionConfig connectionConfig, String warName, String jbossHome, String localWarFileLocation) throws Exception {
+        if (connectionConfig == null){
+            throw new RuntimeException("cannot find connection info");
+        }
         boolean res = false;
         try {
             singleServerDeployService.startDeployServer(connectionConfig);
             res = wrappedDeployService.deployAndRestartServerWithConnectionConfigAndWarName(connectionConfig, warName, jbossHome, localWarFileLocation);
-            log.info("check res :{}",res);
+            log.info("check res :{}", res);
             log.info("trying to stop single deploy service...");
             if (res) singleServerDeployService.endDeployServer(connectionConfig);
-        }finally {
+        } finally {
             singleServerDeployService.endDeployServer(connectionConfig);
         }
         return res;
@@ -352,25 +354,25 @@ public class DeployController {
 
     //這個方法有問題,不要用
     @Deprecated
-    private boolean wrappedDeployNoRestartServer(ConnectionConfig connectionConfig,String warName,String jbossHome,String localWarFileLocation) throws Exception{
+    private boolean wrappedDeployNoRestartServer(ConnectionConfig connectionConfig, String warName, String jbossHome, String localWarFileLocation) throws Exception {
         boolean res = false;
         try {
             singleServerDeployService.startDeployServer(connectionConfig);
             res = wrappedDeployService.deployNoRestartServerWithConnectionConfigAndWarName(connectionConfig, warName, jbossHome, localWarFileLocation);
-        }finally {
+        } finally {
             singleServerDeployService.endDeployServer(connectionConfig);
         }
         return res;
     }
 
     @GetMapping("checkServerStatus")
-    public String checkServerStatus(){
+    public String checkServerStatus() {
         return "ok";
     }
 
     @GetMapping("testError")
     public String testError() throws Exception {
-        if( 1 == 1){
+        if (1 == 1) {
             throw new Exception("test");
         }
         return "ok";

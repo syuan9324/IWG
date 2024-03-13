@@ -9,6 +9,16 @@ uatMap:
     userName: iisiadmin
     passWord: 1qaz2wsx#EDC
     port: 22
+  10.100.211.17:
+    serverIp: 10.100.211.17
+    userName: iisiadmin
+    passWord: 1qaz2wsx#EDC
+    port: 22
+  10.100.211.18:
+    serverIp: 10.100.211.18
+    userName: iisiadmin
+    passWord: 1qaz2wsx#EDC
+    port: 22
   10.100.211.51:
     serverIp: 10.100.211.51
     userName: iisiadmin
