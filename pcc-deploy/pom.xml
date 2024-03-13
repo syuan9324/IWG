@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.iisi</groupId>
 	<artifactId>pcc-deploy</artifactId>
-	<version>0.0.11</version>
+	<version>0.0.12</version>
 <!--	<packaging>war</packaging>-->
 	<name>pcc-deploy</name>
 	<description>server to deploy war file</description>

@@ -1,0 +1,53 @@
+uatMap:
+  10.100.211.15:
+    serverIp: 10.100.211.15
+    userName: iisiadmin
+    passWord: 1qaz2wsx#EDC
+    port:  22
+  10.100.211.16:
+    serverIp: 10.100.211.16
+    userName: iisiadmin
+    passWord: 1qaz2wsx#EDC
+    port: 22
+  10.100.211.51:
+    serverIp: 10.100.211.51
+    userName: iisiadmin
+    passWord: 1qaz2wsx#EDC
+    port: 22
+  10.100.213.11:
+    serverIp: 10.100.213.11
+    userName: iisiadmin
+    passWord: 1qaz2wsx#EDC
+    port: 22
+prodMap:
+  10.100.11.11:
+    serverIp: 10.100.11.11
+    userName: iisiadmin
+    passWord: 1qaz2wsx#EDC
+    port: 22
+  10.100.11.12:
+    serverIp: 10.100.11.12
+    userName: iisiadmin
+    passWord: 1qaz2wsx#EDC
+    port: 22
+  10.100.11.13:
+    serverIp: 10.100.11.13
+    userName: iisiadmin
+    passWord: 1qaz2wsx#EDC
+    port: 22
+  10.100.11.51:
+    serverIp: 10.100.11.51
+    userName: iisiadmin
+    passWord: 1qaz2wsx#EDC
+    port: 22
+  10.100.13.1:
+    serverIp: 10.100.13.1
+    userName: iisiadmin
+    passWord: 1qaz2wsx#EDC
+    port: 22
+testMap:
+  192.168.57.202:
+    serverIp: 192.168.57.202
+    userName: tailinh
+    passWord: IIsi@3456789
+    port: 22
