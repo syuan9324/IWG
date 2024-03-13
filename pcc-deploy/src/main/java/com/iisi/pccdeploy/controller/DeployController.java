@@ -54,11 +54,10 @@ public class DeployController {
         =================================uat====================================
      */
 
-    @GetMapping("deploy-uat-pwc-web-ui")
-    public String deployUatPwcWebUi() throws Exception {
+    @GetMapping("deploy-uat-pcictest")
+    public String deployUatPwcWebUi(@RequestParam String warName) throws Exception {
         Map<String, ConnectionConfig> confMap = serverConnectionConfigMap.getUatMap();
         ConnectionConfig conf = confMap.get("10.100.211.15");
-        String warName = "pwc-web-ui.war";
         String uatJbossHome = "/home/iisiadmin/EAP-7.4.0/";
         String uatWarFileLocation = "C:\\Users\\iisi.tailin\\Desktop\\war-file\\";
         return wrappedDeployAndRestartServer(conf,warName,uatJbossHome,uatWarFileLocation)? "deploy finished" : "deploy failed";
