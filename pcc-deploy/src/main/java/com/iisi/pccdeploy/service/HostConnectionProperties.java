@@ -6,7 +6,7 @@ import java.util.Map;
 
 @Data
 public class HostConnectionProperties {
-
+    private  Map<String,ConnectionConfig> testMap;
     private  Map<String,ConnectionConfig> uatMap;
     private  Map<String,ConnectionConfig> prodMap;
 }
