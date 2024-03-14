@@ -36,3 +36,6 @@ build/
 ### node modules###
 node_modules
 node
+
+### need ignored files ###
+/always-encrypted/alwaysEncrpytSqlGenerator/output.sql
