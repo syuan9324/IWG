@@ -6,10 +6,10 @@ let aeTableList = [
         {tableName:'ADM_CONTACT',columnName:'IDNO',isPk:false,pkColumns:'USER_ID'},
         {tableName:'BID_CPAMI_ARCHITECT_RESUME',columnName:'IDN',isPk:true,pkColumns:'IDN,BUSINESS_NO',pkUpdateSkipColumn:'BUSINESS_NO',pkName:'PK_BID_CPAMI_ARCHITECT_RESUME'},//ok
         {tableName:'BID_CPAMI_FTENG',columnName:'FTENG_IDN',isPk:true,pkColumns:'FTENG_IDN,CPAMI_KEY',pkName:'PK_BID_CPAMI_FTENG'},//ok
-        {tableName:'BID_CPAMI_FTENG_RESUME',columnName:'IDN',isPk:true,pkColumns:'IDN,JOB_TITLE,START_DATE',pkName:'PK_BID_CPAMI_FTENG_RESUME'},//ok    
+        {tableName:'BID_CPAMI_FTENG_RESUME',columnName:'IDN',isPk:true,pkColumns:'IDN,JOB_TITLE,START_DATE',pkName:'PK_BID_CPAMI_FTENG_RESUME'},//ok
         {tableName:'BID_GOV_CHECKERR',columnName:'ROVE_TO',isPk:false,pkColumns:'WKUT,PRJNO,CHECK_DATE,ERR_NUM'},
         {tableName:'BID_EGR_DISCIPLINE',columnName:'ENGR_IDNO',isPk:false,pkColumns:'ENG_ENGR_DISCIPLINE_ID',pkName:'PK_BID_EGR_DISCIPLINE'},
-        {tableName:'BID_PE',columnName:'ID',isPk:true,pkColumns:'ID',pkName:'PK_BID_PE'},// ########varchar have chinese        
+        {tableName:'BID_PE',columnName:'ID',isPk:true,pkColumns:'ID',pkName:'PK_BID_PE'},// ########varchar have chinese
         {tableName:'BID_PRJ_PE',columnName:'ID',isPk:true,pkColumns:'WKUT,PRJNO,ID,PNAME,START_DATE,JOB_TYPE',pkName:'PK_BID_PRJ_PE'},
         {tableName:'BID_PERSONNEL_RESUME',columnName:'IDN',isPk:true,pkColumns:'IDN,NAME,JOB_TITLE',pkUpdateSkipColumn:'NAME',pkName:'PK_BID_PERSONNEL_RESUME'},//####varchar chinese
         {tableName:'BID_PERSONNEL_RESUME_ITEM',columnName:'IDN',isPk:true,pkColumns:'IDN,NAME,JOB_TITLE,INTERVAL_NO,WKUT,PRJNO',
@@ -33,13 +33,15 @@ let aeTableList = [
         {tableName:'ENG_ENGR_EXAM',columnName:'IDNO',isPk:false,pkColumns:'ENG_ENGR_EXAM_ID'},
         {tableName:'ENG_ENGR_INSURANCE',columnName:'IDNO',isPk:false,pkColumns:'ENG_ENGR_INSURANCE_ID'},
         {tableName:'ENG_ENGR_LICENSE',columnName:'IDNO',isPk:false,pkColumns:'ENG_ENGR_LICENSE_ID,ENG_ENGR_LICENSE_VERSION'},
+        {tableName:'ENG_ENGR_PARTTIME_BLI',columnName:'ENG_ENGR_IDNO',isPk:false,pkColumns:'ENG_ENGR_PARTTIME_BLI_ID'},
+        {tableName:'ENG_ENGR_PARTTIME_GCIS',columnName:'ENG_ENGR_IDNO',isPk:false,pkColumns:'ENG_ENGR_PARTTIME_GCIS_ID'},
         {tableName:'ENG_MEMBER',columnName:'IDNO',isPk:false,pkColumns:'ENG_MEMBER_ID'},
         {tableName:'ENG_YEARREPORT',columnName:'ENGR_IDNO',isPk:false,pkColumns:'ENG_YEARREPORT_ID,ENG_YEARREPORT_YYYY'},
         {tableName:'ENG_YEARREPORT_CASE_ENGR',columnName:'IDNO',isPk:false,pkColumns:'ENG_YEARREPORT_CASE_ENGR_ID,ENG_YEARREPORT_CASE_GUID,ENG_YEARREPORT_CASE_ID,ENG_YEARREPORT_ID,ENG_YEARREPORT_YYYY'},
         {tableName:'ENG_YEARREPORT_ENGR',columnName:'ENGR_IDNO',isPk:false,pkColumns:'ENG_YEARREPORT_ENGR_ID,ENG_YEARREPORT_ID,ENG_YEARREPORT_YYYY'},
         {tableName:'ENG_YEARREPORT_IMPORT_LOG',columnName:'IDNO',isPk:false,notNull:true,pkColumns:'ENG_YEARREPORT_IMPORT_LOG_ID'},
         {tableName:'ECT_PUBLIC',columnName:'IDNO',isPk:false,notNull:true,pkColumns:'ECT_PUBLISH_ID'},
-        {tableName:'ECT_CHECK',columnName:'IDNO',isPk:false,notNull:true,pkColumns:'ECT_CHECK_ID'},        
+        {tableName:'ECT_CHECK',columnName:'IDNO',isPk:false,notNull:true,pkColumns:'ECT_CHECK_ID'},
         {tableName:'GEO_EXAM_PASS_IMPORT',columnName:'IDNO',isPk:false,pkColumns:'GEO_EXAM_PASS_IMPORT_ID',nvarchar:true},
         {tableName:'GEO_MEMBER',columnName:'IDNO',isPk:false,pkColumns:'GEO_MEMBER_ID',nvarchar:true},
         {tableName:'QUA_QTRAIN_PERSON',columnName:'PEO_ID',isPk:false,pkColumns:'SID'},//QUA_QTRAIN_PERSON_PK
